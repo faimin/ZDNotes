@@ -191,7 +191,7 @@ int main(int argc, char *argv[]) {
 static struct IMAGE_INFO { unsigned version; unsigned flag; } _OBJC_IMAGE_INFO = { 0, 2 };
 ```
 虽然NSMutableArray前面加不加__block，都不会影响往数组中添加数据，但是当在block中给`mutArr`重新赋值的时候就有区别了。
-![blockTest1.png](https://ooo.0o0.ooo/2016/08/22/57ba88ba3c2d4.png)
+![blockTest1.png](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/Images/blockTest1.png)
 如果你想对`mutArr`变量重新赋值一个新的`array`实例，改变原变量的指针，那么不加`_block`是不行的，但是如果只是单纯的`add`一个数据进去实际上改变的是变量所指的那个`mutArr`内存区域，这样是没有区别的。
 
 ###3、静态变量
