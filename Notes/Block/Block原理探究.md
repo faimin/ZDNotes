@@ -18,7 +18,7 @@ struct __block_impl {
 >* descriptor：是用于描述当前这个 block 的附加信息的，包括结构体的大小，需要 capture 和 dispose 的变量列表等。结构体大小需要保存是因为，每个 block 因为会 capture 一些变量，这些变量会加到 __main_block_impl_0 这个结构体中，使其体积变大。
 
 接下来进入正题：
-> p.s：以下都是在ARC环境下执行
+> p.s：以下`Objective-C`的代码都处在ARC环境下
 
 ###1、不加__block的情况:
 ```objc
