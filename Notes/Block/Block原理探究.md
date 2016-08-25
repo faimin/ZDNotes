@@ -354,7 +354,7 @@ int main(int argc, char *argv[]) {
 static struct IMAGE_INFO { unsigned version; unsigned flag; } _OBJC_IMAGE_INFO = { 0, 2 };
 ```
 
-###总结:
+###总结:  
 1、局部变量：不加`__block`，block内部捕获的是局部变量的值，而且如果局部变量是数值类型（比如int）不会有`__main_block_copy_0` 和 `__main_block_dispose_0` 两个函数，如果是引用类型（比如NSArray）则会有这个函数，说明对于值类型变量是直接定义新变量并赋值相同，对于引用类型变量是定义一个新变量并copy它。
 2、局部变量：而添加`__block`后,原来的局部变量会被放入到一个`__Block_byref_变量名_0`类型的结构体中，然后block内部当捕获局部变量时其实是捕获的是这个结构体的指针，当获取原来的局部变量时(不管是在block内还是block外)，其实都是通过这个结构体或者这个结构体指针来拿到原来的局部变量，再进行操作的。这也就是为什么添加`__block`后可以对block内捕获的局部变量进行重新赋值等操作。
 3、静态变量：block直接捕获的是静态变量的指针，前后都是对指针进行操作。
@@ -363,17 +363,27 @@ static struct IMAGE_INFO { unsigned version; unsigned flag; } _OBJC_IMAGE_INFO =
 
 > `__main_block_copy_0` 中的 `_Block_object_assign` 函数相当于`retain`实例方法，使 block 的成员变量持有捕获到的对象。 `__main_block_dispose_0` 中的 `_Block_object_dispose` 函数相当于 `release` 实例方法，释放 block 的成员变量持有的对象。
 
+Objective-C 中的三中block `__NSStackBlock__`、`__NSMallocBlock`、`__NSGloballBlock` 会在下面的情况下出现：
+
+|					|ARC				                               |非ARC |
+|--------------|:--------------------------------------------:|------------|
+|捕获外部变量		|`__NSStackBlock__` <br> `__NSMallocBlock__`  |`__NSStackBlock__` |
+|未捕获外部变量   |`__NSGlobalBlock__`                         |`__NSGlobalBlock__`|
+* 在 ARC 中，捕获了外部变量的block的类型会是`__NSStackBlock__` 或者 `__NSMallocBlock__`，如果 block 被赋值给了某个变量，在这个过程中会执行`_Block_copy`，将原有的 `__NSStackBlock__` 变成 `__NSMallocBlock__`；但是如果 block 没有被赋值给某个变量，那它的类型就是`__NSStackBlock__`；没有捕获外部变量的 block 的类则是 `__NSGlobalBlock__` ，既不在栈上，也不在堆上，它类似于 C 语言函数一样，会在代码段中。
+* 在非 ARC 中，捕获了外部变量的 block 的类会是`__NSStackBlock__`，放置在栈上；没有捕获外部变量的 block 与 ARC 环境下的情况是相同的，类型是`__NSGlobalBlock__`，放置在代码段中。
 
 ------
 > 参考文章:
 >
 > [1、谈Objective-C Block的实现](http://blog.devtang.com/2013/07/28/a-look-inside-blocks/)
 > 
-> [2、深入分析Objective-C block、weakself、strongself实现原理](http://www.jianshu.com/p/a5dd014edb13)
->
-> [3、一篇文章看懂iOS代码块Block](http://www.jianshu.com/p/14efa33b3562)
+> [2、iOS中的block是如何持有对象的](http://draveness.me/block-retain-object)
+> 
+> [3、深入分析Objective-C block、weakself、strongself实现原理](http://www.jianshu.com/p/a5dd014edb13)
 > 
 > [4、block-copy](http://www.galloway.me.uk/2013/05/a-look-inside-blocks-episode-3-block-copy/)
+
+
 
 
 
