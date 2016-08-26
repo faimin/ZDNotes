@@ -49,6 +49,32 @@
 ```objc
 BOOL isView = [targetView isDescendantOfView:superView];
 ```
+#####判断viewController是disappear还是dealloc
+```objc  
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    BOOL isContains = [self.navigationController.childViewControllers containsObject:self];
+    if (isContains) {
+        NSLog(@"控制器只是单纯的disappear，比如pushToVC");
+    } else {
+        NSLog(@"控制器将要释放了");
+    }
+}
+```
+#####判断当前viewController是push来的还是present来的
+> 如果A弹出B，那么A为presenting，B为presented。
+A弹出B , 则B就是A的presentedViewController, A就是B的presentingViewController
+虽然A为控制器，但是当打印B的presentingViewController，显示类型为导航控制器，这说明如果当前视图有自己的导航控制器，则最终调用present方法的是当前控制器的导航控制器，如果不存在导航控制器，调用着是当前控制器（self）。
+
+```objc
+// 如果存在presentingViewController，则说明是当前视图是present出来的
+if (self.presentingViewController) { 
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+} else {
+    [self.navigationController popViewControllerAnimated:YES];
+}            
+```
 #####修改UItextField中placeholder的文字颜色
 ```objc
 [textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
