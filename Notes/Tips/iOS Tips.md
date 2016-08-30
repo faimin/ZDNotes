@@ -45,6 +45,38 @@
     }
 }
 ```
+#####更改状态栏的类型
+[iOS 中关于 NavigationController 中 preferredStatusBarStyle 一直不执行的问题](http://www.tuicool.com/articles/MZfyE3Z)
+
+```objc
+// 在plist文件里把 `View controller-based status bar appearance` 设置成 `YES`。
+// 
+- (void)changeNavigationAndStatusBarStyle {
+    /// 状态栏
+    [self preferredStatusBarStyle];
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return self.isOpaqueStatusBar ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
+}
+```
+#####手势全屏返回
+```objc
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // self.interactivePopGestureRecognizer系统手势类型为`UIScreenEdgePanGestureRecognizer`
+    // 设置代理
+    id target = self.interactivePopGestureRecognizer.delegate;
+    // 创建手势,并设置代理
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:target action:@selector(handleNavigationTransition:)];
+    pan.delegate = self;
+    // 添加手势
+    [self.view addGestureRecognizer:pan];
+     // 将系统自带的手势覆盖掉
+    self.interactivePopGestureRecognizer.enabled = NO;
+}
+```
 #####判断view是不是指定视图的子视图
 ```objc
 BOOL isView = [targetView isDescendantOfView:superView];
