@@ -32,7 +32,7 @@
 #####禁止锁屏
 ```objc
 [UIApplication sharedApplication].idleTimerDisabled = YES;
-或
+// 或
 [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 ```
 #####手动更改iOS状态栏颜色
@@ -259,7 +259,7 @@ VPN — prefs:root=General&path=Network/VPN
 Wallpaper — prefs:root=Wallpaper
 Wi-Fi — prefs:root=WIFI
 ```
-#####动画暂定再开始
+#####动画暂停然后再开始
 ```objc
 -(void)pauseLayer:(CALayer *)layer {
     CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
@@ -294,7 +294,12 @@ Wi-Fi — prefs:root=WIFI
 描述文件路径
 ~/Library/MobileDevice/Provisioning Profiles
 ```
-
+#####查找所有block的正则表达式
+[正则表达式检测](http://www.regexr.com/)
+```regex
+// 解释：以`^`开头，`{`和`换行符`结束，中间（`*`表示匹配0次或多次，`+`表示匹配一次或者多次）匹配任意字符，最后是换行符
+\^.*\{\n     
+```
 ####参考帖子：
 >* [iOS小技巧总结](http://www.jianshu.com/p/4523eafb4cd4)
 
