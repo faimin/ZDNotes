@@ -1,5 +1,25 @@
 # Block原理探究
-对`Object-C`代码执行`xcrun -sdk iphonesimulator clang -rewrite-objc 文件名.m`操作来获取伪代码，仅供技术探究。
+在此之前先介绍一下**Block Syntax**：
+
+```objc
+// Block as a local variable
+returnType (^blockName)(parameterTypes) = ^returnType(parameters) {...};
+
+// Block as a property
+@property (nonatomic, copy) returnType (^blockName)(parameterTypes);
+
+// Block as a method parameter
+- (void)someMethodThatTakesABlock:(returnType (^)(parameterTypes))blockName;
+
+// Block as an argument to a method call
+[someObject someMethodThatTakesABlock: ^returnType (parameters) {...}];
+
+// Block as typedef
+typedef returnType (^TypeName)(parameterTypes);
+TypeName blockName = ^returnType(parameters) {...};
+```
+
+对`Object-C`代码执行 **xcrun -sdk iphonesimulator clang -rewrite-objc 文件名.m** 操作来获取伪代码，仅供技术探究。
 
 先把`__block_impl`结构体拿出来放在最前面，最终block调用时都会被强转成这种类型，下面好多地方会用到。
 
