@@ -29,12 +29,6 @@
 #endif
 }
 ```
-#####禁止锁屏
-```objc
-[UIApplication sharedApplication].idleTimerDisabled = YES;
-// 或
-[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-```
 #####手动更改iOS状态栏颜色
 ```objc
 - (void)setStatusBarBackgroundColor:(UIColor *)color {
@@ -111,6 +105,16 @@ if (self.presentingViewController) {
 ```objc
 [textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
 ```
+#####UITextField 光标右移
+创建一个 leftView
+```objc
+searchTextField.leftViewMode = UITextFieldViewModeAlways;
+searchTextField.leftView = ({
+	UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, margin, searchTextField.my_height)];
+	leftView.backgroundColor = [UIColor clearColor];
+	leftView;
+});
+```
 #####直接设置UITextView的placeholder
 ```objc
 [self setValue:zd_placeHolderLabel forKey:@"_placeholderLabel"];
@@ -179,6 +183,21 @@ UIBarButtonItem *rightNegativeSpacer = [[UIBarButtonItem alloc] initWithBarButto
 UIBarButtonItem *rightBtnItem1 = [[UIBarButtonItem alloc]initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemClicked:)];
 UIBarButtonItem *rightBtnItem2 = [[UIBarButtonItem alloc]initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemClicked:)];
 self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,rightBtnItem2];
+```
+#####从一个隐藏导航栏的 A 控制器 push 到一个有导航栏的 B 控制器中(导航栏隐藏问题)
+在不显示导航栏的 A 控制器中遵守`UINavigationControllerDelegate`协议,实现其代理方法
+```objc
+#pragma mark - UINavigationControllerDelegate
+-(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
+    BOOL isShowBar = [viewController isKindOfClass:[self class]];
+    [self.navigationController setNavigationBarHidden:isShowBar animated:YES];
+}
+```
+#####禁止锁屏
+```objc
+[UIApplication sharedApplication].idleTimerDisabled = YES;
+// 或
+[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 ```
 #####退出应用
 ```objc
