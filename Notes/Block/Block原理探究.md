@@ -1,5 +1,7 @@
 # Block原理探究
-在此之前先介绍一下**Block Syntax**：
+在此之前先介绍一下**block 基本语法**：
+<details open>
+<summary>Block Syntax</summary>
 
 ```objc
 // Block as a local variable
@@ -18,6 +20,7 @@ returnType (^blockName)(parameterTypes) = ^returnType(parameters) {...};
 typedef returnType (^TypeName)(parameterTypes);
 TypeName blockName = ^returnType(parameters) {...};
 ```
+</details>
 
 对`Object-C`代码执行 **xcrun -sdk iphonesimulator clang -rewrite-objc 文件名.m** 操作来获取伪代码，仅供技术探究。
 

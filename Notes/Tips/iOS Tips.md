@@ -119,6 +119,23 @@ searchTextField.leftView = ({
 ```objc
 [self setValue:zd_placeHolderLabel forKey:@"_placeholderLabel"];
 ```
+#####动态调整 UITextView 的高度
+```objc
+- (void)addKVOObserver {
+    [self addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary<NSString *,id> *)change
+                       context:(void *)context {
+    UITextView *textView = object;
+    textView.frame = (CGRect){textView.frame.origin, textView.frame.size.width, textView.contentSize.height};
+    CGFloat topCorrect = (textView.bounds.size.height - textView.contentSize.height * textView.zoomScale)/2.0;
+    topCorrect = MAX(0.0, topCorrect);
+    textView.contentOffset = (CGPoint){0, -topCorrect};
+}
+```
 #####取消隐式动画
 ```objc
 //方法一
