@@ -106,8 +106,8 @@ if (self.presentingViewController) {
 [textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
 ```
 #####UITextField 光标右移
-创建一个 leftView
 ```objc
+// 创建一个 leftView
 searchTextField.leftViewMode = UITextFieldViewModeAlways;
 searchTextField.leftView = ({
 	UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, margin, searchTextField.my_height)];
@@ -171,6 +171,23 @@ searchTextField.leftView = ({
     [CATransaction commit];
 }
 ```
+#####动画暂停然后再开始
+```objc
+- (void)pauseLayer:(CALayer *)layer {
+    CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
+    layer.speed = 0.0;
+    layer.timeOffset = pausedTime;
+}
+
+- (void)resumeLayer:(CALayer *)layer {
+    CFTimeInterval pausedTime = [layer timeOffset];
+    layer.speed = 1.0;
+    layer.timeOffset = 0.0;
+    layer.beginTime = 0.0;
+    CFTimeInterval timeSincePause = [layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
+    layer.beginTime = timeSincePause;
+}
+```
 #####去掉导航栏返回按钮的back标题
 ```objc
 // 第一种方法:
@@ -178,14 +195,11 @@ searchTextField.leftView = ({
 
 // 第二种方法:
 @implementation UINavigationItem (backBarButttonItem)
-- (UIBarButtonItem*)backBarButtonItem
-{
-    if ([UIDevice iOS_7])
-    {
+- (UIBarButtonItem*)backBarButtonItem {
+    if ([UIDevice iOS_7]) {
         return [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:NULL];
     }
-    else
-    {
+    else {
         return [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:NULL];
     }
 }
@@ -201,8 +215,78 @@ UIBarButtonItem *rightBtnItem1 = [[UIBarButtonItem alloc]initWithImage:img style
 UIBarButtonItem *rightBtnItem2 = [[UIBarButtonItem alloc]initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemClicked:)];
 self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,rightBtnItem2];
 ```
+#####解决自定义返回按钮导致手势返回失败的问题
+> 1、代理方法
+思路：先把导航控制器手势返回的代理保存起来，然后再把当前的控制器设为导航控制器手势返回的代理；当当前控制释放的时候再把原来的代理给导航控制器的手势返回。
+
+```objc
+@interface ViewController () <UIGestureRecognizerDelegate>
+@end
+
+@implementation ViewController {
+    id<UIGestureRecognizerDelegate> _delegate
+}
+
+- (void)viewDidLoad {
+   [super viewDidLoad];
+
+     // 自定义返回按钮
+   UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:({
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        backButton.size = (CGSize){22, 22};
+        backButton.image = [UIImage imageNamed:@"icon_back"];
+        [backButton.image addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+        backButton;
+    })];
+    self.navigationItem.leftBarButtonItem = backItem;
+}
+
+- (void)back:(UIButton *)button {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (self.navigationController.viewControllers.count > 1) {
+          // 记录系统返回手势的代理
+        _delegate = self.navigationController.interactivePopGestureRecognizer.delegate;
+          // 设置系统返回手势的代理为当前控制器
+        self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+     // 设置系统返回手势的代理为我们刚进入控制器的时候记录的系统的返回手势代理
+    self.navigationController.interactivePopGestureRecognizer.delegate = _delegate;
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    return self.navigationController.childViewControllers.count > 1;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return self.navigationController.viewControllers.count > 1;
+}
+@end
+```
+> 2、添加action事件的方法
+
+```objc
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController.interactivePopGestureRecognizer addTarget:self action:@selector(xxxx)];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController.interactivePopGestureRecognizer removeTarget:self action:@selector(xxxx)];
+}
+```
 #####从一个隐藏导航栏的 A 控制器 push 到一个有导航栏的 B 控制器中(导航栏隐藏问题)
-在不显示导航栏的 A 控制器中遵守`UINavigationControllerDelegate`协议,实现其代理方法
+> 在不显示导航栏的 A 控制器中遵守`UINavigationControllerDelegate`协议,实现其代理方法
+
 ```objc
 #pragma mark - UINavigationControllerDelegate
 -(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
@@ -295,23 +379,6 @@ VPN — prefs:root=General&path=Network/VPN
 Wallpaper — prefs:root=Wallpaper
 Wi-Fi — prefs:root=WIFI
 ```
-#####动画暂停然后再开始
-```objc
--(void)pauseLayer:(CALayer *)layer {
-    CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
-    layer.speed = 0.0;
-    layer.timeOffset = pausedTime;
-}
-
--(void)resumeLayer:(CALayer *)layer {
-    CFTimeInterval pausedTime = [layer timeOffset];
-    layer.speed = 1.0;
-    layer.timeOffset = 0.0;
-    layer.beginTime = 0.0;
-    CFTimeInterval timeSincePause = [layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
-    layer.beginTime = timeSincePause;
-}
-```
 #####iOS开发中的一些相关路径
 ```objc
 模拟器的位置:
@@ -330,7 +397,7 @@ Wi-Fi — prefs:root=WIFI
 描述文件路径
 ~/Library/MobileDevice/Provisioning Profiles
 ```
-#####查找所有block的正则表达式
+#####匹配block的正则表达式
 [正则表达式检测](http://www.regexr.com/)
 ```regex
 // 解释：以`^`开头，`{`和`换行符`结束，中间（`*`表示匹配0次或多次，`+`表示匹配一次或者多次）匹配任意字符，最后是换行符
@@ -375,7 +442,8 @@ Wi-Fi — prefs:root=WIFI
 　　double ldexp(double x, int exponent);计算x*(2的exponent次幂) 
 　　double poly(double x, int degree, double coeffs [] );计算多项式 
 　　nt matherr(struct exception *e);数学错误计算处理程序
-　　```
+```
+　　
 ####参考帖子：
 >* [iOS小技巧总结](http://www.jianshu.com/p/4523eafb4cd4)
 
