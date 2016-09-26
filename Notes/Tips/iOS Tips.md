@@ -289,7 +289,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 
 ```objc
 #pragma mark - UINavigationControllerDelegate
--(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
+-(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     BOOL isShowBar = [viewController isKindOfClass:[self class]];
     [self.navigationController setNavigationBarHidden:isShowBar animated:YES];
 }
