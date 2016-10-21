@@ -55,22 +55,6 @@
     return self.isOpaqueStatusBar ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
 }
 ```
-#####手势全屏返回
-```objc
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // self.interactivePopGestureRecognizer系统手势类型为`UIScreenEdgePanGestureRecognizer`
-    // 设置代理
-    id target = self.interactivePopGestureRecognizer.delegate;
-    // 创建手势,并设置代理
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:target action:@selector(handleNavigationTransition:)];
-    pan.delegate = self;
-    // 添加手势
-    [self.view addGestureRecognizer:pan];
-     // 将系统自带的手势覆盖掉
-    self.interactivePopGestureRecognizer.enabled = NO;
-}
-```
 #####判断view是不是指定视图的子视图
 ```objc
 BOOL isView = [targetView isDescendantOfView:superView];
@@ -282,6 +266,22 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.navigationController.interactivePopGestureRecognizer removeTarget:self action:@selector(xxxx)];
+}
+```
+#####全屏手势返回
+```objc
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // self.interactivePopGestureRecognizer系统手势类型为`UIScreenEdgePanGestureRecognizer`
+    // 设置代理
+    id target = self.interactivePopGestureRecognizer.delegate;
+    // 创建手势,并设置代理
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:target action:@selector(handleNavigationTransition:)];
+    pan.delegate = self;
+    // 添加手势
+    [self.view addGestureRecognizer:pan];
+     // 将系统自带的手势覆盖掉
+    self.interactivePopGestureRecognizer.enabled = NO;
 }
 ```
 #####从一个隐藏导航栏的 A 控制器 push 到一个有导航栏的 B 控制器中(导航栏隐藏问题)
