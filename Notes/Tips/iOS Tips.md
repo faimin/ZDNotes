@@ -294,6 +294,115 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
     [self.navigationController setNavigationBarHidden:isShowBar animated:YES];
 }
 ```
+#####本地推送
+> AppDelegate.m
+
+```objc
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {//app在前台
+        NSLog(@"app在前台");
+    } else {//不在前台
+        NSLog(@"app不在前台");
+    }
+}
+```
+> iOS10以前
+
+```objc
+- (void)post_Less_iOS10:(NSDictionary *)userInfo title:(NSString *)title body:(NSString *)body {
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    // 设置触发通知的时间，这里设置的是立即触发
+    NSDate *fireDate = [NSDate date];
+    notification.fireDate = fireDate;
+
+    // 通知内容
+    notification.alertBody =  body;
+    // 标题，iOS8.2之后才有了这个属性
+    if ([notification respondsToSelector:@selector(setAlertTitle:)]) {
+        notification.alertTitle = title;
+    }
+
+    // 通知的声音
+    notification.soundName = UILocalNotificationDefaultSoundName;
+    // 附带内容
+    notification.userInfo = userInfo;
+
+    // ios8后，需要添加这个注册，才能得到授权
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        ///设置
+        UIUserNotificationType type =  UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound;
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:type
+                                                                                 categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    }
+
+    // 执行通知注册
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+}
+```
+> iOS10之后
+ 
+```objc
+- (void)registerNoti {
+    // iOS10 兼容
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 10.0) {
+        // 使用 UNUserNotificationCenter 来管理通知
+        UNUserNotificationCenter *uncenter = [UNUserNotificationCenter currentNotificationCenter];
+        // 监听回调事件
+        [uncenter setDelegate:self];
+        //iOS10 使用以下方法注册，才能得到授权
+        [uncenter requestAuthorizationWithOptions:(UNAuthorizationOptionAlert+UNAuthorizationOptionBadge+UNAuthorizationOptionSound)
+                                completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                                    NSLog(@"%@" , granted ? @"授权成功" : @"授权失败");
+                                }];
+        // 获取当前的通知授权状态, UNNotificationSettings
+        [uncenter getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+            if (settings.authorizationStatus == UNAuthorizationStatusNotDetermined) {
+                NSLog(@"未选择");
+            } else if (settings.authorizationStatus == UNAuthorizationStatusDenied) {
+                NSLog(@"未授权");
+            } else if (settings.authorizationStatus == UNAuthorizationStatusAuthorized) {
+                NSLog(@"已授权");
+            }
+        }];
+    }
+}
+
+- (void)post_iOS10:(NSDictionary *)userInfo title:(NSString *)title body:(NSString *)body {
+    // 使用 UNUserNotificationCenter 来管理通知
+    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+
+    //需创建一个包含待通知内容的 UNMutableNotificationContent 对象，注意不是 UNNotificationContent ,此对象为不可变对象。
+    UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
+    content.title = [NSString localizedUserNotificationStringForKey:title arguments:nil];
+    content.body = [NSString localizedUserNotificationStringForKey:body
+                                                         arguments:nil];
+    content.sound = [UNNotificationSound defaultSound];
+
+    content.userInfo  = userInfo;
+    // 在 alertTime 后推送本地推送
+    UNTimeIntervalNotificationTrigger* trigger = [UNTimeIntervalNotificationTrigger
+                                                  triggerWithTimeInterval:1 repeats:NO];
+
+    UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:@"FiveSecond"
+                                                                          content:content trigger:trigger];
+
+    //添加推送成功后的处理！
+    [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+    }];
+}
+
+#pragma mark - UNUserNotificationCenterDelegate
+///在前台接收到通知
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
+    completionHandler(UNNotificationPresentationOptionAlert);//不写这句通知不会出现在前台，如有需要|UNNotificationPresentationOptionSound，角标UNNotificationPresentationOptionBadge
+}
+
+///点击通知
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler{
+    //handle touch event
+}
+```
 #####禁止锁屏
 ```objc
 [UIApplication sharedApplication].idleTimerDisabled = YES;
