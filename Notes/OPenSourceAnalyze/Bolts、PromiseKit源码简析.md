@@ -1,9 +1,101 @@
-# Blots、PromiseKit源码简析
-####一、Bolts:
+# Bolts、PromiseKit源码简析
+###一、[Bolts](https://github.com/BoltsFramework/Bolts-ObjC):
 `BFTask`原理：
-每个`BFTask`自己都维护着一个任务数组，当task执行`continueWithBlock:`后（会生成一个新的`BFTask`），`continueWithBlock:`带的那个block会被加入到任务数组中，每当有结果返回时，会执行`trySetResult:`方法，这个方法中会拿到task它自己维护的那个任务数组，然后取出其中的所有任务block，然后遍历执行。
+每个`BFTask`自己都维护着一个任务数组，当task执行`continueWithBlock:`后（会生成一个新的`BFTask`），`continueWithBlock:`带的那个`block`会被加入到任务数组中，每当有结果返回时，会执行`trySetResult:`方法，这个方法中会拿到task它自己维护的那个任务数组，然后取出其中的所有任务block，然后遍历执行。
 
-####二、Promise:
+```objc
+/// 内部维护的任务数组
+@property (nonatomic, strong) NSMutableArray *callbacks;
+
+
+/// `continueWithBlock:`方法
+- (BFTask *)continueWithExecutor:(BFExecutor *)executor
+                           block:(BFContinuationBlock)block
+               cancellationToken:(nullable BFCancellationToken *)cancellationToken {
+	 // 创建一个新的`BFTaskCompletionSource`，创建它时，它里面会`new`一个`task`对象，最后`return`的也是这个`task`
+	 // 这个不是单例方法，所以此处创建的`task`是一个新对象
+    BFTaskCompletionSource *tcs = [BFTaskCompletionSource taskCompletionSource]; // (1)
+
+    // 创建一个任务`block`，后面会把执行这个`block`的操作加入到数组中，当回调时会执行这个`block`里面的操作
+    // p.s. 下面附一张把这个block折叠后的图片
+    dispatch_block_t executionBlock = ^{                             //(N.0)
+        if (cancellationToken.cancellationRequested) {
+            [tcs cancel];
+            return;
+        }
+		  
+		  // 把当前类（`task`对象）作为参数进行回调                     //(N.1)
+        id result = nil;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        if (BFTaskCatchesExceptions()) {
+            @try {
+                result = block(self);
+            } @catch (NSException *exception) {
+                NSLog(@"[Bolts] Warning: `BFTask` caught an exception in the continuation block."
+                      @" This behavior is discouraged and will be removed in a future release."
+                      @" Caught Exception: %@", exception);
+                tcs.exception = exception;
+                return;
+            }
+        } else {
+            result = block(self);                          
+        }
+#pragma clang diagnostic pop
+			// 如果回调结果返回的是`BFTask`类型
+        if ([result isKindOfClass:[BFTask class]]) {
+				// 下面`block`中的`task`就是👆的`result`
+            id (^setupWithTask) (BFTask *) = ^id(BFTask *task) {     //(N.3)
+                if (cancellationToken.cancellationRequested || task.cancelled) {
+                    [tcs cancel];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                } else if (task.exception) {
+                    tcs.exception = task.exception;
+#pragma clang diagnostic pop
+                } else if (task.error) {
+                    tcs.error = task.error;
+                } else {
+                    tcs.result = task.result;
+                }
+                return nil;
+            };
+
+            BFTask *resultTask = (BFTask *)result;
+				/// 如果`continueWithBlock:`中的`block`回调返回的`task`是`complete`状态，则直接到 (N.3)，把任务的结果传递到上面新创建的那个`BFTask`对象的`result`属性中,否则就继续执行`continueWithBlock:`来监测任务状态
+            if (resultTask.completed) {
+                setupWithTask(resultTask);                        //(N.2)
+            } else {
+                [resultTask continueWithBlock:setupWithTask];     //(N.4)
+            }
+
+        } else {
+            tcs.result = result;
+        }
+    };
+	
+	 // 如果是未完成状态，则把操作加入到数组中，延后执行；否则就立即执行
+    BOOL completed;
+    @synchronized(self.lock) {	                        //(2.0)
+        completed = self.completed;
+        if (!completed) {
+        		// 把任务添加到数组中
+            [self.callbacks addObject:[^{
+                [executor execute:executionBlock];
+            } copy]];
+        }
+    }
+    if (completed) {                                   //(2.1) 
+        [executor execute:executionBlock];
+    }
+
+    return tcs.task;
+}
+```
+![continueWithBlock:折叠图](xxxxxxx)
+
+
+###二、[Promise](https://github.com/mxcl/PromiseKit):
 * 1、首先，让我们看看创建Promise的源码
 
 ```objc

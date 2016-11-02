@@ -1,4 +1,4 @@
-# Git操作
+# Git常用操作
 ####git命令
 查看命令历史： `git reflog`
 查看提交记录：`git log`
