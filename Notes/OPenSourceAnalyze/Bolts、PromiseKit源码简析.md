@@ -92,7 +92,7 @@
     return tcs.task;
 }
 ```
-![continueWithBlock:折叠图](xxxxxxx)
+![continueWithBlock:折叠图](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/SourceImages/continueWithBlock.png)
 
 
 ###二、[Promise](https://github.com/mxcl/PromiseKit):
