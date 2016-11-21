@@ -8,6 +8,7 @@
 sudo gem install cocoapods -v 0.38.2
 ```
 之后在执行`pod setup`时，由于`pod`工具已经升级到`1.xx`版本了，`pod`算法以及`Specs`库中的文件结构已经改变，所以它会默认拉取新版本的`Specs`库，这样就会出现旧版本`pod`新版本`Specs`库的情况，当执行`pod install`的时候会发生找不到`xxx`第三方库的情况。
+
 解决此问题的方案是需要在`Podfile`中指定`source`源地址：
 
 ``` 
@@ -33,8 +34,10 @@ git checkout v0.32.1
 错误样式如下图所示
 ![ReactiveCocoa issue 2761](https://cloud.githubusercontent.com/assets/10302939/13940970/93497b58-f01d-11e5-9211-a96927537365.png)
 
-3种解决办法：
+######3种解决办法：
 1）修改源码：把.h文件中报错的`__weak`标识删除（不能删除.m文件中的，否则会发生内存问题）
+
+
 2）在引入`ReactiveCocoa`的地方添加`macro`判断标识：
 
 ```objc
@@ -42,6 +45,8 @@ git checkout v0.32.1
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #endif
 ```
+
+
 3）设置工程文件：set 'Weak References in Manual Retain Release:YES'
 ![weak reference in manual](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/SourceImages/weak%20reference%20setting.png)
 
