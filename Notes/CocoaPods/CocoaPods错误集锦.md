@@ -47,7 +47,7 @@ git checkout v0.32.1
 ```
 
 
-3）设置工程文件：set 'Weak References in Manual Retain Release:YES'
+3）设置工程文件：set `Weak References in Manual Retain Release:YES`
 ![weak reference in manual](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/SourceImages/weak%20reference%20setting.png)
 
 
