@@ -1,4 +1,4 @@
-#CocoaPods错误集锦
+#CocoaPods之见招拆招
 #### 1、The `master` repo requires CocoaPods 1.0.0 - (currently using 0.38.2)
 > 参考：http://blog.cocoapods.org/Sharding/
 
@@ -25,8 +25,17 @@ git checkout v0.32.1
 最后，在执行`pod install`的时候需要添加上`--no-repo-update`标识，因为`1.0`之前的`pod`版本在执行`pod install`的时候会默认先更新升级本地`Specs`库文件。
 
 #### 2、File not found with <angled> include; use "quoates" instead
-在`target`中设置**Always Search User Paths**为**YES**
+在`target`中设置**Always Search User Paths**为**YES**，可以通过`pod`设置
 
+```ruby
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+		config.build_settings['ALWAYS_SEARCH_USER_PATHS'] = 'YES'
+    end
+  end
+end
+```
 #### 3、Cannot create `__weak reference` in file using manual reference counting
 >+ https://github.com/ReactiveCocoa/ReactiveCocoa/issues/2761
 >+ @mdiep 对出现此问题的原因的解释：In Xcode 7.3, __weak causes errors in files compiled as -fno-objc-arc. Since RAC uses __weak, you cannot use it in those files without setting the Weak References in Manual Retain Release setting to YES. If you're using a .pch that imports RAC, you're more likely to see this error.
@@ -34,7 +43,9 @@ git checkout v0.32.1
 错误样式如下图所示
 ![ReactiveCocoa issue 2761](https://cloud.githubusercontent.com/assets/10302939/13940970/93497b58-f01d-11e5-9211-a96927537365.png)
 
-######3种解决办法：
+**有3种解决办法：**
+
+
 1）修改源码：把.h文件中报错的`__weak`标识删除（不能删除.m文件中的，否则会发生内存问题）
 
 
@@ -47,7 +58,7 @@ git checkout v0.32.1
 ```
 
 
-3）设置工程文件：set `Weak References in Manual Retain Release:YES`
+3）设置工程文件：设置`Weak References in Manual Retain Release`为`YES`
 ![weak reference in manual](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/SourceImages/weak%20reference%20setting.png)
 
 
