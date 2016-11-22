@@ -25,7 +25,7 @@ git checkout v0.32.1
 最后，在执行`pod install`的时候需要添加上`--no-repo-update`标识，因为`1.0`之前的`pod`版本在执行`pod install`的时候会默认先更新升级本地`Specs`库文件。
 
 #### 2、File not found with <angled> include; use "quoates" instead
-在`target`中设置**Always Search User Paths**为**YES**，可以通过`pod`设置
+在`target`中手动设置**Always Search User Paths**为**YES**，也可以通过`pod`动态设置（推荐）
 
 ```ruby
 post_install do |installer|
