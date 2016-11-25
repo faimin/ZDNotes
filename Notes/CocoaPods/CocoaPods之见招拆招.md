@@ -11,7 +11,7 @@ sudo gem install cocoapods -v 0.38.2
 
 解决此问题的方案是需要在`Podfile`中指定`source`源地址：
 
-``` 
+```
 source "https://github.com/CocoaPods/Old-Specs"
 ```
 并把本地的`Specs`库切换到旧版本：
@@ -23,6 +23,10 @@ git checkout v0.32.1
 ```
 
 最后，在执行`pod install`的时候需要添加上`--no-repo-update`标识，因为`1.0`之前的`pod`版本在执行`pod install`的时候会默认先更新升级本地`Specs`库文件。
+
+以下2张图分别是旧版本的`spec`库和新版本`spec`库的结构，大家可以对比一下二者的结构：
+![OldSpec](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/SourceImages/OldSpec.png)
+![NewSpec](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/SourceImages/NewSpec.png)
 
 #### 2、File not found with <angled> include; use "quoates" instead
 在`target`中手动设置**Always Search User Paths**为**YES**，也可以通过`pod`动态设置（推荐）
@@ -60,5 +64,3 @@ end
 
 3）设置工程文件：设置`Weak References in Manual Retain Release`为`YES`
 ![weak reference in manual](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/SourceImages/weak%20reference%20setting.png)
-
-
