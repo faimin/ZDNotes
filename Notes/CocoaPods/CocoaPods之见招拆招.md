@@ -64,3 +64,14 @@ end
 
 3）设置工程文件：设置`Weak References in Manual Retain Release`为`YES`
 ![weak reference in manual](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/SourceImages/weak%20reference%20setting.png)
+#### 4、"The validator for Swift projects uses Swift 3.0 by default, if you are using a different version of swift you can use a `.swift-version	` file to set the version for you Pod. For example to use Swift 2.3, run: `echo "2.3" > .swift-version`:"
+如下图所示：
+![SwiftVersionError](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/SourceImages/Swift-versionError.png)
+
+**解决办法：**
+
+把`pod`的引用方式由`:git`方式改为指定版本号的方式。
+
+
+
+
