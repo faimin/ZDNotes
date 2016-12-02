@@ -71,6 +71,37 @@ end
 **解决办法：**
 
 把`pod`的引用方式由`:git`方式改为指定版本号的方式。
+#### 5、在`pod`中添加对私有`.a`文件的支持时，不需要在编译选项中设置任何东西，添加之后不仅没效果，还会报错
+#### 6、在`podspec`文件中添加`source_files`时，不推荐`s.source_files = 'DDReaderModelFoundation/Define/*'`这种写法，最好写上后缀限制`s.source_files = 'DDReaderModelFoundation/Define/*.{h,m}`，因为假如在Define文件夹下包含`xib`或者其他资源文件时，会把资源文件也拷入`source_files`中，而资源文件在`podspec`中是需要单独设置的，比如下面的几种方式：
+
+```ruby
+spec.ios.resource_bundle = { 'MapBox' => 'MapView/Map/Resources/*.png' }
+spec.resource_bundles = {
+    'MapBox' => ['MapView/Map/Resources/*.png'],
+    'OtherResources' => ['MapView/Map/OtherResources/*.png']
+}
+
+spec.resource = 'Resources/HockeySDK.bundle'
+spec.resources = ['Images/*.png', 'Sounds/*']
+
+spec.vendored_frameworks = 'MyFramework.framework', 'TheirFramework.framework'
+
+spec.vendored_libraries = 'libProj4.a', 'libJavaScriptCore.a'
+spec.ios.vendored_library = 'Libraries/libProj4.a'
+```
+> 对于`podspec`的语法我就不过多的贴在这里了，推荐大家阅读`cocoaPods`的官方**[wiki](http://guides.cocoapods.org/syntax/podspec.html)**
+单独设置资源文件时也会发生引用、拷贝操作，这样就会导致编译问题。
+
+这里有篇我同事写的**[文章](http://www.cnblogs.com/JoelZeng/p/6123234.html)**就是介绍这个坑的，大家可以了解一下。
+#### 7、在`pod`的`pch`文件中添加引用时，比如
+
+```objc
+s.prefix_header_contents = '#import "DDDefine.h"'
+```
+不能添加自己工程中的文件，执行`pod lib lint`时，它会一直报找不到你想引入的文件的错误。
+
+但是你可以在这里添加其他`pod`中的文件，或者`iOS`自己`API`中的库文件。
+
 
 
 
