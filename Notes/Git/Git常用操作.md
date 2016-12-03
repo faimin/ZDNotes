@@ -121,7 +121,9 @@ git clone --recursive https://github.com/Cocoanetics/DTCoreText.git "/Users/ssss
 
 ### 推荐文章：
 1、[代码回滚：Reset、Checkout、Revert的选择](https://github.com/geeeeeeeeek/git-recipes/wiki/5.2-%E4%BB%A3%E7%A0%81%E5%9B%9E%E6%BB%9A%EF%BC%9AReset%E3%80%81Checkout%E3%80%81Revert%E7%9A%84%E9%80%89%E6%8B%A9)
+
 2、[回滚错误的修改](https://github.com/geeeeeeeeek/git-recipes/wiki/2.6-%E5%9B%9E%E6%BB%9A%E9%94%99%E8%AF%AF%E7%9A%84%E4%BF%AE%E6%94%B9)
+
 3、[Git查看、删除、重命名远程分支和tag](http://zengrong.net/post/1746.htm)
 
 
