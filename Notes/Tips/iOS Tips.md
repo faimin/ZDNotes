@@ -72,10 +72,11 @@ BOOL isView = [targetView isDescendantOfView:superView];
     }
 }
 ```
-#####判断当前viewController是push来的还是present来的
+#####判断当前viewController是push进来的还是present进来的
 > 如果A弹出B，那么A为presenting，B为presented。
-A弹出B , 则B就是A的presentedViewController, A就是B的presentingViewController
-虽然A为控制器，但是当打印B的presentingViewController，显示类型为导航控制器，这说明如果当前视图有自己的导航控制器，则最终调用present方法的是当前控制器的导航控制器，如果不存在导航控制器，调用着是当前控制器（self）。
+A弹出B , 则B就是A的presentedViewController, A就是B的presentingViewController。
+>
+> 虽然A为控制器，但是当打印B的presentingViewController，显示类型为导航控制器，这说明如果当前视图有自己的导航控制器，则最终调用present方法的是当前控制器的导航控制器，如果不存在导航控制器，调用着是当前控制器（self）。
 
 ```objc
 // 如果存在presentingViewController，则说明是当前视图是present出来的
@@ -172,6 +173,14 @@ searchTextField.leftView = ({
     layer.beginTime = timeSincePause;
 }
 ```
+#####Autolayout动画
+```objc
+[containerView setNeedsLayout];
+[UIView animateWithDuration:1.0 animations:^{
+  // Make all constraint changes here
+  [containerView layoutIfNeeded];
+}];
+```
 #####去掉导航栏返回按钮的back标题
 ```objc
 // 第一种方法:
@@ -201,7 +210,8 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 ```
 #####解决自定义返回按钮导致手势返回失败的问题
 > 1、代理方法
-思路：先把导航控制器手势返回的代理保存起来，然后再把当前的控制器设为导航控制器手势返回的代理；当当前控制释放的时候再把原来的代理给导航控制器的手势返回。
+> 
+思路：先把导航控制器手势返回的代理保存起来，然后再把当前的控制器设为导航控制器手势返回的代理；当当前控制消失的时候再把原来的代理给导航控制器的手势返回。
 
 ```objc
 @interface ViewController () <UIGestureRecognizerDelegate>
