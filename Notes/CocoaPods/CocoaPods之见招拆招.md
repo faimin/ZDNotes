@@ -102,6 +102,108 @@ s.prefix_header_contents = '#import "DDDefine.h"'
 
 但是你可以在这里添加其他`pod`中的文件，或者`iOS`自己`API`中的库文件。
 
+#### 8、`CocoaPods`卸载
+有的时候不小心把`podSpec`升级到了`1.x` 版本，然后`pod search`就不能用了，然后通过切换分支`checkout`到`v0.32.1`，但是`pod search`还是报错：
+
+```pod
+$ pod search ZDTableView
+[!] Unable to load a specification for the plugin `/Users/fuxianchao/.rvm/gems/ruby-2.2.1/gems/cocoapods-deintegrate-1.0.0.beta.1`
+
+――― MARKDOWN TEMPLATE ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+ Command
+
+/Users/fuxianchao/.rvm/gems/ruby-2.2.1/bin/pod search ZDTableView
+
+
+ Report
+
+* What did you do?
+
+* What did you expect to happen?
+
+* What happened instead?
+
+ Stack
+
+   CocoaPods : 0.38.2
+        Ruby : ruby 2.2.1p85 (2015-02-26 revision 49769) [x86_64-darwin14]
+    RubyGems : 2.4.8
+        Host : Mac OS X 10.12.2 (16C67)
+       Xcode : 8.2.1 (8C1002)
+         Git : git version 2.11.0
+Ruby lib dir : /Users/fuxianchao/.rvm/rubies/ruby-2.2.1/lib
+Repositories : cocoapods - https://github.com/CocoaPods/Old-Specs @ 6e256ccc84aad851d401fabb79b2c0f9e09bb875
+               DDSpec - http://10.255.223.213/ios-code/DDSpec.git @ 941bed4b0c03090e13ecb7ee16a1eafa77969785
+               master - https://github.com/CocoaPods/Specs.git @ 2d939ca0abb4172b9ef087d784b43e0696109e7c
+               
+
+Plugins
+
+cocoapods-keys        : 1.7.0
+cocoapods-playgrounds : 0.1.0
+cocoapods-plugins     : 0.4.2
+cocoapods-search      : 1.0.0.beta.1
+cocoapods-stats       : 0.5.3
+cocoapods-trunk       : 0.6.4
+cocoapods-try         : 0.4.5
+
+Error
+
+NoMethodError - undefined method `all' for Pod::Platform:Class
+/Users/fuxianchao/.rvm/gems/ruby-2.2.1/gems/cocoapods-search-1.0.0.beta.1/lib/cocoapods-search/command/search.rb:34:in `initialize'
+/Users/fuxianchao/.rvm/gems/ruby-2.2.1@global/gems/claide-0.9.1/lib/claide/command.rb:334:in `new'
+/Users/fuxianchao/.rvm/gems/ruby-2.2.1@global/gems/claide-0.9.1/lib/claide/command.rb:334:in `parse'
+/Users/fuxianchao/.rvm/gems/ruby-2.2.1@global/gems/claide-0.9.1/lib/claide/command.rb:330:in `parse'
+/Users/fuxianchao/.rvm/gems/ruby-2.2.1@global/gems/claide-0.9.1/lib/claide/command.rb:308:in `run'
+/Users/fuxianchao/.rvm/gems/ruby-2.2.1/gems/cocoapods-0.38.2/lib/cocoapods/command.rb:48:in `run'
+/Users/fuxianchao/.rvm/gems/ruby-2.2.1/gems/cocoapods-0.38.2/bin/pod:44:in `<top (required)>'
+/Users/fuxianchao/.rvm/gems/ruby-2.2.1/bin/pod:23:in `load'
+/Users/fuxianchao/.rvm/gems/ruby-2.2.1/bin/pod:23:in `<main>'
+/Users/fuxianchao/.rvm/gems/ruby-2.2.1/bin/ruby_executable_hooks:15:in `eval'
+/Users/fuxianchao/.rvm/gems/ruby-2.2.1/bin/ruby_executable_hooks:15:in `<main>'
+
+――― TEMPLATE END ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+
+[!] Oh no, an error occurred.
+
+Search for existing GitHub issues similar to yours:
+https://github.com/CocoaPods/CocoaPods/search?q=undefined+method+%60all%27+for+Pod%3A%3APlatform%3AClass&type=Issues
+
+If none exists, create a ticket, with the template displayed above, on:
+https://github.com/CocoaPods/CocoaPods/issues/new
+
+Be sure to first read the contributing guide for details on how to properly submit a ticket:
+https://github.com/CocoaPods/CocoaPods/blob/master/CONTRIBUTING.md
+
+Don't forget to anonymize any private data!
+```
+
+这时候我的做法通常就是卸载`pod` ，然后重新安装。
+
+```ruby
+$ which pod //得到path
+$ sudo rm -rf <path>
+// 循环遍历卸载pod组件（如果是安装在了用户目录下，那就去掉命令中的sudo）
+$ for i in `gem list | grep pod | awk '{print $1}'`; do sudo gem uninstall  $i; done
+```
+
+有的时候对于新系统直接调用`gem install cocoapods` 是不行的，提示错误，此种情况就用下面的命令：
+
+```ruby
+// 安装指定版本的pod
+sudo gem install -n /usr/local/bin cocoapods -v 1.1.1
+// 卸载
+sudo gem uninstall -n /usr/local/bin cocoapods -v 1.1.1
+```
+
+--------
+
+
+
+
+
+
 
 
 
