@@ -1,5 +1,5 @@
 ##iOS tips：
-#####UITableView plain样式下，让section跟随滑动
+### UITableView plain样式下，让section跟随滑动
 ```objc
 // 让section跟随滑动
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -29,7 +29,35 @@
 #endif
 }
 ```
-#####手动更改iOS状态栏颜色
+
+### 设置tableViewCell之间的分割线
++ 第一种办法
+
+```objc 
+// 设置 `tableView`的`separatorInset`
+self.tableView.separatorInset = UIEdgeInsetsZero;
+
+// 运行程序后还是存在边距,接下来设置cell的属性
+cell.layoutMargins = UIEdgeInsetsZero;
+```
+
++ 第二种办法（推荐）
+
+```objc
+// 1、隐藏tableview的分割线
+self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
+// 2、把分割线的颜色设置为tableview的背景色
+self.tableView.backgroundColor = [UIColor redColor];
+
+// 3、重写cell的setFrame方法
+- (void)setFrame:(CGRect)frame {
+    frame.size.height -=1;
+    [super setFrame:frame];
+}
+```
+
+### 手动更改iOS状态栏颜色
 ```objc
 - (void)setStatusBarBackgroundColor:(UIColor *)color {
     UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
@@ -39,7 +67,7 @@
     }
 }
 ```
-#####更改状态栏的类型
+### 更改状态栏的类型
 [iOS 中关于 NavigationController 中 preferredStatusBarStyle 一直不执行的问题](http://www.tuicool.com/articles/MZfyE3Z)
 
 ```objc
@@ -55,11 +83,11 @@
     return self.isOpaqueStatusBar ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
 }
 ```
-#####判断view是不是指定视图的子视图
+### 判断view是不是指定视图的子视图
 ```objc
 BOOL isView = [targetView isDescendantOfView:superView];
 ```
-#####判断viewController是disappear还是dealloc
+### 判断viewController是disappear还是dealloc
 ```objc  
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -72,7 +100,7 @@ BOOL isView = [targetView isDescendantOfView:superView];
     }
 }
 ```
-#####判断当前viewController是push进来的还是present进来的
+### 判断当前viewController是push进来的还是present进来的
 > 如果A弹出B，那么A为presenting，B为presented。
 A弹出B , 则B就是A的presentedViewController, A就是B的presentingViewController。
 >
@@ -86,11 +114,11 @@ if (self.presentingViewController) {
     [self.navigationController popViewControllerAnimated:YES];
 }            
 ```
-#####修改UItextField中placeholder的文字颜色
+### 修改UItextField中placeholder的文字颜色
 ```objc
 [textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
 ```
-#####UITextField 光标右移
+### UITextField 光标右移
 ```objc
 // 创建一个 leftView
 searchTextField.leftViewMode = UITextFieldViewModeAlways;
@@ -100,11 +128,11 @@ searchTextField.leftView = ({
 	leftView;
 });
 ```
-#####直接设置UITextView的placeholder
+### 直接设置UITextView的placeholder
 ```objc
 [self setValue:zd_placeHolderLabel forKey:@"_placeholderLabel"];
 ```
-#####动态调整 UITextView 的高度
+### 动态调整 UITextView 的高度
 ```objc
 - (void)addKVOObserver {
     [self addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
@@ -121,7 +149,8 @@ searchTextField.leftView = ({
     textView.contentOffset = (CGPoint){0, -topCorrect};
 }
 ```
-#####取消隐式动画
+
+### 取消隐式动画
 ```objc
 //方法一
 [UIView performWithoutAnimation:^{
@@ -144,8 +173,7 @@ searchTextField.leftView = ({
 }];
 
 //方法四
-- (void)layoutSubviews
-{
+- (void)layoutSubviews {
     [super layoutSubviews];
     
     [CATransaction begin];
@@ -156,7 +184,7 @@ searchTextField.leftView = ({
     [CATransaction commit];
 }
 ```
-#####动画暂停然后再开始
+### 动画暂停然后再开始
 ```objc
 - (void)pauseLayer:(CALayer *)layer {
     CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
@@ -173,7 +201,7 @@ searchTextField.leftView = ({
     layer.beginTime = timeSincePause;
 }
 ```
-#####Autolayout动画
+### Autolayout动画
 ```objc
 [containerView setNeedsLayout];
 [UIView animateWithDuration:1.0 animations:^{
@@ -181,7 +209,7 @@ searchTextField.leftView = ({
   [containerView layoutIfNeeded];
 }];
 ```
-#####去掉导航栏返回按钮的back标题
+### 去掉导航栏返回按钮的back标题
 ```objc
 // 第一种方法:
 [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
@@ -197,7 +225,7 @@ searchTextField.leftView = ({
     }
 }
 ```
-#####调整barButtonItem之间的距离
+### 调整barButtonItem之间的距离
 ```objc
 UIImage *img = [[UIImage imageNamed:@"icon_cog"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 //宽度为负数的固定间距的系统item
@@ -208,7 +236,7 @@ UIBarButtonItem *rightBtnItem1 = [[UIBarButtonItem alloc]initWithImage:img style
 UIBarButtonItem *rightBtnItem2 = [[UIBarButtonItem alloc]initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemClicked:)];
 self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,rightBtnItem2];
 ```
-#####解决自定义返回按钮导致手势返回失败的问题
+### 解决自定义返回按钮导致手势返回失败的问题
 > 1、代理方法
 > 
 思路：先把导航控制器手势返回的代理保存起来，然后再把当前的控制器设为导航控制器手势返回的代理；当当前控制消失的时候再把原来的代理给导航控制器的手势返回。
@@ -278,7 +306,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
     [self.navigationController.interactivePopGestureRecognizer removeTarget:self action:@selector(xxxx)];
 }
 ```
-#####全屏手势返回
+### 全屏手势返回
 ```objc
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -294,7 +322,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
     self.interactivePopGestureRecognizer.enabled = NO;
 }
 ```
-#####从一个隐藏导航栏的 A 控制器 push 到一个有导航栏的 B 控制器中(导航栏隐藏问题)
+### 从一个隐藏导航栏的 A 控制器 push 到一个有导航栏的 B 控制器中(导航栏隐藏问题)
 > 在不显示导航栏的 A 控制器中遵守`UINavigationControllerDelegate`协议,实现其代理方法
 
 ```objc
@@ -304,7 +332,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
     [self.navigationController setNavigationBarHidden:isShowBar animated:YES];
 }
 ```
-#####本地推送
+### 本地推送
 > AppDelegate.m
 
 ```objc
@@ -413,13 +441,13 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
     //handle touch event
 }
 ```
-#####禁止锁屏
+### 禁止锁屏
 ```objc
 [UIApplication sharedApplication].idleTimerDisabled = YES;
 // 或
 [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 ```
-#####退出应用
+### 退出应用
 ```objc
 //退出方法
 - (void)exitApp {
@@ -439,7 +467,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 	}
 }
 ```
-#####获取手机安装的应用
+### 获取手机安装的应用
 ```objc
 Class c =NSClassFromString(@"LSApplicationWorkspace");
 id s = [(id)c performSelector:NSSelectorFromString(@"defaultWorkspace")];
@@ -451,7 +479,7 @@ for (id item in array) {
     NSLog(@"%@",[item performSelector:NSSelectorFromString(@"shortVersionString")]);
 }
 ```
-#####打开系统设置界面
+### 打开系统设置界面
 ```objc
 //iOS8之后
 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
@@ -498,7 +526,7 @@ VPN — prefs:root=General&path=Network/VPN
 Wallpaper — prefs:root=Wallpaper
 Wi-Fi — prefs:root=WIFI
 ```
-#####iOS开发中的一些相关路径
+### iOS开发中的一些相关路径
 ```objc
 模拟器的位置:
 /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs 
@@ -516,13 +544,13 @@ Wi-Fi — prefs:root=WIFI
 描述文件路径
 ~/Library/MobileDevice/Provisioning Profiles
 ```
-#####匹配block的正则表达式
+### 匹配block的正则表达式
 [正则表达式检测](http://www.regexr.com/)
 ```regex
 // 解释：以`^`开头，`{`和`换行符`结束，中间（`*`表示匹配0次或多次，`+`表示匹配一次或者多次）匹配任意字符，最后是换行符
 \^.*\{\n     
 ```
-#####iOS 常用数学函数
+### iOS 常用数学函数
 ```C
 	1、 三角函数 
 　　double sin (double);正弦 
@@ -563,6 +591,6 @@ Wi-Fi — prefs:root=WIFI
 　　nt matherr(struct exception *e);数学错误计算处理程序
 ```
 　　
-####参考帖子：
+### 参考帖子：
 >* [iOS小技巧总结](http://www.jianshu.com/p/4523eafb4cd4)
 
