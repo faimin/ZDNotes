@@ -1,4 +1,5 @@
 ###对ReactiveCocoa中几个函数的解读
+![哈咪.gif](https://ooo.0o0.ooo/2017/01/12/5876ed68b3b77.gif)
 ####flattenMap与map
 >* 推荐文章：
 >* [RAC核心元素与信号流](http://www.jianshu.com/p/d262f2c55fbe) 
@@ -114,7 +115,7 @@ P.S：本文有些地方是参考上面推荐的文章来理解的，感谢**god
 
 ----
 
-#### 再来看看RACCommand（未完待续）
+#### 再来看看RACCommand
 直接上源码:
 
 ```objc
@@ -228,7 +229,7 @@ P.S：本文有些地方是参考上面推荐的文章来理解的，感谢**god
     return [connection.signal]; // (5)
 }
 ```
-> 说说几个函数
+> 接下来再来简单说说RACCommand中用到的几个函数
 
 ```objc
 // 以下是对`allowsConcurrentExecution`属性的处理方法，利用了属性的原子性，防止资源竞争，值得学习

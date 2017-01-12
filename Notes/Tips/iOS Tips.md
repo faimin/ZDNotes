@@ -1,4 +1,5 @@
-##iOS tips：
+# iOS tips
+![t@2x.png](https://ooo.0o0.ooo/2017/01/12/5876ebd6266ac.png)
 ### UITableView plain样式下，让section跟随滑动
 ```objc
 // 让section跟随滑动
@@ -54,6 +55,18 @@ self.tableView.backgroundColor = [UIColor redColor];
 - (void)setFrame:(CGRect)frame {
     frame.size.height -=1;
     [super setFrame:frame];
+}
+```
+
+### 让view支持Autolayout计算高度
+```objc
+// 重写系统计算高度的方法
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)targetSize withHorizontalFittingPriority:(UILayoutPriority)horizontalFittingPriority verticalFittingPriority:(UILayoutPriority)verticalFittingPriority {
+    
+    [_tagView layoutIfNeeded];
+    [_tagView invalidateIntrinsicContentSize];
+    
+    return [super systemLayoutSizeFittingSize:targetSize withHorizontalFittingPriority:horizontalFittingPriority verticalFittingPriority:verticalFittingPriority];
 }
 ```
 
