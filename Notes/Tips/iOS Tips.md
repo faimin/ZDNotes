@@ -69,6 +69,21 @@ self.tableView.backgroundColor = [UIColor redColor];
     return [super systemLayoutSizeFittingSize:targetSize withHorizontalFittingPriority:horizontalFittingPriority verticalFittingPriority:verticalFittingPriority];
 }
 ```
+### 为NavigationBar设置titleView
+```objc
+UIButton *titleButton = ({
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.backgroundColor = [UIColor blackColor];
+    button.titleLabel.font = [UIFont systemFontOfSize:16];
+    [titleButton setTitle:showTitle forState:UIControlStateNormal];
+    [titleButton setImage:[UIImage imageNamed:@"top-arrw"] forState:UIControlStateNormal];
+    // 这句话是重点，如果不调用`sizeToFit`方法的话，titleView根本显示不出来，或者只显示文字
+    [titleButton sizeToFit];
+    button;
+});
+self.navigationItem.titleView = titleButton;
+```
+> http://stackoverflow.com/questions/13341562/how-to-set-button-for-navigationitem-titleview
 
 ### 手动更改iOS状态栏颜色
 ```objc
