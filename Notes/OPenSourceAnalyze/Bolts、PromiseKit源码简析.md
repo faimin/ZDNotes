@@ -1,6 +1,6 @@
 # Bolts、PromiseKit源码简析
 ![哈咪.gif](https://ooo.0o0.ooo/2017/01/12/5876ed68b3b77.gif)
-###一、[Bolts](https://github.com/BoltsFramework/Bolts-ObjC):
+### 一、[Bolts](https://github.com/BoltsFramework/Bolts-ObjC):
 `BFTask`原理：
 每个`BFTask`自己都维护着一个任务数组，当task执行`continueWithBlock:`后（会生成一个新的`BFTask`），`continueWithBlock:`带的那个`block`会被加入到任务数组中，每当有结果返回时，会执行`trySetResult:`方法，这个方法中会拿到task它自己维护的那个任务数组，然后取出其中的所有任务block，然后遍历执行。
 
@@ -96,7 +96,7 @@
 ![continueWithBlock:折叠图](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/SourceImages/continueWithBlock.png)
 
 
-###二、[Promise](https://github.com/mxcl/PromiseKit):
+### 二、[Promise](https://github.com/mxcl/PromiseKit):
 * 1、首先，让我们看看创建Promise的源码
 
 ```objc
@@ -170,7 +170,7 @@ static void PMKResolve(PMKPromise *this, id result) {
         set(result); // (8) 
 }
 ```
-调用`new:`方法时会调用`promiseWithResolver:`方法，在里面进行一些初始化`promise`的工作：创建了一个GCD并发队列和一个数组，并立即回调`new:`后面的那个参数`block`，即：立即执行，生成一个成功（fulfiller）和失败（rejecter）的block，这个block将由用户控制进行回调操作。
+调用`new:`方法时会调用`promiseWithResolver:`方法，在里面进行一些初始化`promise`的工作：创建了一个`GCD`并发队列和一个数组，并立即回调`new:`后面的那个参数`block`，即：立即执行，生成一个成功`fulfiller`和失败`rejecter`的block，这个block将由用户控制进行回调操作。
 
 ----
 * 2、下面看一下`then`的源码实现：
