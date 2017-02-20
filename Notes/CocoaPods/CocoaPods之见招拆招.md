@@ -192,10 +192,14 @@ $ for i in `gem list | grep pod | awk '{print $1}'`; do sudo gem uninstall  $i; 
 
 ```ruby
 // 安装指定版本的pod
-sudo gem install -n /usr/local/bin cocoapods -v 1.1.1
+sudo gem install -n /usr/local/bin cocoapods -v 1.2.0
 // 卸载
-sudo gem uninstall -n /usr/local/bin cocoapods -v 1.1.1
+sudo gem uninstall -n /usr/local/bin cocoapods -v 1.2.0
 ```
+
+#### 9、Library not found for -lAFNetworking
+![](http://olmn3rwny.bkt.clouddn.com/20170220194028_e1YcoQ_Library not found for -lAFNetworking.jpeg)
+这种情况的解决方案是设置`project` -> `build setting` -> `library search patchs` 里添加 `$(inherited)` 标识。
 
 --------
 
