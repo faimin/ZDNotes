@@ -201,6 +201,39 @@ sudo gem uninstall -n /usr/local/bin cocoapods -v 1.2.0
 ![](http://olmn3rwny.bkt.clouddn.com/20170220194028_e1YcoQ_Library not found for -lAFNetworking.jpeg)
 这种情况的解决方案是设置`project` -> `build setting` -> `library search patchs` 里添加 `$(inherited)` 标识。
 
+#### 10、Cannot synthesize weak property because the current deployment target does not support weak refernces
+![](http://olmn3rwny.bkt.clouddn.com/20170221184314_Ewqne4_Screenshot.jpeg)
+refer: [http://stackoverflow.com/questions/37160688/set-deployment-target-for-cocoapodss-pod](http://stackoverflow.com/questions/37160688/set-deployment-target-for-cocoapodss-pod)
+解决方案：
+
+```cocoaPods
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            if target.name == 'DDKit'
+                config.build_settings['ENABLE_STRICT_OBJC_MSGSEND'] = 'NO'
+            elsif target.name == 'PulsingHalo'
+                config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.2'
+            end
+        end
+    end
+end
+```
+
+或者错误提示为：`Cannot synthesize weak property in file using manual reference counting`
+
+```cocoaPods
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            if target.name == 'ReactiveCocoa'
+                config.build_settings['CLANG_ENABLE_OBJC_WEAK'] = 'YES'
+            end
+        end
+    end
+end
+```
+
 --------
 
 
