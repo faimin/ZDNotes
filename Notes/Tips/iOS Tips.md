@@ -58,6 +58,41 @@ self.tableView.backgroundColor = [UIColor redColor];
 }
 ```
 
+### 设置tableViewCell分割线的左右边距
+Refer： http://itangqi.me/2017/02/28/uitableview-cell-separatorinset/
+
+```objc
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    // If cell margins are derived from the width of the readableContentGuide.
+    // NS_AVAILABLE_IOS(9_0)，需进行判断
+    // 设置为 NO，防止在横屏时留白
+    if ([tableView respondsToSelector:@selector(setCellLayoutMarginsFollowReadableWidth:)]) {
+        tableView.cellLayoutMarginsFollowReadableWidth = NO;
+    }
+
+    // Prevent the cell from inheriting the Table View's margin settings.
+    // NS_AVAILABLE_IOS(8_0)，需进行判断
+    // 阻止 Cell 继承来自 TableView 相关的设置（LayoutMargins or SeparatorInset），设置为 NO 后，Cell 可以独立地设置其自身的分割线边距而不依赖于 TableView
+    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
+        [cell setPreservesSuperviewLayoutMargins:NO];
+    }
+
+    // Remove seperator inset.
+    // NS_AVAILABLE_IOS(8_0)，需进行判断
+    // 移除 Cell 的 layoutMargins（即设置为 0）
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+    }
+
+    // Explictly set your cell's layout margins.
+    // NS_AVAILABLE_IOS(7_0)，需进行判断
+    // 根据需求设置相应的边距
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        [cell setSeparatorInset:UIEdgeInsetsMake(0, 16, 0, 16)];
+    }
+}
+```
+
 ### 让view支持Autolayout计算高度
 ```objc
 // 重写系统计算高度的方法
