@@ -143,7 +143,7 @@ self.navigationItem.titleView = titleButton;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    return self.isOpaqueStatusBar ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
+    return self.isBlackStatusBar ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
 }
 ```
 ### 判断view是不是指定视图的子视图
