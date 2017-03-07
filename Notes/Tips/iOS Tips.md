@@ -613,6 +613,12 @@ Wi-Fi — prefs:root=WIFI
 // 解释：以`^`开头，`{`和`换行符`结束，中间（`*`表示匹配0次或多次，`+`表示匹配一次或者多次）匹配任意字符，最后是换行符
 \^.*\{\n     
 ```
+### ARC 下打印retainCount（引用计数）
+```objc
+// obj目标对象
+NSInteger retainCount = CFGetRetainCount((__bridge CFTypeRef)obj);
+NSLog(@"Retain count is %ld", retainCount);
+```
 ### iOS 常用数学函数
 ```C
 	1、 三角函数 
