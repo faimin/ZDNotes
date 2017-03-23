@@ -619,6 +619,22 @@ Wi-Fi — prefs:root=WIFI
 NSInteger retainCount = CFGetRetainCount((__bridge CFTypeRef)obj);
 NSLog(@"Retain count is %ld", retainCount);
 ```
+### 快速生成以实例变量名称作为key,变量作为value的字典
+```
+NSString *packId    = @"zero";
+NSNumber *userId    = @(22);
+NSArray *proxyTypes = @[@"int", @"string", @"double"];
+NSDictionary *param = NSDictionaryOfVariableBindings(packId, userId, proxyTypes);
+NSLog(@"%@", param);
+
+<=> 等价于
+
+NSDictionary *param = @{
+	@"packId" : packId,
+	@"userId" : userId,
+	@"proxyTypes" : @[@"int", @"string", @"double"]
+}; 
+```
 ### iOS 常用数学函数
 ```C
 	1、 三角函数 

@@ -54,11 +54,13 @@ button.titleEdgeInsets = UIEdgeInsetsMake(0, -460, 0, 0);
 ![imageUpTitleDown](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/SourceImages/buttonEdgeInsets/imageUpTitleDown.png)
 
 ###总结
-`button`控件中,
+`button`控件中：
 
 `image`的上、左、下是相对于`button`本身的，而右边是相对于`title`的;
 
 `title`的上、下、右是相对于`button`本身的，而左边是相对于`image`的;
 
+### 参考
+> http://www.cnblogs.com/Phelthas/p/4452235.html
 
 
