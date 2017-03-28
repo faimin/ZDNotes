@@ -43,7 +43,7 @@ struct __block_impl {
 接下来进入正题：
 > p.s：以下`Objective-C`的代码都处在ARC环境下
 
-###1、不加__block的情况:
+### 1、不加__block的情况:
 ```objc
 #import <Foundation/Foundation.h>
 
@@ -118,7 +118,7 @@ static struct IMAGE_INFO { unsigned version; unsigned flag; } _OBJC_IMAGE_INFO =
 ```
 ----
 
-###2、添加__block的情况:
+### 2、添加__block的情况:
 ```objc
 #import <Foundation/Foundation.h>
 
@@ -214,10 +214,10 @@ int main(int argc, char *argv[]) {
 static struct IMAGE_INFO { unsigned version; unsigned flag; } _OBJC_IMAGE_INFO = { 0, 2 };
 ```
 虽然NSMutableArray前面加不加__block，都不会影响往数组中添加数据，但是当在block中给`mutArr`重新赋值的时候就有区别了。
-![blockTest1.png](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/Images/blockTest1.png)
+![blockTest1.png](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/SourceImages/blockTest1.png)
 如果你想对`mutArr`变量重新赋值一个新的`array`实例，改变原变量的指针，那么不加`_block`是不行的，但是如果只是单纯的`add`一个数据进去实际上改变的是变量所指的那个`mutArr`内存区域，这样是没有区别的。
 
-###3、静态变量
+### 3、静态变量
 
 ```objc
 #import <Foundation/Foundation.h>
@@ -377,11 +377,15 @@ int main(int argc, char *argv[]) {
 static struct IMAGE_INFO { unsigned version; unsigned flag; } _OBJC_IMAGE_INFO = { 0, 2 };
 ```
 
-###总结:  
+### 总结:  
 1、局部变量：不加`__block`，block内部捕获的是局部变量的值，而且如果局部变量是数值类型（比如int）不会有`__main_block_copy_0` 和 `__main_block_dispose_0` 两个函数，如果是引用类型（比如NSArray）则会有这个函数，说明对于值类型变量是直接定义新变量并赋值相同，对于引用类型变量是定义一个新变量并copy它。
+
 2、局部变量：而添加`__block`后,原来的局部变量会被放入到一个`__Block_byref_变量名_0`类型的结构体中，然后block内部当捕获局部变量时其实是捕获的是这个结构体的指针，当获取原来的局部变量时(不管是在block内还是block外)，其实都是通过这个结构体或者这个结构体指针来拿到原来的局部变量，再进行操作的。这也就是为什么添加`__block`后可以对block内捕获的局部变量进行重新赋值等操作。
+
 3、静态变量：block直接捕获的是静态变量的指针，前后都是对指针进行操作。
+
 4、全局变量（或 全局静态变量）：block并没有捕获变量，而是在结构体的执行方法中直接使用了全局变量，是在执行时才去取值，一直都是获取变量的最新值。而且细心点我们可以发现，对于没有捕获全局变量的block中也没有`__main_block_copy_0` 和 `__main_block_dispose_0` 两个函数（用于在调用前后修改相应变量的引用计数），即没有发生copy操作。
+
 5、在ARC环境下：在单独声明block的时候，block还是会在栈上的；当block作为参数返回的时候，block也会自动被移到堆上；在ARC下，只要指针过一下strong指针，或者由函数返回都会把block移动到堆上。
 
 > `__main_block_copy_0` 中的 `_Block_object_assign` 函数相当于`retain`实例方法，使 block 的成员变量持有捕获到的对象。 `__main_block_dispose_0` 中的 `_Block_object_dispose` 函数相当于 `release` 实例方法，释放 block 的成员变量持有的对象。
