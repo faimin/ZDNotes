@@ -1,5 +1,8 @@
 # Block原理探究
 在此之前先介绍一下**block 基本语法**：
+
+![block语法](http://olmn3rwny.bkt.clouddn.com/20170330193208_8X7KiF_Screenshot.jpeg)
+
 <details open>
 <summary>Block Syntax</summary>
 
@@ -80,8 +83,9 @@ struct __main_block_impl_0 {
 // 以下为调用`block`时执行的方法
 // 此`mutArr`是在最初定义`block`时 为结构体传进去的局部变量`mutArr`的值
 static void __main_block_func_0(struct __main_block_impl_0 *__cself) {
+  // bound by copy:这里的注释表示，block对它引用的局部变量做了只读拷贝，也就是说block引用的是局部变量的副本。
   NSMutableArray *mutArr = __cself->mutArr; // bound by copy
-
+	
    ((void (*)(id, SEL, ObjectType))(void *)objc_msgSend)((id)mutArr, sel_registerName("addObject:"), (id)((NSNumber *(*)(Class, SEL, int))(void *)objc_msgSend)(objc_getClass("NSNumber"), sel_registerName("numberWithInt:"), 2));
 }
 
@@ -305,7 +309,7 @@ int main(int argc, char *argv[]) {
 }
 static struct IMAGE_INFO { unsigned version; unsigned flag; } _OBJC_IMAGE_INFO = { 0, 2 };
 ```
-###4、全局变量
+### 4、全局变量
 
 ```objc
 #import <Foundation/Foundation.h>
@@ -409,6 +413,8 @@ Objective-C 中的三中block `__NSStackBlock__`、`__NSMallocBlock`、`__NSGlob
 > [3、深入分析Objective-C block、weakself、strongself实现原理](http://www.jianshu.com/p/a5dd014edb13)
 > 
 > [4、block-copy](http://www.galloway.me.uk/2013/05/a-look-inside-blocks-episode-3-block-copy/)
+
+
 
 
 

@@ -15,6 +15,7 @@
 		0599063D1E8C0B4D00DC200F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0599063B1E8C0B4D00DC200F /* LaunchScreen.storyboard */; };
 		059906481E8C0B4D00DC200F /* ZDFrameBoundsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 059906471E8C0B4D00DC200F /* ZDFrameBoundsTests.m */; };
 		059906531E8C0B4D00DC200F /* ZDFrameBoundsUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 059906521E8C0B4D00DC200F /* ZDFrameBoundsUITests.m */; };
+		BC52AB9B1E8D190E00CB26D5 /* PropertyController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC52AB9A1E8D190E00CB26D5 /* PropertyController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		0599064E1E8C0B4D00DC200F /* ZDFrameBoundsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZDFrameBoundsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		059906521E8C0B4D00DC200F /* ZDFrameBoundsUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZDFrameBoundsUITests.m; sourceTree = "<group>"; };
 		059906541E8C0B4D00DC200F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BC52AB991E8D190E00CB26D5 /* PropertyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyController.h; sourceTree = "<group>"; };
+		BC52AB9A1E8D190E00CB26D5 /* PropertyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +108,8 @@
 				059906311E8C0B4D00DC200F /* AppDelegate.m */,
 				059906331E8C0B4D00DC200F /* ViewController.h */,
 				059906341E8C0B4D00DC200F /* ViewController.m */,
+				BC52AB991E8D190E00CB26D5 /* PropertyController.h */,
+				BC52AB9A1E8D190E00CB26D5 /* PropertyController.m */,
 				059906361E8C0B4D00DC200F /* Main.storyboard */,
 				059906391E8C0B4D00DC200F /* Assets.xcassets */,
 				0599063B1E8C0B4D00DC200F /* LaunchScreen.storyboard */,
@@ -273,6 +278,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC52AB9B1E8D190E00CB26D5 /* PropertyController.m in Sources */,
 				059906351E8C0B4D00DC200F /* ViewController.m in Sources */,
 				059906321E8C0B4D00DC200F /* AppDelegate.m in Sources */,
 				0599062F1E8C0B4D00DC200F /* main.m in Sources */,
@@ -509,6 +515,7 @@
 				059906591E8C0B4D00DC200F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0599065A1E8C0B4D00DC200F /* Build configuration list for PBXNativeTarget "ZDFrameBoundsTests" */ = {
 			isa = XCConfigurationList;
@@ -517,6 +524,7 @@
 				0599065C1E8C0B4D00DC200F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0599065D1E8C0B4D00DC200F /* Build configuration list for PBXNativeTarget "ZDFrameBoundsUITests" */ = {
 			isa = XCConfigurationList;
@@ -525,6 +533,7 @@
 				0599065F1E8C0B4D00DC200F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
