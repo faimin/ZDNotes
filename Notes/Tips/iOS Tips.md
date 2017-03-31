@@ -635,6 +635,24 @@ NSDictionary *param = @{
 	@"proxyTypes" : @[@"int", @"string", @"double"]
 }; 
 ```
+### 空闲（idle）时候执行
+```objc
+- (void)registerForIdleNotification { 
+    NSNotification *notification = [NSNotification 
+        notificationWithName:@"自定义通知的key" object:nil]; 
+    [[NSNotificationQueue defaultQueue] enqueueNotification:notification 
+    postingStyle:NSPostWhenIdle]; 
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+        selector:@selector(idleNotificationMethod) 
+        name:@"自定义通知的key" 
+        object:nil]; 
+ }
+ 
+- (void)idleNotificationMethod { 
+    // do something here 
+} 
+```
 ### iOS 常用数学函数
 ```C
 	1、 三角函数 
