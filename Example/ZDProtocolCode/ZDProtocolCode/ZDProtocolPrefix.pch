@@ -1,0 +1,17 @@
+//
+//  ZDProtocolPrefix.pch
+//  ZDProtocolCode
+//
+//  Created by 符现超 on 2017/4/16.
+//  Copyright © 2017年 Zero.D.Saber. All rights reserved.
+//
+
+#ifndef ZDProtocolPrefix_pch
+#define ZDProtocolPrefix_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import "Xtrace.h"
+
+#endif /* ZDProtocolPrefix_pch */

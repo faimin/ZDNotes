@@ -1,0 +1,798 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		056E78091EA1C88200E034D0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 056E78081EA1C88200E034D0 /* main.m */; };
+		056E780C1EA1C88200E034D0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 056E780B1EA1C88200E034D0 /* AppDelegate.m */; };
+		056E78121EA1C88200E034D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 056E78101EA1C88200E034D0 /* Main.storyboard */; };
+		056E78141EA1C88200E034D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 056E78131EA1C88200E034D0 /* Assets.xcassets */; };
+		056E78171EA1C88200E034D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 056E78151EA1C88200E034D0 /* LaunchScreen.storyboard */; };
+		056E78221EA1C88200E034D0 /* ZDProtocolCodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 056E78211EA1C88200E034D0 /* ZDProtocolCodeTests.m */; };
+		056E782D1EA1C88200E034D0 /* ZDProtocolCodeUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 056E782C1EA1C88200E034D0 /* ZDProtocolCodeUITests.m */; };
+		056E783F1EA26E3500E034D0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 056E783D1EA26E3500E034D0 /* ViewController.m */; };
+		056E78431EA26EE900E034D0 /* VCBaseProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 056E78421EA26EE900E034D0 /* VCBaseProtocol.m */; };
+		056E78461EA3C40100E034D0 /* ViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = 056E78451EA3C40100E034D0 /* ViewController1.m */; };
+		056E78491EA3C40E00E034D0 /* ViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 056E78481EA3C40E00E034D0 /* ViewController2.m */; };
+		056E784D1EA3C8CD00E034D0 /* Xtrace.mm in Sources */ = {isa = PBXBuildFile; fileRef = 056E784C1EA3C8CD00E034D0 /* Xtrace.mm */; };
+		7FA4E2956AABE07AC792F16E /* libPods-ZDProtocolCodeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F1F2C742098D628ABB12F2E /* libPods-ZDProtocolCodeTests.a */; };
+		E3C1657C4231EA42C0DEB640 /* libPods-ZDProtocolCode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B69B1CF89B30EE2C18E54C27 /* libPods-ZDProtocolCode.a */; };
+		ED51FBBA36723B1A83B082F2 /* libPods-ZDProtocolCodeUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C762214B5277CF28EFF3CE7F /* libPods-ZDProtocolCodeUITests.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		056E781E1EA1C88200E034D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 056E77FC1EA1C88200E034D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 056E78031EA1C88200E034D0;
+			remoteInfo = ZDProtocolCode;
+		};
+		056E78291EA1C88200E034D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 056E77FC1EA1C88200E034D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 056E78031EA1C88200E034D0;
+			remoteInfo = ZDProtocolCode;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		04C7F039DFB952B00FCEF562 /* Pods-ZDProtocolCodeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZDProtocolCodeTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZDProtocolCodeTests/Pods-ZDProtocolCodeTests.debug.xcconfig"; sourceTree = "<group>"; };
+		056E78041EA1C88200E034D0 /* ZDProtocolCode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZDProtocolCode.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		056E78081EA1C88200E034D0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		056E780A1EA1C88200E034D0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		056E780B1EA1C88200E034D0 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		056E78111EA1C88200E034D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		056E78131EA1C88200E034D0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		056E78161EA1C88200E034D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		056E78181EA1C88200E034D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		056E781D1EA1C88200E034D0 /* ZDProtocolCodeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZDProtocolCodeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		056E78211EA1C88200E034D0 /* ZDProtocolCodeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZDProtocolCodeTests.m; sourceTree = "<group>"; };
+		056E78231EA1C88200E034D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		056E78281EA1C88200E034D0 /* ZDProtocolCodeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZDProtocolCodeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		056E782C1EA1C88200E034D0 /* ZDProtocolCodeUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZDProtocolCodeUITests.m; sourceTree = "<group>"; };
+		056E782E1EA1C88200E034D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		056E783C1EA26E3500E034D0 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		056E783D1EA26E3500E034D0 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		056E78411EA26EE900E034D0 /* VCBaseProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCBaseProtocol.h; sourceTree = "<group>"; };
+		056E78421EA26EE900E034D0 /* VCBaseProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCBaseProtocol.m; sourceTree = "<group>"; };
+		056E78441EA3C40100E034D0 /* ViewController1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController1.h; sourceTree = "<group>"; };
+		056E78451EA3C40100E034D0 /* ViewController1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController1.m; sourceTree = "<group>"; };
+		056E78471EA3C40E00E034D0 /* ViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController2.h; sourceTree = "<group>"; };
+		056E78481EA3C40E00E034D0 /* ViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController2.m; sourceTree = "<group>"; };
+		056E784B1EA3C8CD00E034D0 /* Xtrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Xtrace.h; sourceTree = "<group>"; };
+		056E784C1EA3C8CD00E034D0 /* Xtrace.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Xtrace.mm; sourceTree = "<group>"; };
+		056E784E1EA3C92B00E034D0 /* ZDProtocolPrefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZDProtocolPrefix.pch; sourceTree = "<group>"; };
+		301278B4D89F964DEFAC0BE4 /* Pods-ZDProtocolCodeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZDProtocolCodeUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZDProtocolCodeUITests/Pods-ZDProtocolCodeUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		48381BBE1E41AD5657D47337 /* Pods-ZDProtocolCodeUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZDProtocolCodeUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZDProtocolCodeUITests/Pods-ZDProtocolCodeUITests.release.xcconfig"; sourceTree = "<group>"; };
+		5F1F2C742098D628ABB12F2E /* libPods-ZDProtocolCodeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZDProtocolCodeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E6F5792C63503DC61E7617A /* Pods-ZDProtocolCodeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZDProtocolCodeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZDProtocolCodeTests/Pods-ZDProtocolCodeTests.release.xcconfig"; sourceTree = "<group>"; };
+		9528D2D1A6E270CA44C8968A /* Pods-ZDProtocolCode.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZDProtocolCode.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZDProtocolCode/Pods-ZDProtocolCode.release.xcconfig"; sourceTree = "<group>"; };
+		AAB9C94C878551DEA3CDA76D /* Pods-ZDProtocolCode.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZDProtocolCode.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZDProtocolCode/Pods-ZDProtocolCode.debug.xcconfig"; sourceTree = "<group>"; };
+		B69B1CF89B30EE2C18E54C27 /* libPods-ZDProtocolCode.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZDProtocolCode.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C762214B5277CF28EFF3CE7F /* libPods-ZDProtocolCodeUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZDProtocolCodeUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		056E78011EA1C88200E034D0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E3C1657C4231EA42C0DEB640 /* libPods-ZDProtocolCode.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		056E781A1EA1C88200E034D0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7FA4E2956AABE07AC792F16E /* libPods-ZDProtocolCodeTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		056E78251EA1C88200E034D0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED51FBBA36723B1A83B082F2 /* libPods-ZDProtocolCodeUITests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		056E77FB1EA1C88200E034D0 = {
+			isa = PBXGroup;
+			children = (
+				056E78061EA1C88200E034D0 /* ZDProtocolCode */,
+				056E78201EA1C88200E034D0 /* ZDProtocolCodeTests */,
+				056E782B1EA1C88200E034D0 /* ZDProtocolCodeUITests */,
+				056E78051EA1C88200E034D0 /* Products */,
+				5E24B92755FC6EBD7F8499A5 /* Pods */,
+				930967849FD52A76AA1C985B /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		056E78051EA1C88200E034D0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				056E78041EA1C88200E034D0 /* ZDProtocolCode.app */,
+				056E781D1EA1C88200E034D0 /* ZDProtocolCodeTests.xctest */,
+				056E78281EA1C88200E034D0 /* ZDProtocolCodeUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		056E78061EA1C88200E034D0 /* ZDProtocolCode */ = {
+			isa = PBXGroup;
+			children = (
+				056E780A1EA1C88200E034D0 /* AppDelegate.h */,
+				056E780B1EA1C88200E034D0 /* AppDelegate.m */,
+				056E78401EA26EAC00E034D0 /* Protocols */,
+				056E783B1EA26E3500E034D0 /* ViewController */,
+				056E783A1EA26E3500E034D0 /* View */,
+				056E783E1EA26E3500E034D0 /* ViewModel */,
+				056E784A1EA3C8CD00E034D0 /* ThirdRepo */,
+				056E78101EA1C88200E034D0 /* Main.storyboard */,
+				056E78131EA1C88200E034D0 /* Assets.xcassets */,
+				056E78151EA1C88200E034D0 /* LaunchScreen.storyboard */,
+				056E78181EA1C88200E034D0 /* Info.plist */,
+				056E784E1EA3C92B00E034D0 /* ZDProtocolPrefix.pch */,
+				056E78071EA1C88200E034D0 /* Supporting Files */,
+			);
+			path = ZDProtocolCode;
+			sourceTree = "<group>";
+		};
+		056E78071EA1C88200E034D0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				056E78081EA1C88200E034D0 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		056E78201EA1C88200E034D0 /* ZDProtocolCodeTests */ = {
+			isa = PBXGroup;
+			children = (
+				056E78211EA1C88200E034D0 /* ZDProtocolCodeTests.m */,
+				056E78231EA1C88200E034D0 /* Info.plist */,
+			);
+			path = ZDProtocolCodeTests;
+			sourceTree = "<group>";
+		};
+		056E782B1EA1C88200E034D0 /* ZDProtocolCodeUITests */ = {
+			isa = PBXGroup;
+			children = (
+				056E782C1EA1C88200E034D0 /* ZDProtocolCodeUITests.m */,
+				056E782E1EA1C88200E034D0 /* Info.plist */,
+			);
+			path = ZDProtocolCodeUITests;
+			sourceTree = "<group>";
+		};
+		056E783A1EA26E3500E034D0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		056E783B1EA26E3500E034D0 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				056E783C1EA26E3500E034D0 /* ViewController.h */,
+				056E783D1EA26E3500E034D0 /* ViewController.m */,
+				056E78441EA3C40100E034D0 /* ViewController1.h */,
+				056E78451EA3C40100E034D0 /* ViewController1.m */,
+				056E78471EA3C40E00E034D0 /* ViewController2.h */,
+				056E78481EA3C40E00E034D0 /* ViewController2.m */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		056E783E1EA26E3500E034D0 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		056E78401EA26EAC00E034D0 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				056E78411EA26EE900E034D0 /* VCBaseProtocol.h */,
+				056E78421EA26EE900E034D0 /* VCBaseProtocol.m */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		056E784A1EA3C8CD00E034D0 /* ThirdRepo */ = {
+			isa = PBXGroup;
+			children = (
+				056E784B1EA3C8CD00E034D0 /* Xtrace.h */,
+				056E784C1EA3C8CD00E034D0 /* Xtrace.mm */,
+			);
+			path = ThirdRepo;
+			sourceTree = "<group>";
+		};
+		5E24B92755FC6EBD7F8499A5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AAB9C94C878551DEA3CDA76D /* Pods-ZDProtocolCode.debug.xcconfig */,
+				9528D2D1A6E270CA44C8968A /* Pods-ZDProtocolCode.release.xcconfig */,
+				04C7F039DFB952B00FCEF562 /* Pods-ZDProtocolCodeTests.debug.xcconfig */,
+				7E6F5792C63503DC61E7617A /* Pods-ZDProtocolCodeTests.release.xcconfig */,
+				301278B4D89F964DEFAC0BE4 /* Pods-ZDProtocolCodeUITests.debug.xcconfig */,
+				48381BBE1E41AD5657D47337 /* Pods-ZDProtocolCodeUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		930967849FD52A76AA1C985B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B69B1CF89B30EE2C18E54C27 /* libPods-ZDProtocolCode.a */,
+				5F1F2C742098D628ABB12F2E /* libPods-ZDProtocolCodeTests.a */,
+				C762214B5277CF28EFF3CE7F /* libPods-ZDProtocolCodeUITests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		056E78031EA1C88200E034D0 /* ZDProtocolCode */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 056E78311EA1C88200E034D0 /* Build configuration list for PBXNativeTarget "ZDProtocolCode" */;
+			buildPhases = (
+				77E1C7B0335EB32133F7CEE1 /* [CP] Check Pods Manifest.lock */,
+				056E78001EA1C88200E034D0 /* Sources */,
+				056E78011EA1C88200E034D0 /* Frameworks */,
+				056E78021EA1C88200E034D0 /* Resources */,
+				62F4C87885C6CB8D021B9BBC /* [CP] Embed Pods Frameworks */,
+				42D36C3484B8E06B4900951E /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ZDProtocolCode;
+			productName = ZDProtocolCode;
+			productReference = 056E78041EA1C88200E034D0 /* ZDProtocolCode.app */;
+			productType = "com.apple.product-type.application";
+		};
+		056E781C1EA1C88200E034D0 /* ZDProtocolCodeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 056E78341EA1C88200E034D0 /* Build configuration list for PBXNativeTarget "ZDProtocolCodeTests" */;
+			buildPhases = (
+				840B4F96E2CBEA4AB06C8119 /* [CP] Check Pods Manifest.lock */,
+				056E78191EA1C88200E034D0 /* Sources */,
+				056E781A1EA1C88200E034D0 /* Frameworks */,
+				056E781B1EA1C88200E034D0 /* Resources */,
+				1305A4A10D31DC55AD6FFB02 /* [CP] Embed Pods Frameworks */,
+				7A1F9011DEB806668107E2B5 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				056E781F1EA1C88200E034D0 /* PBXTargetDependency */,
+			);
+			name = ZDProtocolCodeTests;
+			productName = ZDProtocolCodeTests;
+			productReference = 056E781D1EA1C88200E034D0 /* ZDProtocolCodeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		056E78271EA1C88200E034D0 /* ZDProtocolCodeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 056E78371EA1C88200E034D0 /* Build configuration list for PBXNativeTarget "ZDProtocolCodeUITests" */;
+			buildPhases = (
+				6325E4963B985E88DD2D5037 /* [CP] Check Pods Manifest.lock */,
+				056E78241EA1C88200E034D0 /* Sources */,
+				056E78251EA1C88200E034D0 /* Frameworks */,
+				056E78261EA1C88200E034D0 /* Resources */,
+				E88CB858097A0AA16147D1E0 /* [CP] Embed Pods Frameworks */,
+				A7D6EDD36749CD664D86594B /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				056E782A1EA1C88200E034D0 /* PBXTargetDependency */,
+			);
+			name = ZDProtocolCodeUITests;
+			productName = ZDProtocolCodeUITests;
+			productReference = 056E78281EA1C88200E034D0 /* ZDProtocolCodeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		056E77FC1EA1C88200E034D0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = Zero.D.Saber;
+				TargetAttributes = {
+					056E78031EA1C88200E034D0 = {
+						CreatedOnToolsVersion = 8.3.1;
+						ProvisioningStyle = Automatic;
+					};
+					056E781C1EA1C88200E034D0 = {
+						CreatedOnToolsVersion = 8.3.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 056E78031EA1C88200E034D0;
+					};
+					056E78271EA1C88200E034D0 = {
+						CreatedOnToolsVersion = 8.3.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 056E78031EA1C88200E034D0;
+					};
+				};
+			};
+			buildConfigurationList = 056E77FF1EA1C88200E034D0 /* Build configuration list for PBXProject "ZDProtocolCode" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 056E77FB1EA1C88200E034D0;
+			productRefGroup = 056E78051EA1C88200E034D0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				056E78031EA1C88200E034D0 /* ZDProtocolCode */,
+				056E781C1EA1C88200E034D0 /* ZDProtocolCodeTests */,
+				056E78271EA1C88200E034D0 /* ZDProtocolCodeUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		056E78021EA1C88200E034D0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				056E78171EA1C88200E034D0 /* LaunchScreen.storyboard in Resources */,
+				056E78141EA1C88200E034D0 /* Assets.xcassets in Resources */,
+				056E78121EA1C88200E034D0 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		056E781B1EA1C88200E034D0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		056E78261EA1C88200E034D0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1305A4A10D31DC55AD6FFB02 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZDProtocolCodeTests/Pods-ZDProtocolCodeTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		42D36C3484B8E06B4900951E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZDProtocolCode/Pods-ZDProtocolCode-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		62F4C87885C6CB8D021B9BBC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZDProtocolCode/Pods-ZDProtocolCode-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6325E4963B985E88DD2D5037 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		77E1C7B0335EB32133F7CEE1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		7A1F9011DEB806668107E2B5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZDProtocolCodeTests/Pods-ZDProtocolCodeTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		840B4F96E2CBEA4AB06C8119 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A7D6EDD36749CD664D86594B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZDProtocolCodeUITests/Pods-ZDProtocolCodeUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E88CB858097A0AA16147D1E0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZDProtocolCodeUITests/Pods-ZDProtocolCodeUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		056E78001EA1C88200E034D0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				056E784D1EA3C8CD00E034D0 /* Xtrace.mm in Sources */,
+				056E78461EA3C40100E034D0 /* ViewController1.m in Sources */,
+				056E783F1EA26E3500E034D0 /* ViewController.m in Sources */,
+				056E78431EA26EE900E034D0 /* VCBaseProtocol.m in Sources */,
+				056E780C1EA1C88200E034D0 /* AppDelegate.m in Sources */,
+				056E78091EA1C88200E034D0 /* main.m in Sources */,
+				056E78491EA3C40E00E034D0 /* ViewController2.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		056E78191EA1C88200E034D0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				056E78221EA1C88200E034D0 /* ZDProtocolCodeTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		056E78241EA1C88200E034D0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				056E782D1EA1C88200E034D0 /* ZDProtocolCodeUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		056E781F1EA1C88200E034D0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 056E78031EA1C88200E034D0 /* ZDProtocolCode */;
+			targetProxy = 056E781E1EA1C88200E034D0 /* PBXContainerItemProxy */;
+		};
+		056E782A1EA1C88200E034D0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 056E78031EA1C88200E034D0 /* ZDProtocolCode */;
+			targetProxy = 056E78291EA1C88200E034D0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		056E78101EA1C88200E034D0 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				056E78111EA1C88200E034D0 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		056E78151EA1C88200E034D0 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				056E78161EA1C88200E034D0 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		056E782F1EA1C88200E034D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		056E78301EA1C88200E034D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		056E78321EA1C88200E034D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AAB9C94C878551DEA3CDA76D /* Pods-ZDProtocolCode.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/ZDProtocolCode/ZDProtocolPrefix.pch";
+				INFOPLIST_FILE = ZDProtocolCode/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Zero.ZDProtocolCode;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		056E78331EA1C88200E034D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9528D2D1A6E270CA44C8968A /* Pods-ZDProtocolCode.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/ZDProtocolCode/ZDProtocolPrefix.pch";
+				INFOPLIST_FILE = ZDProtocolCode/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Zero.ZDProtocolCode;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		056E78351EA1C88200E034D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 04C7F039DFB952B00FCEF562 /* Pods-ZDProtocolCodeTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = ZDProtocolCodeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Zero.ZDProtocolCodeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZDProtocolCode.app/ZDProtocolCode";
+			};
+			name = Debug;
+		};
+		056E78361EA1C88200E034D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7E6F5792C63503DC61E7617A /* Pods-ZDProtocolCodeTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = ZDProtocolCodeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Zero.ZDProtocolCodeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZDProtocolCode.app/ZDProtocolCode";
+			};
+			name = Release;
+		};
+		056E78381EA1C88200E034D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 301278B4D89F964DEFAC0BE4 /* Pods-ZDProtocolCodeUITests.debug.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = ZDProtocolCodeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Zero.ZDProtocolCodeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = ZDProtocolCode;
+			};
+			name = Debug;
+		};
+		056E78391EA1C88200E034D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 48381BBE1E41AD5657D47337 /* Pods-ZDProtocolCodeUITests.release.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = ZDProtocolCodeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Zero.ZDProtocolCodeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = ZDProtocolCode;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		056E77FF1EA1C88200E034D0 /* Build configuration list for PBXProject "ZDProtocolCode" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				056E782F1EA1C88200E034D0 /* Debug */,
+				056E78301EA1C88200E034D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		056E78311EA1C88200E034D0 /* Build configuration list for PBXNativeTarget "ZDProtocolCode" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				056E78321EA1C88200E034D0 /* Debug */,
+				056E78331EA1C88200E034D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		056E78341EA1C88200E034D0 /* Build configuration list for PBXNativeTarget "ZDProtocolCodeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				056E78351EA1C88200E034D0 /* Debug */,
+				056E78361EA1C88200E034D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		056E78371EA1C88200E034D0 /* Build configuration list for PBXNativeTarget "ZDProtocolCodeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				056E78381EA1C88200E034D0 /* Debug */,
+				056E78391EA1C88200E034D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 056E77FC1EA1C88200E034D0 /* Project object */;
+}
