@@ -247,7 +247,9 @@ searchTextField.leftView = ({
     [CATransaction commit];
 }
 ```
-### 动画暂停然后再开始
+### 动画暂停和重新开始
+Reference： [http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause-a-cabasicanimation/3003922#3003922](http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause-a-cabasicanimation/3003922#3003922)
+
 ```objc
 - (void)pauseLayer:(CALayer *)layer {
     CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
@@ -264,6 +266,81 @@ searchTextField.leftView = ({
     layer.beginTime = timeSincePause;
 }
 ```
+
+### Pop动画
+[https://github.com/facebook/pop/issues/28](https://github.com/facebook/pop/issues/28)
+
+![](https://camo.githubusercontent.com/28a42913bbc1dd0d27459991ef14b0a3b9a80489/687474703a2f2f662e636c2e6c792f6974656d732f334f3351336d3368305431323268316f323531592f506f70436f6e74726f6c506f696e74732e676966)
+
+```objc
+@property (nonatomic, assign) CGFloat controlPointOfLine; // property on view controller
+
+- (void)controlPointAnimation
+{
+    self.controlPointOfLine = 0;
+
+    CGFloat height = 300.f;
+    bendiPath = [UIBezierPath bezierPath];
+    [bendiPath moveToPoint:CGPointMake(0, 0)];
+    [bendiPath addCurveToPoint:CGPointMake(0, height) controlPoint1:CGPointMake(0, height * 0.5) controlPoint2:CGPointMake(0, height * 0.5)];
+
+    shape = [CAShapeLayer layer];
+    shape.path = bendiPath.CGPath;
+    shape.strokeColor = [UIColor blackColor].CGColor;
+    shape.lineWidth = 10.f;
+    shape.fillColor = nil;
+    shape.position =CGPointMake(self.view.bounds.size.width * 0.5, self.view.bounds.size.height * 0.5);
+    [self.view.layer addSublayer:shape];
+
+    //    return;
+    self.pop = [POPAnimatableProperty propertyWithName:@"controlPointOfLine" initializer:^(POPMutableAnimatableProperty *prop) {
+        // read value
+        prop.readBlock = ^(DHTDetailViewController *obj, CGFloat values[]) {
+            values[0] = self.controlPointOfLine;
+        };
+        // write value
+        prop.writeBlock = ^(DHTDetailViewController *obj, const CGFloat values[]) {
+            obj.controlPointOfLine = values[0];
+            // update bezier
+            [bendiPath removeAllPoints];
+            [bendiPath moveToPoint:CGPointMake(0, 0)];
+            [bendiPath addCurveToPoint:CGPointMake(0, height) controlPoint1:CGPointMake(obj.controlPointOfLine, height * 0.5) controlPoint2:CGPointMake(obj.controlPointOfLine, height * 0.5)];
+
+            [label setText:[NSString stringWithFormat:@"%f", obj.controlPointOfLine]];
+            [label sizeToFit];
+            label.layer.position = self.view.center;
+            shape.path = bendiPath.CGPath;
+        };
+        // dynamics threshold
+        prop.threshold = 0.1;
+    }];
+
+    self.anim = [POPSpringAnimation animation];
+    _anim.fromValue = @(-50.0);
+    _anim.toValue =  @(0.f);
+    _anim.springBounciness = 30.1;
+    _anim.springSpeed = 10.4;
+    _anim.dynamicsTension = 2000;
+    _anim.property = self.pop;
+    [self pop_addAnimation:_anim forKey:nil];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+
+// get touches in view, before and after shapelayer, to get the new control point
+    UITouch *touch = [[event allTouches] anyObject];
+    CGPoint location = [touch locationInView:touch.view];
+    CGFloat controlPoint = location.x - shape.position.x;
+
+    _anim.fromValue = @(controlPoint);
+    _anim.toValue =  @(0.f);
+
+     [self pop_addAnimation:_anim forKey:nil];
+}
+```
+
 ### Autolayout动画
 ```objc
 [containerView setNeedsLayout];
