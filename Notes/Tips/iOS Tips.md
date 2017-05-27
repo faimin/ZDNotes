@@ -696,6 +696,30 @@ Wi-Fi — prefs:root=WIFI
 NSInteger retainCount = CFGetRetainCount((__bridge CFTypeRef)obj);
 NSLog(@"Retain count is %ld", retainCount);
 ```
+### 系统隐藏的调试工具类 `UIDebuggingInformationOverlay`
+> Reference: [http://ryanipete.com/blog/ios/swift/objective-c/uidebugginginformationoverlay/](http://ryanipete.com/blog/ios/swift/objective-c/uidebugginginformationoverlay/)
+> 1、Call `[UIDebuggingInformationOverlay prepareDebuggingOverlay]` - I’m not sure exactly what this method does, but the overlay will be empty if you don’t call it.
+> 2、Call `[[UIDebuggingInformationOverlay overlay] toggleVisibility]` - This shows the overlay window (assuming it’s not already visible).
+
+```objc
+/// Objective-C
+- (void)debug {
+#if DEBUG
+    Class aClass = objc_getClass("UIDebuggingInformationOverlay");
+    ((void (*) (id, SEL))(void *)objc_msgSend) ((id)aClass, sel_registerName("prepareDebuggingOverlay"));
+    id returnInstance = ((id (*) (id, SEL))(void *)objc_msgSend) ((id)aClass, sel_registerName("overlay"));
+    ((void* (*) (id, SEL))(void *)objc_msgSend) ((id)returnInstance, sel_registerName("toggleVisibility"));
+#endif
+}
+```
+
+```swift
+/// Swift
+let overlayClass = NSClassFromString("UIDebuggingInformationOverlay") as? UIWindow.Type
+_ = overlayClass?.perform(NSSelectorFromString("prepareDebuggingOverlay"))
+let overlay = overlayClass?.perform(NSSelectorFromString("overlay")).takeUnretainedValue() as? UIWindow
+_ = overlay?.perform(NSSelectorFromString("toggleVisibility"))
+```
 ### 快速生成以实例变量名称作为key,变量作为value的字典
 ```
 NSString *packId    = @"zero";
