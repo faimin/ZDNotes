@@ -708,6 +708,7 @@ NSLog(@"Retain count is %ld", retainCount);
     Class aClass = objc_getClass("UIDebuggingInformationOverlay");
     ((void (*) (id, SEL))(void *)objc_msgSend) ((id)aClass, sel_registerName("prepareDebuggingOverlay"));
     id returnInstance = ((id (*) (id, SEL))(void *)objc_msgSend) ((id)aClass, sel_registerName("overlay"));
+    // 下面这个方法是可选的，可以不调用，因为直接两个手指点击状态栏就可以调出调试工具
     ((void* (*) (id, SEL))(void *)objc_msgSend) ((id)returnInstance, sel_registerName("toggleVisibility"));
 #endif
 }
