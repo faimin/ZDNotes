@@ -93,6 +93,40 @@ Refer： http://itangqi.me/2017/02/28/uitableview-cell-separatorinset/
 }
 ```
 
+### 修改UITableviewCell.imageView的大小
+```objc
+UIImage *icon = [UIImage imageNamed:@""];
+CGSize itemSize = CGSizeMake(30, 30);
+UIGraphicsBeginImageContextWithOptions(itemSize, NO ,0.0);
+CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+[icon drawInRect:imageRect];
+cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+UIGraphicsEndImageContext();
+```
+
+### 打开或禁用view的复制、选择、全选等功能
+```objc
+// override the method
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+// 返回NO为禁用，YES为开启
+    // 粘贴
+    if (action == @selector(paste:)) return NO;
+    // 剪切
+    if (action == @selector(cut:)) return NO;
+    // 复制
+    if (action == @selector(copy:)) return NO;
+    // 选择
+    if (action == @selector(select:)) return NO;
+    // 选中全部
+    if (action == @selector(selectAll:)) return NO;
+    // 删除
+    if (action == @selector(delete:)) return NO;
+    // 分享
+    if (action == @selector(share)) return NO;
+    return [super canPerformAction:action withSender:sender];
+}
+```
+
 ### 让view支持Autolayout计算高度
 ```objc
 // 重写系统计算高度的方法
@@ -145,6 +179,12 @@ self.navigationItem.titleView = titleButton;
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return self.isBlackStatusBar ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
 }
+```
+### 禁用UIButton的高亮状态
+```objc
+button.adjustsImageWhenHighlighted = NO;
+//或者在创建的时候
+UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 ```
 ### 判断view是不是指定视图的子视图
 ```objc
@@ -736,6 +776,25 @@ NSDictionary *param = @{
 	@"userId" : userId,
 	@"proxyTypes" : @[@"int", @"string", @"double"]
 }; 
+```
+### 函数和消息代替`performSelector：`
+```objc
+if (!obj) { return; }
+SEL selector = NSSelectorFromString(@"aMethod");
+IMP imp = [obj methodForSelector:selector];
+void (*func)(id, SEL) = (void *)imp;
+func(obj, selector);
+
+或者：
+SEL selector = NSSelectorFromString(@"aMethod");
+((void (*)(id, SEL))[obj methodForSelector:selector])(obj, selector);
+
+或者：
+//代码块：((<#ReturnClass#> (*) (id, SEL, <#ParameterClass, ...#>))(void *)objc_msgSend) ((id)<#self#>, sel_registerName(<#const char *str#>), <#Parameters, ...#>);
+
+#import <objc/message.h>
+
+((void(*)(id, SEL, id, int, BOOL))objc_msgSend)(ot, sel_registerName("A:B:C:"), value_1, value_2, value_3);
 ```
 ### iOS 常用数学函数
 ```C
