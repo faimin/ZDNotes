@@ -58,7 +58,7 @@ self.tableView.backgroundColor = [UIColor redColor];
 }
 ```
 
-### 设置tableViewCell分割线的左右边距
+### 设置`tableViewCell`分割线的左右边距
 Refer： http://itangqi.me/2017/02/28/uitableview-cell-separatorinset/
 
 ```objc
@@ -93,7 +93,7 @@ Refer： http://itangqi.me/2017/02/28/uitableview-cell-separatorinset/
 }
 ```
 
-### 修改UITableviewCell.imageView的大小
+### 修改`UITableviewCell.imageView`的大小
 ```objc
 UIImage *icon = [UIImage imageNamed:@""];
 CGSize itemSize = CGSizeMake(30, 30);
@@ -104,7 +104,13 @@ cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
 UIGraphicsEndImageContext();
 ```
 
-### 打开或禁用view的复制、选择、全选等功能
+### 判断某一行`cell`是否已经显示
+```objc
+CGRect cellRect = [tableView rectForRowAtIndexPath:indexPath];
+BOOL completelyVisible = CGRectContainsRect(tableView.bounds, cellRect);
+```
+
+### 打开或禁用`UIView`的复制、选择、全选等功能
 ```objc
 // override the method
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
@@ -127,7 +133,7 @@ UIGraphicsEndImageContext();
 }
 ```
 
-### 让view支持Autolayout计算高度
+### 让`UIView`支持`Autolayout`计算高度
 ```objc
 // 重写系统计算高度的方法
 - (CGSize)systemLayoutSizeFittingSize:(CGSize)targetSize withHorizontalFittingPriority:(UILayoutPriority)horizontalFittingPriority verticalFittingPriority:(UILayoutPriority)verticalFittingPriority {
@@ -138,7 +144,7 @@ UIGraphicsEndImageContext();
     return [super systemLayoutSizeFittingSize:targetSize withHorizontalFittingPriority:horizontalFittingPriority verticalFittingPriority:verticalFittingPriority];
 }
 ```
-### 为NavigationBar设置titleView
+### 为`NavigationBar`设置`titleView`
 ```objc
 UIButton *titleButton = ({
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -217,11 +223,11 @@ if (self.presentingViewController) {
     [self.navigationController popViewControllerAnimated:YES];
 }            
 ```
-### 修改UItextField中placeholder的文字颜色
+### 修改`UItextField`中`placeholder`的文字颜色
 ```objc
 [textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
 ```
-### UITextField 光标右移
+### `UITextField`光标右移
 ```objc
 // 创建一个 leftView
 searchTextField.leftViewMode = UITextFieldViewModeAlways;
@@ -231,11 +237,54 @@ searchTextField.leftView = ({
 	leftView;
 });
 ```
-### 直接设置UITextView的placeholder
+
+### `UITextField`文字周围增加边距
+```objc
+// 子类化UITextField，增加insert属性
+@interface ZDTextField : UITextField
+@property (nonatomic, assign) UIEdgeInsets insets;
+@end
+
+// 在.m文件重写下列方法
+- (CGRect)textRectForBounds:(CGRect)bounds {
+    CGRect paddedRect = UIEdgeInsetsInsetRect(bounds, self.insets);
+    if (self.rightViewMode == UITextFieldViewModeAlways || self.rightViewMode == UITextFieldViewModeUnlessEditing) {
+        return [self adjustRectWithWidthRightView:paddedRect];
+    }
+    return paddedRect;
+}
+
+- (CGRect)placeholderRectForBounds:(CGRect)bounds {
+    CGRect paddedRect = UIEdgeInsetsInsetRect(bounds, self.insets);
+
+    if (self.rightViewMode == UITextFieldViewModeAlways || self.rightViewMode == UITextFieldViewModeUnlessEditing) {
+        return [self adjustRectWithWidthRightView:paddedRect];
+    }
+    return paddedRect;
+}
+
+- (CGRect)editingRectForBounds:(CGRect)bounds {
+    CGRect paddedRect = UIEdgeInsetsInsetRect(bounds, self.insets);
+    if (self.rightViewMode == UITextFieldViewModeAlways || self.rightViewMode == UITextFieldViewModeWhileEditing) {
+        return [self adjustRectWithWidthRightView:paddedRect];
+    }
+    return paddedRect;
+}
+
+- (CGRect)adjustRectWithWidthRightView:(CGRect)bounds {
+    CGRect paddedRect = bounds;
+    paddedRect.size.width -= CGRectGetWidth(self.rightView.frame);
+
+    return paddedRect;
+}
+```
+
+### 直接设置`UITextView`的`placeholder`
 ```objc
 [self setValue:zd_placeHolderLabel forKey:@"_placeholderLabel"];
 ```
-### 动态调整 UITextView 的高度
+
+### 动态调整 `UITextView` 的高度
 ```objc
 - (void)addKVOObserver {
     [self addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
@@ -252,6 +301,58 @@ searchTextField.leftView = ({
     textView.contentOffset = (CGPoint){0, -topCorrect};
 }
 ```
+
+### 当`UITextView/UITextField`中没有文字时，禁用回车键
+```objc
+textField.enablesReturnKeyAutomatically = YES;
+```
+
+### 动画修改`UILabel`上的文字
+```objc
+// 方法一
+CATransition *animation = [CATransition animation];
+animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+animation.type = kCATransitionFade;
+animation.duration = 0.75;
+[self.label.layer addAnimation:animation forKey:@"kCATransitionFade"];
+self.label.text = @"New";
+
+// 方法二
+[UIView transitionWithView:self.label
+                      duration:0.25f
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{
+
+                        self.label.text = @"Well done!";
+
+                    } completion:nil];
+
+// 方法三
+[UIView animateWithDuration:1.0
+                     animations:^{
+                         self.label.alpha = 0.0f;
+                         self.label.text = @"newText";
+                         self.label.alpha = 1.0f;
+                     }];
+```
+
+### 计算`UILabel`上某段文字的`frame`
+```objc
+@implementation UILabel (TextRect)
+
+- (CGRect)boundingRectForCharacterRange:(NSRange)range {
+    NSTextStorage *textStorage = [[NSTextStorage alloc] initWithAttributedString:[self attributedText]];
+    NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
+    [textStorage addLayoutManager:layoutManager];
+    NSTextContainer *textContainer = [[NSTextContainer alloc] initWithSize:[self bounds].size];
+    textContainer.lineFragmentPadding = 0;
+    [layoutManager addTextContainer:textContainer];
+    NSRange glyphRange;
+    [layoutManager characterRangeForGlyphRange:range actualGlyphRange:&glyphRange];
+    return [layoutManager boundingRectForGlyphRange:glyphRange inTextContainer:textContainer];
+}
+```
+
 
 ### 取消隐式动画
 ```objc
@@ -486,6 +587,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
     [self.navigationController.interactivePopGestureRecognizer removeTarget:self action:@selector(xxxx)];
 }
 ```
+
 ### 全屏手势返回
 ```objc
 - (void)viewDidLoad {
@@ -502,6 +604,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
     self.interactivePopGestureRecognizer.enabled = NO;
 }
 ```
+
 ### 从一个隐藏导航栏的 A 控制器 push 到一个有导航栏的 B 控制器中(导航栏隐藏问题)
 > 在不显示导航栏的 A 控制器中遵守`UINavigationControllerDelegate`协议,实现其代理方法
 
@@ -512,6 +615,49 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
     [self.navigationController setNavigationBarHidden:isShowBar animated:YES];
 }
 ```
+
+### 页面跳转时翻转动画
+```objc
+// modal方式
+    TestViewController *vc = [[TestViewController alloc] init];
+    vc.view.backgroundColor = [UIColor redColor];
+    vc.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:vc animated:YES completion:nil];
+
+// push方式
+    TestViewController *vc = [[TestViewController alloc] init];
+    vc.view.backgroundColor = [UIColor redColor];
+    [UIView beginAnimations:@"View Flip" context:nil];
+    [UIView setAnimationDuration:0.80];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
+    [self.navigationController pushViewController:vc animated:YES];
+    [UIView commitAnimations];
+```
+
+### 以`modal`样式进行`push`跳转
+```objc
+- (void)push {
+TestViewController *vc = [[TestViewController alloc] init];
+    vc.view.backgroundColor = [UIColor redColor];
+    CATransition* transition = [CATransition animation];
+    transition.duration = 0.4f;
+    transition.type = kCATransitionMoveIn;
+    transition.subtype = kCATransitionFromTop;
+    [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+    [self.navigationController pushViewController:vc animated:NO];
+}
+
+- (void)pop {
+CATransition* transition = [CATransition animation];
+    transition.duration = 0.4f;
+    transition.type = kCATransitionReveal;
+    transition.subtype = kCATransitionFromBottom;
+    [self.navigationController.view.layer addAnimation:transition forKey:kCATransition];
+    [self.navigationController popViewControllerAnimated:NO];
+}
+```
+
 ### 本地推送
 > AppDelegate.m
 
@@ -761,7 +907,7 @@ _ = overlayClass?.perform(NSSelectorFromString("prepareDebuggingOverlay"))
 let overlay = overlayClass?.perform(NSSelectorFromString("overlay")).takeUnretainedValue() as? UIWindow
 _ = overlay?.perform(NSSelectorFromString("toggleVisibility"))
 ```
-### 快速生成以实例变量名称作为key,变量作为value的字典
+### 快速生成以实例变量名称作为`key`,变量作为`value`的字典
 ```
 NSString *packId    = @"zero";
 NSNumber *userId    = @(22);
@@ -795,6 +941,11 @@ SEL selector = NSSelectorFromString(@"aMethod");
 #import <objc/message.h>
 
 ((void(*)(id, SEL, id, int, BOOL))objc_msgSend)(ot, sel_registerName("A:B:C:"), value_1, value_2, value_3);
+```
+### 生成随机小数(0-1之间)
+```objc
+#define ARC4RANDOM_MAX      0x100000000
+double val = ((double)arc4random() / ARC4RANDOM_MAX);
 ```
 ### iOS 常用数学函数
 ```C
@@ -839,4 +990,6 @@ SEL selector = NSSelectorFromString(@"aMethod");
 　　
 ### 参考帖子：
 >* [iOS小技巧总结](http://www.jianshu.com/p/4523eafb4cd4)
+>+ [多年iOS开发经验总结(二)](http://www.tuicool.com/articles/2Ynmui2)
+
 
