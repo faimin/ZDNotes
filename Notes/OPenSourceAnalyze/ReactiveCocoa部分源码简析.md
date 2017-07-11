@@ -1,6 +1,8 @@
-###对ReactiveCocoa中几个函数的解读
+### 对ReactiveCocoa中几个函数的解读
+
 ![哈咪.gif](https://ooo.0o0.ooo/2017/01/12/5876ed68b3b77.gif)
-####flattenMap与map
+
+#### flattenMap与map
 >* 推荐文章：
 >* [RAC核心元素与信号流](http://www.jianshu.com/p/d262f2c55fbe) 
 >* [细说ReactiveCocoa的冷信号与热信号（三）：怎么处理冷信号与热信号](http://tech.meituan.com/talk-about-reactivecocoas-cold-signal-and-hot-signal-part-3.html) 
@@ -306,14 +308,14 @@ P.S：本文有些地方是参考上面推荐的文章来理解的，感谢**god
 ```
 
 ------
-####附1：对其中几个函数的图表说明
+#### 附1：对其中几个函数的图表说明
 > ![CombineLatest](http://img0.tuicool.com/QbyMjyR.png)
 > ![Zip](http://img2.tuicool.com/JBrMn2r.png)
 > ![操作结果](http://img0.tuicool.com/Nr2AriV.png)
 > ![Merge](http://img1.tuicool.com/U3Mzym3.png)
 > ![Concat](http://img0.tuicool.com/faIv6bu.png)
 
-###附2：`ReactiveCocoa`和`RxSwift` API图，引用自[FRPCheatSheeta](https://github.com/aiqiuqiu/FRPCheatSheeta)
+### 附2：`ReactiveCocoa`和`RxSwift` API图，引用自[FRPCheatSheeta](https://github.com/aiqiuqiu/FRPCheatSheeta)
 >
 **ReactiveCocoa-Objc**
 ----
