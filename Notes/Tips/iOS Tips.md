@@ -1,6 +1,8 @@
 # iOS tips
+
 ![t@2x.png](https://ooo.0o0.ooo/2017/01/12/5876ebd6266ac.png)
 ### UITableView plain样式下，让section跟随滑动
+
 ```objc
 // 让section跟随滑动
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -32,6 +34,7 @@
 ```
 
 ### 设置tableViewCell之间的分割线
+
 + 第一种办法
 
 ```objc 
@@ -59,6 +62,7 @@ self.tableView.backgroundColor = [UIColor redColor];
 ```
 
 ### 设置`tableViewCell`分割线的左右边距
+
 Refer： http://itangqi.me/2017/02/28/uitableview-cell-separatorinset/
 
 ```objc
@@ -94,6 +98,7 @@ Refer： http://itangqi.me/2017/02/28/uitableview-cell-separatorinset/
 ```
 
 ### 修改`UITableviewCell.imageView`的大小
+
 ```objc
 UIImage *icon = [UIImage imageNamed:@""];
 CGSize itemSize = CGSizeMake(30, 30);
@@ -105,12 +110,14 @@ UIGraphicsEndImageContext();
 ```
 
 ### 判断某一行`cell`是否已经显示
+
 ```objc
 CGRect cellRect = [tableView rectForRowAtIndexPath:indexPath];
 BOOL completelyVisible = CGRectContainsRect(tableView.bounds, cellRect);
 ```
 
 ### 打开或禁用`UIView`的复制、选择、全选等功能
+
 ```objc
 // override the method
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
@@ -134,6 +141,7 @@ BOOL completelyVisible = CGRectContainsRect(tableView.bounds, cellRect);
 ```
 
 ### 让`UIView`支持`Autolayout`计算高度
+
 ```objc
 // 重写系统计算高度的方法
 - (CGSize)systemLayoutSizeFittingSize:(CGSize)targetSize withHorizontalFittingPriority:(UILayoutPriority)horizontalFittingPriority verticalFittingPriority:(UILayoutPriority)verticalFittingPriority {
@@ -144,7 +152,9 @@ BOOL completelyVisible = CGRectContainsRect(tableView.bounds, cellRect);
     return [super systemLayoutSizeFittingSize:targetSize withHorizontalFittingPriority:horizontalFittingPriority verticalFittingPriority:verticalFittingPriority];
 }
 ```
+
 ### 为`NavigationBar`设置`titleView`
+
 ```objc
 UIButton *titleButton = ({
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -161,6 +171,7 @@ self.navigationItem.titleView = titleButton;
 > http://stackoverflow.com/questions/13341562/how-to-set-button-for-navigationitem-titleview
 
 ### 手动更改iOS状态栏颜色
+
 ```objc
 - (void)setStatusBarBackgroundColor:(UIColor *)color {
     UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
@@ -170,7 +181,9 @@ self.navigationItem.titleView = titleButton;
     }
 }
 ```
+
 ### 更改状态栏的类型
+
 [iOS 中关于 NavigationController 中 preferredStatusBarStyle 一直不执行的问题](http://www.tuicool.com/articles/MZfyE3Z)
 
 ```objc
@@ -186,17 +199,23 @@ self.navigationItem.titleView = titleButton;
     return self.isBlackStatusBar ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
 }
 ```
+
 ### 禁用UIButton的高亮状态
+
 ```objc
 button.adjustsImageWhenHighlighted = NO;
 //或者在创建的时候
 UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 ```
+
 ### 判断view是不是指定视图的子视图
+
 ```objc
 BOOL isView = [targetView isDescendantOfView:superView];
 ```
+
 ### 判断viewController是disappear还是dealloc
+
 ```objc  
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -209,7 +228,9 @@ BOOL isView = [targetView isDescendantOfView:superView];
     }
 }
 ```
+
 ### 判断当前viewController是push进来的还是present进来的
+
 > 如果A弹出B，那么A为presenting，B为presented。
 A弹出B , 则B就是A的presentedViewController, A就是B的presentingViewController。
 >
@@ -223,11 +244,15 @@ if (self.presentingViewController) {
     [self.navigationController popViewControllerAnimated:YES];
 }            
 ```
+
 ### 修改`UItextField`中`placeholder`的文字颜色
+
 ```objc
 [textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
 ```
+
 ### `UITextField`光标右移
+
 ```objc
 // 创建一个 leftView
 searchTextField.leftViewMode = UITextFieldViewModeAlways;
@@ -239,6 +264,7 @@ searchTextField.leftView = ({
 ```
 
 ### `UITextField`文字周围增加边距
+
 ```objc
 // 子类化UITextField，增加insert属性
 @interface ZDTextField : UITextField
@@ -280,11 +306,13 @@ searchTextField.leftView = ({
 ```
 
 ### 直接设置`UITextView`的`placeholder`
+
 ```objc
 [self setValue:zd_placeHolderLabel forKey:@"_placeholderLabel"];
 ```
 
 ### 动态调整 `UITextView` 的高度
+
 ```objc
 - (void)addKVOObserver {
     [self addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
@@ -303,11 +331,13 @@ searchTextField.leftView = ({
 ```
 
 ### 当`UITextView/UITextField`中没有文字时，禁用回车键
+
 ```objc
 textField.enablesReturnKeyAutomatically = YES;
 ```
 
 ### 动画修改`UILabel`上的文字
+
 ```objc
 // 方法一
 CATransition *animation = [CATransition animation];
@@ -337,6 +367,7 @@ self.label.text = @"New";
 ```
 
 ### 计算`UILabel`上某段文字的`frame`
+
 ```objc
 @implementation UILabel (TextRect)
 
@@ -353,8 +384,8 @@ self.label.text = @"New";
 }
 ```
 
-
 ### 取消隐式动画
+
 ```objc
 //方法一
 [UIView performWithoutAnimation:^{
@@ -388,7 +419,9 @@ self.label.text = @"New";
     [CATransaction commit];
 }
 ```
+
 ### 动画暂停和重新开始
+
 Reference： [http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause-a-cabasicanimation/3003922#3003922](http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause-a-cabasicanimation/3003922#3003922)
 
 ```objc
@@ -409,6 +442,7 @@ Reference： [http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause
 ```
 
 ### Pop动画
+
 [https://github.com/facebook/pop/issues/28](https://github.com/facebook/pop/issues/28)
 
 ![](https://camo.githubusercontent.com/28a42913bbc1dd0d27459991ef14b0a3b9a80489/687474703a2f2f662e636c2e6c792f6974656d732f334f3351336d3368305431323268316f323531592f506f70436f6e74726f6c506f696e74732e676966)
@@ -416,8 +450,7 @@ Reference： [http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause
 ```objc
 @property (nonatomic, assign) CGFloat controlPointOfLine; // property on view controller
 
-- (void)controlPointAnimation
-{
+- (void)controlPointAnimation {
     self.controlPointOfLine = 0;
 
     CGFloat height = 300.f;
@@ -466,8 +499,7 @@ Reference： [http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause
     [self pop_addAnimation:_anim forKey:nil];
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesBegan:touches withEvent:event];
 
 // get touches in view, before and after shapelayer, to get the new control point
@@ -483,6 +515,7 @@ Reference： [http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause
 ```
 
 ### Autolayout动画
+
 ```objc
 [containerView setNeedsLayout];
 [UIView animateWithDuration:1.0 animations:^{
@@ -490,7 +523,9 @@ Reference： [http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause
   [containerView layoutIfNeeded];
 }];
 ```
+
 ### 去掉导航栏返回按钮的back标题
+
 ```objc
 // 第一种方法:
 [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
@@ -506,7 +541,9 @@ Reference： [http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause
     }
 }
 ```
+
 ### 调整barButtonItem之间的距离
+
 ```objc
 UIImage *img = [[UIImage imageNamed:@"icon_cog"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 //宽度为负数的固定间距的系统item
@@ -517,7 +554,9 @@ UIBarButtonItem *rightBtnItem1 = [[UIBarButtonItem alloc]initWithImage:img style
 UIBarButtonItem *rightBtnItem2 = [[UIBarButtonItem alloc]initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonItemClicked:)];
 self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,rightBtnItem2];
 ```
+
 ### 解决自定义返回按钮导致手势返回失败的问题
+
 > 1、代理方法
 > 
 思路：先把导航控制器手势返回的代理保存起来，然后再把当前的控制器设为导航控制器手势返回的代理；当当前控制消失的时候再把原来的代理给导航控制器的手势返回。
@@ -574,6 +613,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 }
 @end
 ```
+
 > 2、添加action事件的方法
 
 ```objc
@@ -589,6 +629,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 ```
 
 ### 全屏手势返回
+
 ```objc
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -606,6 +647,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 ```
 
 ### 从一个隐藏导航栏的 A 控制器 push 到一个有导航栏的 B 控制器中(导航栏隐藏问题)
+
 > 在不显示导航栏的 A 控制器中遵守`UINavigationControllerDelegate`协议,实现其代理方法
 
 ```objc
@@ -617,6 +659,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 ```
 
 ### 页面跳转时翻转动画
+
 ```objc
 // modal方式
     TestViewController *vc = [[TestViewController alloc] init];
@@ -636,9 +679,10 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 ```
 
 ### 以`modal`样式进行`push`跳转
+
 ```objc
 - (void)push {
-TestViewController *vc = [[TestViewController alloc] init];
+    TestViewController *vc = [[TestViewController alloc] init];
     vc.view.backgroundColor = [UIColor redColor];
     CATransition* transition = [CATransition animation];
     transition.duration = 0.4f;
@@ -649,7 +693,7 @@ TestViewController *vc = [[TestViewController alloc] init];
 }
 
 - (void)pop {
-CATransition* transition = [CATransition animation];
+    CATransition* transition = [CATransition animation];
     transition.duration = 0.4f;
     transition.type = kCATransitionReveal;
     transition.subtype = kCATransitionFromBottom;
@@ -658,7 +702,54 @@ CATransition* transition = [CATransition animation];
 }
 ```
 
+### `Dispatch Surce`方式调整进度
+
+> [多线程--Dispatch Source](http://www.jianshu.com/p/880c2f9301b6)
+
+```objc
+// 1、指定DISPATCH_SOURCE_TYPE_DATA_ADD，做成Dispatch Source(分派源)。设定Main Dispatch Queue 为追加处理的Dispatch Queue
+dispatch_source_t source = dispatch_source_create(DISPATCH_SOURCE_TYPE_DATA_ADD, 0, 0, dispatch_get_main_queue());
+
+__block NSUInteger totalComplete = 0;
+dispatch_source_set_event_handler(source, ^{
+    // 当处理事件被最终执行时，计算后的数据可以通过dispatch_source_get_data来获取。
+    // 这个数据的值在每次响应事件执行后会被重置，所以totalComplete的值是最终累积的值。
+    NSUInteger value = dispatch_source_get_data(source);
+    totalComplete += value;
+
+    NSLog(@"进度：%f", totalComplete / 100.f);
+    NSLog(@"线程号：%@", [NSThread currentThread]);
+});
+
+//分派源创建时默认处于暂停状态，在分派源分派处理程序之前必须先恢复。
+dispatch_resume(source);
+
+//2、恢复源后，就可以通过`dispatch_source_merge_data`向`Dispatch Source`(分派源)发送事件:
+dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+
+for (NSUInteger index = 0; index < 100; index++) {
+    dispatch_async(queue, ^{
+        dispatch_source_merge_data(source, 1);
+
+        usleep(20000); //0.02秒
+    });
+}
+
+/*
+//3、比较上面的for循环代码，将dispatch_async放在外面for循环的外面，打印结果不一样
+dispatch_async(queue, ^{
+   for (NSUInteger index = 0; index < 100; index++) {
+       dispatch_source_merge_data(source, 1);
+       NSLog(@":recycle:线程号：%@~~~~~~~~~~~~i = %ld", [NSThread currentThread], index);
+       usleep(20000);//0.02秒
+   }
+});
+// 2是将100个任务添加到queue里面，而3是在queue里面添加一个任务，而这一个任务做了100次循环
+*/
+```
+
 ### 本地推送
+
 > AppDelegate.m
 
 ```objc
@@ -670,6 +761,7 @@ CATransition* transition = [CATransition animation];
     }
 }
 ```
+
 > iOS10以前
 
 ```objc
@@ -704,6 +796,7 @@ CATransition* transition = [CATransition animation];
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
 ```
+
 > iOS10之后
  
 ```objc
@@ -758,7 +851,7 @@ CATransition* transition = [CATransition animation];
 
 #pragma mark - UNUserNotificationCenterDelegate
 ///在前台接收到通知
--(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
     completionHandler(UNNotificationPresentationOptionAlert);//不写这句通知不会出现在前台，如有需要|UNNotificationPresentationOptionSound，角标UNNotificationPresentationOptionBadge
 }
 
@@ -767,13 +860,17 @@ CATransition* transition = [CATransition animation];
     //handle touch event
 }
 ```
+
 ### 禁止锁屏
+
 ```objc
 [UIApplication sharedApplication].idleTimerDisabled = YES;
 // 或
 [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 ```
+
 ### 退出应用
+
 ```objc
 //退出方法
 - (void)exitApp {
@@ -793,7 +890,9 @@ CATransition* transition = [CATransition animation];
 	}
 }
 ```
+
 ### 获取手机安装的应用
+
 ```objc
 Class c =NSClassFromString(@"LSApplicationWorkspace");
 id s = [(id)c performSelector:NSSelectorFromString(@"defaultWorkspace")];
@@ -805,7 +904,9 @@ for (id item in array) {
     NSLog(@"%@",[item performSelector:NSSelectorFromString(@"shortVersionString")]);
 }
 ```
+
 ### 打开系统设置界面
+
 ```objc
 //iOS8之后
 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
@@ -852,7 +953,9 @@ VPN — prefs:root=General&path=Network/VPN
 Wallpaper — prefs:root=Wallpaper
 Wi-Fi — prefs:root=WIFI
 ```
+
 ### iOS开发中的一些相关路径
+
 ```objc
 模拟器的位置:
 /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs 
@@ -870,19 +973,26 @@ Wi-Fi — prefs:root=WIFI
 描述文件路径
 ~/Library/MobileDevice/Provisioning Profiles
 ```
+
 ### 匹配block的正则表达式
+
 [正则表达式检测](http://www.regexr.com/)
+
 ```regex
 // 解释：以`^`开头，`{`和`换行符`结束，中间（`*`表示匹配0次或多次，`+`表示匹配一次或者多次）匹配任意字符，最后是换行符
 \^.*\{\n     
 ```
+
 ### ARC 下打印retainCount（引用计数）
+
 ```objc
 // obj目标对象
 NSInteger retainCount = CFGetRetainCount((__bridge CFTypeRef)obj);
 NSLog(@"Retain count is %ld", retainCount);
 ```
+
 ### 系统隐藏的调试工具类 `UIDebuggingInformationOverlay`
+
 > Reference: [http://ryanipete.com/blog/ios/swift/objective-c/uidebugginginformationoverlay/](http://ryanipete.com/blog/ios/swift/objective-c/uidebugginginformationoverlay/)
 > 1、Call `[UIDebuggingInformationOverlay prepareDebuggingOverlay]` - I’m not sure exactly what this method does, but the overlay will be empty if you don’t call it.
 > 2、Call `[[UIDebuggingInformationOverlay overlay] toggleVisibility]` - This shows the overlay window (assuming it’s not already visible).
