@@ -121,7 +121,7 @@ BOOL completelyVisible = CGRectContainsRect(tableView.bounds, cellRect);
 ```objc
 // override the method
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
-// 返回NO为禁用，YES为开启
+    // 返回NO为禁用，YES为开启
     // 粘贴
     if (action == @selector(paste:)) return NO;
     // 剪切
@@ -702,12 +702,12 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 }
 ```
 
-### `Dispatch Surce`方式调整进度
+### `Dispatch Source`方式调整进度
 
 > [多线程--Dispatch Source](http://www.jianshu.com/p/880c2f9301b6)
 
 ```objc
-// 1、指定DISPATCH_SOURCE_TYPE_DATA_ADD，做成Dispatch Source(分派源)。设定Main Dispatch Queue 为追加处理的Dispatch Queue
+// 1、指定`DISPATCH_SOURCE_TYPE_DATA_ADD`，做成Dispatch Source(分派源)。设定Main Dispatch Queue 为追加处理的Dispatch Queue
 dispatch_source_t source = dispatch_source_create(DISPATCH_SOURCE_TYPE_DATA_ADD, 0, 0, dispatch_get_main_queue());
 
 __block NSUInteger totalComplete = 0;
