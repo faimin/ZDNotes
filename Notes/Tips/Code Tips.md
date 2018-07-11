@@ -89,7 +89,7 @@
 
 3. 使用`__auto_type`做类型推导：
 
-   > `CC`对`C11`准的语法扩展
+   > `GCC`对`C11`标准的语法扩展
 
    ```c
    #if defined(__cplusplus)
@@ -134,13 +134,13 @@
     **这个特性可以用来做枚举值和字符串的映射**
 
    ```objectivec
-    typedef NS_ENUM(NSInteger, XXType){
-        XXType1,
-        XXType2
+    typedef NS_ENUM(NSInteger, Type){
+        Type1,
+        Type2
     };
-    const NSString *XXTypeNameMapping[] = {
-        [XXType1] = @"Type1",
-        [XXType2] = @"Type2"
+    const NSString *TypeNameMapping[] = {
+        [Type1] = @"Type1",
+        [Type2] = @"Type2"
     };
    ```
 
@@ -186,31 +186,17 @@
 
     于是上面的`keypath`宏的输出结果是`#PATH`也就是一个`c`字符串 
 
-8. `C`函数重载：
+8. `C`函数重载标示符：
 
    > [RTRootNavigationController](https://github.com/rickytan/RTRootNavigationController/blob/master/RTRootNavigationController/Classes/RTRootNavigationController.m) 中有用到这个技巧
 
    ```objective-c
-    __attribute((overloadable)) void ZD_CornerRadiusForView(UIView *view, CGFloat cornerRadius) {
-        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:view.bounds cornerRadius:cornerRadius];
-        [maskPath addClip];
-   
-        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-        maskLayer.frame = view.bounds;
-        maskLayer.path = maskPath.CGPath;
-   
-        view.layer.mask = maskLayer;
+    __attribute((overloadable)) NSInteger ZD_SumFunc(NSInteger a, NSInteger b) {
+        return a + b;
     }
    
-    __attribute((overloadable)) void ZD_CornerRadiusForView(UIView *view, UIRectCorner rectCorner, CGFloat cornerRadius) {
-        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:view.bounds byRoundingCorners:rectCorner cornerRadii:(CGSize){cornerRadius, cornerRadius}];
-        [maskPath addClip];
-   
-        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-        maskLayer.frame = view.bounds;
-        maskLayer.path = maskPath.CGPath;
-   
-        view.layer.mask = maskLayer;
+    __attribute((overloadable)) NSInteger ZD_SumFunc(NSInteger a, NSInteger b, NSInteger c) {
+        return a + b + c;
     }
    ```
 
