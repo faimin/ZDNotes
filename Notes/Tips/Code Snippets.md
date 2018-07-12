@@ -1,6 +1,8 @@
-##Code Snippets
-#####UIScrollView代理
-```objc
+## Code Snippets
+
+##### UIScrollView代理
+
+```objectivec
 // 停止拖动时执行
 // 快速停止拖动时,虽然这个方法执行了,但是此时滑动还没停下来,所以下面打印出来的`contentOffsetY`是当时的偏移量,而`targetOffsetY`打印出来的是滑动最终停下来的位置的偏移量.
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
@@ -11,7 +13,7 @@
     CGFloat velocityY = velocity.y;
     CGFloat targetOffsetY = targetContentOffset->y;
     CGFloat contentOffsetY = scrollView.contentOffset.y;
-    
+
     NSLog(@"\n\nvelocityY = %f,\ntargetOffsetY = %f,\noffsetY = %f", velocityY, targetOffsetY, contentOffsetY);
 }
 
@@ -20,4 +22,4 @@
     // 慢慢拖动时`decelerate`为 NO
     NSLog(@"\n\n %@,\nEndDrag = %f", decelerate ? @"将要减速" : @"不会减速", contentOffsetY);
 }
-``` 
+```

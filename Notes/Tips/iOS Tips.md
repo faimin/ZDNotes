@@ -1,6 +1,7 @@
 # iOS tips
 
 ![t@2x.png](https://ooo.0o0.ooo/2017/01/12/5876ebd6266ac.png)
+
 ### UITableView plain样式下，让section跟随滑动
 
 ```objc
@@ -13,16 +14,16 @@
         CGFloat padding = MIN(contentOffsetY, SectionHeight);
         self.tableView.contentInset = UIEdgeInsetsMake(-padding, 0, 0, 0);
         if (contentOffsetY > self.recordContentOffsetY) {   // 上拉
-            
+
         }
         else {                                              // 下拉
-            
+
         }
     }
     self.recordContentOffsetY = contentOffsetY; //设置一全局变量，记录滑动偏移量
-    
+
 #else
-    
+
     if (contentOffsetY <= SectionHeight && contentOffsetY >= 0) {
         scrollView.contentInset = UIEdgeInsetsMake(-contentOffsetY, 0, 0, 0);
     }
@@ -37,7 +38,7 @@
 
 + 第一种办法
 
-```objc 
+```objc
 // 设置 `tableView`的`separatorInset`
 self.tableView.separatorInset = UIEdgeInsetsZero;
 
@@ -145,10 +146,10 @@ BOOL completelyVisible = CGRectContainsRect(tableView.bounds, cellRect);
 ```objc
 // 重写系统计算高度的方法
 - (CGSize)systemLayoutSizeFittingSize:(CGSize)targetSize withHorizontalFittingPriority:(UILayoutPriority)horizontalFittingPriority verticalFittingPriority:(UILayoutPriority)verticalFittingPriority {
-    
+
     [_tagView layoutIfNeeded];
     [_tagView invalidateIntrinsicContentSize];
-    
+
     return [super systemLayoutSizeFittingSize:targetSize withHorizontalFittingPriority:horizontalFittingPriority verticalFittingPriority:verticalFittingPriority];
 }
 ```
@@ -168,6 +169,7 @@ UIButton *titleButton = ({
 });
 self.navigationItem.titleView = titleButton;
 ```
+
 > http://stackoverflow.com/questions/13341562/how-to-set-button-for-navigationitem-titleview
 
 ### 手动更改iOS状态栏颜色
@@ -216,10 +218,10 @@ BOOL isView = [targetView isDescendantOfView:superView];
 
 ### 判断viewController是disappear还是dealloc
 
-```objc  
+```objc
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
+
     BOOL isContains = [self.navigationController.childViewControllers containsObject:self];
     if (isContains) {
         NSLog(@"控制器只是单纯的disappear，比如pushToVC");
@@ -232,8 +234,8 @@ BOOL isView = [targetView isDescendantOfView:superView];
 ### 判断当前viewController是push进来的还是present进来的
 
 > 如果A弹出B，那么A为presenting，B为presented。
-A弹出B , 则B就是A的presentedViewController, A就是B的presentingViewController。
->
+> A弹出B , 则B就是A的presentedViewController, A就是B的presentingViewController。
+> 
 > 虽然A为控制器，但是当打印B的presentingViewController，显示类型为导航控制器，这说明如果当前视图有自己的导航控制器，则最终调用present方法的是当前控制器的导航控制器，如果不存在导航控制器，调用着是当前控制器（self）。
 
 ```objc
@@ -242,7 +244,7 @@ if (self.presentingViewController) {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
 } else {
     [self.navigationController popViewControllerAnimated:YES];
-}            
+}
 ```
 
 ### 修改`UItextField`中`placeholder`的文字颜色
@@ -257,9 +259,9 @@ if (self.presentingViewController) {
 // 创建一个 leftView
 searchTextField.leftViewMode = UITextFieldViewModeAlways;
 searchTextField.leftView = ({
-	UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, margin, searchTextField.my_height)];
-	leftView.backgroundColor = [UIColor clearColor];
-	leftView;
+    UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, margin, searchTextField.my_height)];
+    leftView.backgroundColor = [UIColor clearColor];
+    leftView;
 });
 ```
 
@@ -388,35 +390,35 @@ self.label.text = @"New";
 
 ```objc
 //方法一
-[UIView performWithoutAnimation:^{
-    [collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
+[UIView performWithoutAnimation:^{
+    [collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
 }];
 
 //方法二
-[UIView animateWithDuration:0 animations:^{
-    [collectionView performBatchUpdates:^{
-        [collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
-    } completion:nil];
+[UIView animateWithDuration:0 animations:^{
+    [collectionView performBatchUpdates:^{
+        [collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
+    } completion:nil];
 }];
-     
+
 //方法三
-[UIView setAnimationsEnabled:NO];
-[self.trackPanel performBatchUpdates:^{
-    [collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
-} completion:^(BOOL finished) {
-    [UIView setAnimationsEnabled:YES];
+[UIView setAnimationsEnabled:NO];
+[self.trackPanel performBatchUpdates:^{
+    [collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
+} completion:^(BOOL finished) {
+    [UIView setAnimationsEnabled:YES];
 }];
 
 //方法四
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    
-    self.frameLayer.frame = self.frameView.bounds;
-    
-    [CATransaction commit];
+- (void)layoutSubviews {
+    [super layoutSubviews];
+
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+
+    self.frameLayer.frame = self.frameView.bounds;
+
+    [CATransaction commit];
 }
 ```
 
@@ -559,7 +561,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 
 > 1、代理方法
 > 
-思路：先把导航控制器手势返回的代理保存起来，然后再把当前的控制器设为导航控制器手势返回的代理；当当前控制消失的时候再把原来的代理给导航控制器的手势返回。
+> 思路：先把导航控制器手势返回的代理保存起来，然后再把当前的控制器设为导航控制器手势返回的代理；当当前控制消失的时候再把原来的代理给导航控制器的手势返回。
 
 ```objc
 @interface ViewController () <UIGestureRecognizerDelegate>
@@ -798,7 +800,7 @@ dispatch_async(queue, ^{
 ```
 
 > iOS10之后
- 
+
 ```objc
 - (void)registerNoti {
     // iOS10 兼容
@@ -874,20 +876,20 @@ dispatch_async(queue, ^{
 ```objc
 //退出方法
 - (void)exitApp {
-	[UIView beginAnimations:@"exitApplication" context:nil];
-	[UIView setAnimationDuration:0.5];
-	[UIView setAnimationDelegate:self];
-	[UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
+    [UIView beginAnimations:@"exitApplication" context:nil];
+    [UIView setAnimationDuration:0.5];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
                            forView:self.view.window cache:NO];
-	[UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
-	self.view.window.bounds = CGRectMake(0, 0, 0, 0);
-	[UIView commitAnimations];
+    [UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
+    self.view.window.bounds = CGRectMake(0, 0, 0, 0);
+    [UIView commitAnimations];
 }
 
 - (void)animationFinished:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context {
-	if ([animationID compare:@"exitApplication"] == 0) {
-		exit(0); //退出
-	}
+    if ([animationID compare:@"exitApplication"] == 0) {
+        exit(0); //退出
+    }
 }
 ```
 
@@ -980,7 +982,7 @@ Wi-Fi — prefs:root=WIFI
 
 ```regex
 // 解释：以`^`开头，`{`和`换行符`结束，中间（`*`表示匹配0次或多次，`+`表示匹配一次或者多次）匹配任意字符，最后是换行符
-\^.*\{\n     
+\^.*\{\n
 ```
 
 ### ARC 下打印retainCount（引用计数）
@@ -1017,7 +1019,9 @@ _ = overlayClass?.perform(NSSelectorFromString("prepareDebuggingOverlay"))
 let overlay = overlayClass?.perform(NSSelectorFromString("overlay")).takeUnretainedValue() as? UIWindow
 _ = overlay?.perform(NSSelectorFromString("toggleVisibility"))
 ```
+
 ### 快速生成以实例变量名称作为`key`,变量作为`value`的字典
+
 ```
 NSString *packId    = @"zero";
 NSNumber *userId    = @(22);
@@ -1028,12 +1032,14 @@ NSLog(@"%@", param);
 <=> 等价于
 
 NSDictionary *param = @{
-	@"packId" : packId,
-	@"userId" : userId,
-	@"proxyTypes" : @[@"int", @"string", @"double"]
-}; 
+    @"packId" : packId,
+    @"userId" : userId,
+    @"proxyTypes" : @[@"int", @"string", @"double"]
+};
 ```
+
 ### 函数和消息代替`performSelector：`
+
 ```objc
 if (!obj) { return; }
 SEL selector = NSSelectorFromString(@"aMethod");
@@ -1052,14 +1058,51 @@ SEL selector = NSSelectorFromString(@"aMethod");
 
 ((void(*)(id, SEL, id, int, BOOL))objc_msgSend)(ot, sel_registerName("A:B:C:"), value_1, value_2, value_3);
 ```
+
 ### 生成随机小数(0-1之间)
+
 ```objc
 #define ARC4RANDOM_MAX      0x100000000
 double val = ((double)arc4random() / ARC4RANDOM_MAX);
 ```
+
+### 正确使用`NSArray`和`NSDictionary`的方式
+
+```objectivec
+{
+  // ok
+  NSArray *array = [NSArray arrayWithArray:nil];
+  NSLog(@"array = %@", array); // output @[]
+
+  NSMutableDictionary *mutDict1 = [NSMutableDictionary dictionary];
+  NSString *nilString = nil;
+  // crash
+  //[mutDict1 setObject:nil forKey:@"key"];
+  //mutDict1[nilString] = @"11000";
+  // ok
+  mutDict1[@"keykey"] = nil;
+  // ok
+  id valueXX = [mutDict1 objectForKey:nilString];
+  // ok
+  id valueYY = mutDict1[nilString];
+  NSLog(@"xxx = %@", valueXX); // output null
+
+  // ok
+  NSMutableDictionary *mutDict2 = [NSMutableDictionary dictionaryWithObjectsAndKeys:nil, @"key", nil]; 	//output @[]
+  // crash
+  //mutDict2 = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"value", nil, nil];
+  // crash 
+  //mutDict2 = @{@"key" : nilString}.mutableCopy;
+  NSLog(@"%@", mutDict2);
+}
+```
+
+
+
 ### iOS 常用数学函数
+
 ```C
-	1、 三角函数 
+    1、 三角函数 
 　　double sin (double);正弦 
 　　double cos (double);余弦 
 　　double tan (double);正切 
@@ -1097,9 +1140,9 @@ double val = ((double)arc4random() / ARC4RANDOM_MAX);
 　　double poly(double x, int degree, double coeffs [] );计算多项式 
 　　nt matherr(struct exception *e);数学错误计算处理程序
 ```
-　　
+
+
 ### 参考帖子：
->* [iOS小技巧总结](http://www.jianshu.com/p/4523eafb4cd4)
->+ [多年iOS开发经验总结(二)](http://www.tuicool.com/articles/2Ynmui2)
 
-
+> * [iOS小技巧总结](http://www.jianshu.com/p/4523eafb4cd4)
+> > * [多年iOS开发经验总结(二)](http://www.tuicool.com/articles/2Ynmui2)
