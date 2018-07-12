@@ -4,7 +4,7 @@
 
 ### UITableView plain样式下，让section跟随滑动
 
-```objc
+```objectivec
 // 让section跟随滑动
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 #if 1
@@ -38,7 +38,7 @@
 
 + 第一种办法
 
-```objc
+```objectivec
 // 设置 `tableView`的`separatorInset`
 self.tableView.separatorInset = UIEdgeInsetsZero;
 
@@ -48,7 +48,7 @@ cell.layoutMargins = UIEdgeInsetsZero;
 
 + 第二种办法（推荐）
 
-```objc
+```objectivec
 // 1、隐藏tableview的分割线
 self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
@@ -66,7 +66,7 @@ self.tableView.backgroundColor = [UIColor redColor];
 
 Refer： http://itangqi.me/2017/02/28/uitableview-cell-separatorinset/
 
-```objc
+```objectivec
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     // If cell margins are derived from the width of the readableContentGuide.
     // NS_AVAILABLE_IOS(9_0)，需进行判断
@@ -100,7 +100,7 @@ Refer： http://itangqi.me/2017/02/28/uitableview-cell-separatorinset/
 
 ### 修改`UITableviewCell.imageView`的大小
 
-```objc
+```objectivec
 UIImage *icon = [UIImage imageNamed:@""];
 CGSize itemSize = CGSizeMake(30, 30);
 UIGraphicsBeginImageContextWithOptions(itemSize, NO ,0.0);
@@ -112,14 +112,14 @@ UIGraphicsEndImageContext();
 
 ### 判断某一行`cell`是否已经显示
 
-```objc
+```objectivec
 CGRect cellRect = [tableView rectForRowAtIndexPath:indexPath];
 BOOL completelyVisible = CGRectContainsRect(tableView.bounds, cellRect);
 ```
 
 ### 打开或禁用`UIView`的复制、选择、全选等功能
 
-```objc
+```objectivec
 // override the method
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
     // 返回NO为禁用，YES为开启
@@ -143,7 +143,7 @@ BOOL completelyVisible = CGRectContainsRect(tableView.bounds, cellRect);
 
 ### 让`UIView`支持`Autolayout`计算高度
 
-```objc
+```objectivec
 // 重写系统计算高度的方法
 - (CGSize)systemLayoutSizeFittingSize:(CGSize)targetSize withHorizontalFittingPriority:(UILayoutPriority)horizontalFittingPriority verticalFittingPriority:(UILayoutPriority)verticalFittingPriority {
 
@@ -156,7 +156,7 @@ BOOL completelyVisible = CGRectContainsRect(tableView.bounds, cellRect);
 
 ### 为`NavigationBar`设置`titleView`
 
-```objc
+```objectivec
 UIButton *titleButton = ({
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.backgroundColor = [UIColor blackColor];
@@ -174,7 +174,7 @@ self.navigationItem.titleView = titleButton;
 
 ### 手动更改iOS状态栏颜色
 
-```objc
+```objectivec
 - (void)setStatusBarBackgroundColor:(UIColor *)color {
     UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
 
@@ -188,7 +188,7 @@ self.navigationItem.titleView = titleButton;
 
 [iOS 中关于 NavigationController 中 preferredStatusBarStyle 一直不执行的问题](http://www.tuicool.com/articles/MZfyE3Z)
 
-```objc
+```objectivec
 // 在plist文件里把 `View controller-based status bar appearance` 设置成 `YES`。
 // 
 - (void)changeNavigationAndStatusBarStyle {
@@ -204,7 +204,7 @@ self.navigationItem.titleView = titleButton;
 
 ### 禁用UIButton的高亮状态
 
-```objc
+```objectivec
 button.adjustsImageWhenHighlighted = NO;
 //或者在创建的时候
 UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -212,13 +212,13 @@ UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 
 ### 判断view是不是指定视图的子视图
 
-```objc
+```objectivec
 BOOL isView = [targetView isDescendantOfView:superView];
 ```
 
 ### 判断viewController是disappear还是dealloc
 
-```objc
+```objectivec
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 
@@ -238,7 +238,7 @@ BOOL isView = [targetView isDescendantOfView:superView];
 > 
 > 虽然A为控制器，但是当打印B的presentingViewController，显示类型为导航控制器，这说明如果当前视图有自己的导航控制器，则最终调用present方法的是当前控制器的导航控制器，如果不存在导航控制器，调用着是当前控制器（self）。
 
-```objc
+```objectivec
 // 如果存在presentingViewController，则说明是当前视图是present出来的
 if (self.presentingViewController) { 
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
@@ -249,13 +249,13 @@ if (self.presentingViewController) {
 
 ### 修改`UItextField`中`placeholder`的文字颜色
 
-```objc
+```objectivec
 [textField setValue:[UIColor redColor] forKeyPath:@"_placeholderLabel.textColor"];
 ```
 
 ### `UITextField`光标右移
 
-```objc
+```objectivec
 // 创建一个 leftView
 searchTextField.leftViewMode = UITextFieldViewModeAlways;
 searchTextField.leftView = ({
@@ -267,7 +267,7 @@ searchTextField.leftView = ({
 
 ### `UITextField`文字周围增加边距
 
-```objc
+```objectivec
 // 子类化UITextField，增加insert属性
 @interface ZDTextField : UITextField
 @property (nonatomic, assign) UIEdgeInsets insets;
@@ -309,13 +309,13 @@ searchTextField.leftView = ({
 
 ### 直接设置`UITextView`的`placeholder`
 
-```objc
+```objectivec
 [self setValue:zd_placeHolderLabel forKey:@"_placeholderLabel"];
 ```
 
 ### 动态调整 `UITextView` 的高度
 
-```objc
+```objectivec
 - (void)addKVOObserver {
     [self addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
 }
@@ -334,13 +334,13 @@ searchTextField.leftView = ({
 
 ### 当`UITextView/UITextField`中没有文字时，禁用回车键
 
-```objc
+```objectivec
 textField.enablesReturnKeyAutomatically = YES;
 ```
 
 ### 动画修改`UILabel`上的文字
 
-```objc
+```objectivec
 // 方法一
 CATransition *animation = [CATransition animation];
 animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -370,7 +370,7 @@ self.label.text = @"New";
 
 ### 计算`UILabel`上某段文字的`frame`
 
-```objc
+```objectivec
 @implementation UILabel (TextRect)
 
 - (CGRect)boundingRectForCharacterRange:(NSRange)range {
@@ -388,7 +388,7 @@ self.label.text = @"New";
 
 ### 取消隐式动画
 
-```objc
+```objectivec
 //方法一
 [UIView performWithoutAnimation:^{
     [collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
@@ -426,7 +426,7 @@ self.label.text = @"New";
 
 Reference： [http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause-a-cabasicanimation/3003922#3003922](http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause-a-cabasicanimation/3003922#3003922)
 
-```objc
+```objectivec
 - (void)pauseLayer:(CALayer *)layer {
     CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
     layer.speed = 0.0;
@@ -449,7 +449,7 @@ Reference： [http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause
 
 ![](https://camo.githubusercontent.com/28a42913bbc1dd0d27459991ef14b0a3b9a80489/687474703a2f2f662e636c2e6c792f6974656d732f334f3351336d3368305431323268316f323531592f506f70436f6e74726f6c506f696e74732e676966)
 
-```objc
+```objectivec
 @property (nonatomic, assign) CGFloat controlPointOfLine; // property on view controller
 
 - (void)controlPointAnimation {
@@ -518,7 +518,7 @@ Reference： [http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause
 
 ### Autolayout动画
 
-```objc
+```objectivec
 [containerView setNeedsLayout];
 [UIView animateWithDuration:1.0 animations:^{
   // Make all constraint changes here
@@ -528,7 +528,7 @@ Reference： [http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause
 
 ### 去掉导航栏返回按钮的back标题
 
-```objc
+```objectivec
 // 第一种方法:
 [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 
@@ -546,7 +546,7 @@ Reference： [http://stackoverflow.com/questions/2306870/is-there-a-way-to-pause
 
 ### 调整barButtonItem之间的距离
 
-```objc
+```objectivec
 UIImage *img = [[UIImage imageNamed:@"icon_cog"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 //宽度为负数的固定间距的系统item
 UIBarButtonItem *rightNegativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -563,7 +563,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 > 
 > 思路：先把导航控制器手势返回的代理保存起来，然后再把当前的控制器设为导航控制器手势返回的代理；当当前控制消失的时候再把原来的代理给导航控制器的手势返回。
 
-```objc
+```objectivec
 @interface ViewController () <UIGestureRecognizerDelegate>
 @end
 
@@ -618,7 +618,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 
 > 2、添加action事件的方法
 
-```objc
+```objectivec
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController.interactivePopGestureRecognizer addTarget:self action:@selector(xxxx)];
@@ -632,7 +632,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 
 ### 全屏手势返回
 
-```objc
+```objectivec
 - (void)viewDidLoad {
     [super viewDidLoad];
     // self.interactivePopGestureRecognizer系统手势类型为`UIScreenEdgePanGestureRecognizer`
@@ -652,7 +652,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 
 > 在不显示导航栏的 A 控制器中遵守`UINavigationControllerDelegate`协议,实现其代理方法
 
-```objc
+```objectivec
 #pragma mark - UINavigationControllerDelegate
 -(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     BOOL isShowBar = [viewController isKindOfClass:[self class]];
@@ -662,7 +662,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 
 ### 页面跳转时翻转动画
 
-```objc
+```objectivec
 // modal方式
     TestViewController *vc = [[TestViewController alloc] init];
     vc.view.backgroundColor = [UIColor redColor];
@@ -682,7 +682,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 
 ### 以`modal`样式进行`push`跳转
 
-```objc
+```objectivec
 - (void)push {
     TestViewController *vc = [[TestViewController alloc] init];
     vc.view.backgroundColor = [UIColor redColor];
@@ -708,7 +708,7 @@ self.navigationItem.rightBarButtonItems = @[rightNegativeSpacer,rightBtnItem1,ri
 
 > [多线程--Dispatch Source](http://www.jianshu.com/p/880c2f9301b6)
 
-```objc
+```objectivec
 // 1、指定`DISPATCH_SOURCE_TYPE_DATA_ADD`，做成Dispatch Source(分派源)。设定Main Dispatch Queue 为追加处理的Dispatch Queue
 dispatch_source_t source = dispatch_source_create(DISPATCH_SOURCE_TYPE_DATA_ADD, 0, 0, dispatch_get_main_queue());
 
@@ -754,7 +754,7 @@ dispatch_async(queue, ^{
 
 > AppDelegate.m
 
-```objc
+```objectivec
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {//app在前台
         NSLog(@"app在前台");
@@ -766,7 +766,7 @@ dispatch_async(queue, ^{
 
 > iOS10以前
 
-```objc
+```objectivec
 - (void)post_Less_iOS10:(NSDictionary *)userInfo title:(NSString *)title body:(NSString *)body {
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     // 设置触发通知的时间，这里设置的是立即触发
@@ -801,7 +801,7 @@ dispatch_async(queue, ^{
 
 > iOS10之后
 
-```objc
+```objectivec
 - (void)registerNoti {
     // iOS10 兼容
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 10.0) {
@@ -865,7 +865,7 @@ dispatch_async(queue, ^{
 
 ### 禁止锁屏
 
-```objc
+```objectivec
 [UIApplication sharedApplication].idleTimerDisabled = YES;
 // 或
 [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
@@ -873,7 +873,7 @@ dispatch_async(queue, ^{
 
 ### 退出应用
 
-```objc
+```objectivec
 //退出方法
 - (void)exitApp {
     [UIView beginAnimations:@"exitApplication" context:nil];
@@ -895,7 +895,7 @@ dispatch_async(queue, ^{
 
 ### 获取手机安装的应用
 
-```objc
+```objectivec
 Class c =NSClassFromString(@"LSApplicationWorkspace");
 id s = [(id)c performSelector:NSSelectorFromString(@"defaultWorkspace")];
 NSArray *array = [s performSelector:NSSelectorFromString(@"allInstalledApplications")];
@@ -909,7 +909,7 @@ for (id item in array) {
 
 ### 打开系统设置界面
 
-```objc
+```objectivec
 //iOS8之后
 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
 //如果App没有添加权限，显示的是设定界面。如果App有添加权限（例如通知），显示的是App的设定界面。
@@ -958,7 +958,7 @@ Wi-Fi — prefs:root=WIFI
 
 ### iOS开发中的一些相关路径
 
-```objc
+```objectivec
 模拟器的位置:
 /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs 
 
@@ -980,14 +980,14 @@ Wi-Fi — prefs:root=WIFI
 
 [正则表达式检测](http://www.regexr.com/)
 
-```regex
+```objectivec
 // 解释：以`^`开头，`{`和`换行符`结束，中间（`*`表示匹配0次或多次，`+`表示匹配一次或者多次）匹配任意字符，最后是换行符
 \^.*\{\n
 ```
 
 ### ARC 下打印retainCount（引用计数）
 
-```objc
+```objectivec
 // obj目标对象
 NSInteger retainCount = CFGetRetainCount((__bridge CFTypeRef)obj);
 NSLog(@"Retain count is %ld", retainCount);
@@ -999,7 +999,7 @@ NSLog(@"Retain count is %ld", retainCount);
 > 1、Call `[UIDebuggingInformationOverlay prepareDebuggingOverlay]` - I’m not sure exactly what this method does, but the overlay will be empty if you don’t call it.
 > 2、Call `[[UIDebuggingInformationOverlay overlay] toggleVisibility]` - This shows the overlay window (assuming it’s not already visible).
 
-```objc
+```objectivec
 /// Objective-C
 - (void)debug {
 #if DEBUG
@@ -1022,7 +1022,7 @@ _ = overlay?.perform(NSSelectorFromString("toggleVisibility"))
 
 ### 快速生成以实例变量名称作为`key`,变量作为`value`的字典
 
-```
+```objectivec
 NSString *packId    = @"zero";
 NSNumber *userId    = @(22);
 NSArray *proxyTypes = @[@"int", @"string", @"double"];
@@ -1040,7 +1040,7 @@ NSDictionary *param = @{
 
 ### 函数和消息代替`performSelector：`
 
-```objc
+```objectivec
 if (!obj) { return; }
 SEL selector = NSSelectorFromString(@"aMethod");
 IMP imp = [obj methodForSelector:selector];
@@ -1061,7 +1061,7 @@ SEL selector = NSSelectorFromString(@"aMethod");
 
 ### 生成随机小数(0-1之间)
 
-```objc
+```objectivec
 #define ARC4RANDOM_MAX      0x100000000
 double val = ((double)arc4random() / ARC4RANDOM_MAX);
 ```
@@ -1080,6 +1080,8 @@ double val = ((double)arc4random() / ARC4RANDOM_MAX);
   //[mutDict1 setObject:nil forKey:@"key"];
   //mutDict1[nilString] = @"11000";
   // ok
+  [mutDict1 setValue:nilString forKeyPath:@"key"];
+  // ok
   mutDict1[@"keykey"] = nil;
   // ok
   id valueXX = [mutDict1 objectForKey:nilString];
@@ -1088,7 +1090,7 @@ double val = ((double)arc4random() / ARC4RANDOM_MAX);
   NSLog(@"xxx = %@", valueXX); // output null
 
   // ok
-  NSMutableDictionary *mutDict2 = [NSMutableDictionary dictionaryWithObjectsAndKeys:nil, @"key", nil]; 	//output @[]
+  NSMutableDictionary *mutDict2 = [NSMutableDictionary dictionaryWithObjectsAndKeys:nil, @"key", nil];     //output @[]
   // crash
   //mutDict2 = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"value", nil, nil];
   // crash 
@@ -1097,11 +1099,9 @@ double val = ((double)arc4random() / ARC4RANDOM_MAX);
 }
 ```
 
-
-
 ### iOS 常用数学函数
 
-```C
+```objectivec
     1、 三角函数 
 　　double sin (double);正弦 
 　　double cos (double);余弦 
@@ -1141,8 +1141,8 @@ double val = ((double)arc4random() / ARC4RANDOM_MAX);
 　　nt matherr(struct exception *e);数学错误计算处理程序
 ```
 
-
 ### 参考帖子：
 
 > * [iOS小技巧总结](http://www.jianshu.com/p/4523eafb4cd4)
-> > * [多年iOS开发经验总结(二)](http://www.tuicool.com/articles/2Ynmui2)
+>   
+>   > * [多年iOS开发经验总结(二)](http://www.tuicool.com/articles/2Ynmui2)
