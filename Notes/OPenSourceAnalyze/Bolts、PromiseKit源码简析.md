@@ -1,8 +1,8 @@
 # Bolts、PromiseKit源码简析
 ![哈咪.gif](https://ooo.0o0.ooo/2017/01/12/5876ed68b3b77.gif)
-### 一、[Bolts](https://github.com/BoltsFramework/Bolts-ObjC):
-`BFTask`原理：
-每个`BFTask`自己都维护着一个任务数组，当task执行`continueWithBlock:`后（会生成一个新的`BFTask`），`continueWithBlock:`带的那个`block`会被加入到任务数组中，每当有结果返回时，会执行`trySetResult:`方法，这个方法中会拿到task它自己维护的那个任务数组，然后取出其中的所有任务block，然后遍历执行。
+### 一、 [Bolts](https://github.com/BoltsFramework/Bolts-ObjC):
+#### `BFTask`原理：
+每个`BFTask`自己都维护着一个任务数组，当task执行`continueWithBlock:`后（会生成一个新的`BFTask`），`continueWithBlock:`带的那个`block`会被加入到任务数组中，每当有结果返回时，会执行`trySetResult:`方法，这个方法中会拿到`task`它自己维护的那个任务数组，然后取出其中的所有任务`block`，然后遍历执行。
 
 ```objc
 /// 内部维护的任务数组
@@ -93,11 +93,12 @@
     return tcs.task;
 }
 ```
+
 ![continueWithBlock:折叠图](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/SourceImages/continueWithBlock.png)
 
 
-### 二、[Promise](https://github.com/mxcl/PromiseKit):
-* 1、首先，让我们看看创建Promise的源码
+### 二、 [Promise](https://github.com/mxcl/PromiseKit):
+1. 首先，让我们看看创建Promise的源码
 
 ```objc
 + (instancetype)promiseWithResolver:(void (^)(PMKResolver))block {    // (2)
@@ -170,10 +171,10 @@ static void PMKResolve(PMKPromise *this, id result) {
         set(result); // (8) 
 }
 ```
-调用`new:`方法时会调用`promiseWithResolver:`方法，在里面进行一些初始化`promise`的工作：创建了一个`GCD`并发队列和一个数组，并立即回调`new:`后面的那个参数`block`，即：立即执行，生成一个成功`fulfiller`和失败`rejecter`的block，这个block将由用户控制进行回调操作。
+调用`new:`方法时会调用`promiseWithResolver:`方法，在里面进行一些初始化`promise`的工作：创建了一个`GCD`并发队列和一个数组，并立即回调`new:`后面的那个参数`block`，即：立即执行，生成一个成功`fulfiller`和失败`rejecter`的`block`，这个`block`将由用户控制进行回调操作。
 
 ----
-* 2、下面看一下`then`的源码实现：
+2. 下面看一下`then`的源码实现：
 
 ```objc
 - (PMKPromise *(^)(id))then {      // 1
@@ -257,9 +258,10 @@ static void PMKResolve(PMKPromise *this, id result) {
     return callBlock ?: mkresolvedCallback(result); // (1) callBlock存在,说明result为nil,现在还没有结果;否则就执行后面的`mkresolvedCallback()` block.
 }
 ```
-> 这个方法看上去很复杂，仔细看看,函数的形参其实就是2个block，一个是resolved的block，还有一个是pending的block。当一个promise经历过resolved之后，可能是fulfill，也可能是reject，之后生成next新的promise，传入到下一个then中，并且状态会变成pending。上面代码中第一个return，如果next为nil，那么意味着promise没有生成，这是会再调用一次mkresolvedCallback，并传入参数result，生成的PMKResolveOnQueueBlock，再次传入(q, block)，直到next的promise生成，并把pendingCallback存入到handler当中。这个handler存了所有待执行的block，如果把这个数组里面的block都执行，那么就相当于依次完成了上面的所有异步操作。第二个return是在callblock为nil的时候，还会再调一次mkresolvedCallback(result)，保证一定要生成next的promise。
 
-> 这个函数里面的这里dispatch_barrier_sync这个方法，就是promise后面可以链式调用then的原因，因为GCD的这个方法，让后面then变得像一行行的then顺序执行了。
+> 这个方法看上去很复杂，仔细看看,函数的形参其实就是2个`block`，一个是`resolved`的`block`，还有一个是`pending`的`block`。当一个`promise`经历过`resolved`之后，可能是`fulfill`，也可能是`reject`，之后生成`next`新的`promise`，传入到下一个`then`中，并且状态会变成`pending`。上面代码中第一个`return`，如果`next`为`nil`，那么意味着`promise`没有生成，这是会再调用一次`mkresolvedCallback`，并传入参数`result`，生成的`PMKResolveOnQueueBlock`，再次传入`(q, block)`，直到`next`的`promise`生成，并把`pendingCallback`存入到`handler`当中。这个`handler`存了所有待执行的`block`，如果把这个数组里面的`block`都执行，那么就相当于依次完成了上面的所有异步操作。第二个`return`是在`callblock`为`nil`的时候，还会再调一次`mkresolvedCallback(result)`，保证一定要生成`next`的`promise`。
+
+> 这个函数里面的这里`dispatch_barrier_sync`这个方法，就是`promise`后面可以链式调用`then`的原因，因为`GCD`的这个方法，让后面`then`变得像一行行的`then`顺序执行了。
 
 
 
