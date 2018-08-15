@@ -4,7 +4,8 @@
 
 ---
 
-1. `GNU C`的赋值扩展，即使用`({...})`的形式。这种形式的语句可以类似很多脚本语言，在顺次执行之后，会将最后一次的表达式的值作为返回值。
+#### 1. `GNU C`的赋值扩展：
+    即使用`({...})`的形式。这种形式的语句可以类似很多脚本语言，在顺次执行之后，会将最后一次的表达式的值作为返回值。
 
    > 注意：这个不是懒加载
 
@@ -32,7 +33,7 @@
 
    使用这种语法的其中一个优点是结构鲜明紧凑，而且由于不用担心块里面的变量名污染外面变量名的问题。
 
-2. `case`语句中使用范围表达式：
+#### 2. `case`语句中使用范围表达式：
 
    > `GCC`对`C11`标准的语法扩展
 
@@ -87,7 +88,7 @@
    }
    ```
 
-3. 使用`__auto_type`做类型推导：
+#### 3. 使用`__auto_type`做类型推导：
 
    > `GCC`对`C11`标准的语法扩展
 
@@ -110,7 +111,7 @@
     let result = block(@"foo", 100);  // no warning
    ```
 
-4. 结构体的初始化：     
+#### 4. 结构体的初始化：     
 
    ```objectivec
     // 不加(CGRect)强转也不会warning
@@ -119,7 +120,7 @@
     CGRect rect3 = {1, 2}; // {1, 2, 0, 0}
    ```
 
-5. 数组的下标初始化：
+#### 5. 数组的下标初始化：
 
    ```objectivec
     const int numbers[] = {
@@ -169,14 +170,14 @@
     }
    ```
 
-6. 自带提示的`keypath`宏：
+#### 6. 自带提示的`keypath`宏：
 
    ```objectivec
    #define keypath2(OBJ, PATH) \
     (((void)(NO && ((void)OBJ.PATH, NO)), # PATH))
    ```
 
-7. 逗号表达式：
+#### 7. 逗号表达式：
 
     逗号表达式取后值，但前值的表达式参与运算，可用`void`忽略编译器警告
 
@@ -186,7 +187,7 @@
 
     于是上面的`keypath`宏的输出结果是`#PATH`也就是一个`c`字符串 
 
-8. `C`函数重载标示符：
+#### 8. `C`函数重载标示符：
 
    > [RTRootNavigationController](https://github.com/rickytan/RTRootNavigationController/blob/master/RTRootNavigationController/Classes/RTRootNavigationController.m) 中有用到这个技巧
 
