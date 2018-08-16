@@ -25,7 +25,7 @@ TypeName blockName = ^returnType(parameters) {...};
 ```
 </details>
 
-对`Object-C`代码执行 **xcrun -sdk iphonesimulator clang -rewrite-objc 文件名.m** 操作来获取伪代码，仅供技术探究。
+对`Object-C`文件执行 `xcrun -sdk iphonesimulator clang -rewrite-objc fileName.m` 操作来获取伪代码，仅供技术探究。
 
 先把`__block_impl`结构体拿出来放在最前面，最终block调用时都会被强转成这种类型，下面好多地方会用到。
 
@@ -221,7 +221,7 @@ static struct IMAGE_INFO { unsigned version; unsigned flag; } _OBJC_IMAGE_INFO =
 ![blockTest1.png](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/SourceImages/blockTest1.png)
 如果你想对`mutArr`变量重新赋值一个新的`array`实例，改变原变量的指针，那么不加`_block`是不行的，但是如果只是单纯的`add`一个数据进去实际上改变的是变量所指的那个`mutArr`内存区域，这样是没有区别的。
 
-### 3、静态变量
+### 3、静态变量:
 
 ```objc
 #import <Foundation/Foundation.h>
@@ -309,7 +309,7 @@ int main(int argc, char *argv[]) {
 }
 static struct IMAGE_INFO { unsigned version; unsigned flag; } _OBJC_IMAGE_INFO = { 0, 2 };
 ```
-### 4、全局变量
+### 4、全局变量:
 
 ```objc
 #import <Foundation/Foundation.h>
