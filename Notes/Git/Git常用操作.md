@@ -127,12 +127,26 @@ git push origin --delete tag <tagname>
 git tag | grep "0.0.d$" | xargs git tag -d
 ```
 	
-##### 解决有时clone下来代码后提示缺失文件的解决办法
+#### 解决有时clone下来代码后提示缺失文件的解决办法
 添加`--recursive`参数选项
 
 ```git
 git clone --recursive https://github.com/Cocoanetics/DTCoreText.git "/Users/sssss/Desktop/DTCoreTextDemo"
 ```
+
+#### 'stash@{x}' is not a stash reference
+![](http://olmn3rwny.bkt.clouddn.com/20180914114817_95vQdn_stash error.jpeg)
+```git 
+git stash list
+
+//--- apply target stash
+git stash apply refs/stash@{n} 
+
+//---- delete target stash
+git stash drop --index n
+git stash drop refs/stash@{n}
+```
+
 
 ### 推荐文章：
 1、[代码回滚：Reset、Checkout、Revert的选择](https://github.com/geeeeeeeeek/git-recipes/wiki/5.2-%E4%BB%A3%E7%A0%81%E5%9B%9E%E6%BB%9A%EF%BC%9AReset%E3%80%81Checkout%E3%80%81Revert%E7%9A%84%E9%80%89%E6%8B%A9)
