@@ -2,6 +2,45 @@
 
 ![t@2x.png](https://ooo.0o0.ooo/2017/01/12/5876ebd6266ac.png)
 
+
+### 判断当前所在队列是否是目标队列
+> 三种方案，推荐前2种
+
+```objc
+BOOL ZD_InTargetQueue(dispatch_queue_t targetQueue) {
+    if (strcmp(dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL), dispatch_queue_get_label(targetQueue)) == 0) {
+        NSLog(@"当前所在队列是targetQueue");
+        return YES;
+    }
+    return NO;
+}
+```
+
+```objc
+// 原理：给主队列设置一个标签，然后在当前队列获取标签，
+// 如果获取到的标签与设置的标签不一样，说明当前队列就不是主队列
+BOOL ZD_IsMainQueue(void) {
+    static const void *mainQueueKey = &mainQueueKey;
+    static void *mainQueueContext = &mainQueueContext;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dispatch_queue_set_specific(dispatch_get_main_queue(), mainQueueKey, mainQueueContext, (dispatch_function_t)CFRelease);
+    });
+    void *context = dispatch_get_specific(mainQueueKey);
+    return (context == mainQueueContext);
+}
+```
+
+```objc
+BOOL ZD_IsMainQueue(void) {
+    dispatch_queue_t mainQueue = (__bridge dispatch_queue_t)(pthread_getspecific(20));
+    BOOL isMainQueue = !strcmp(dispatch_queue_get_label(mainQueue), @"com.apple.main-thread".UTF8String);
+    return isMainQueue;
+}
+
+```
+
 ### UITableView plain样式下，让section跟随滑动
 
 ```objectivec
