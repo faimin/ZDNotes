@@ -201,10 +201,24 @@
     }
    ```
 
-#### 参考：
+#### 9. 同名全局变量或者全局函数共存：
 
-1. [objc非主流代码技巧](http://blog.sunnyxx.com/2014/08/02/objc-weird-code/)
+    ```c
+    // 下面二者可以并存
+    NSDictionary *ZDInfoDict = nil;
 
-2. [Even Swiftier Objective-C](https://pspdfkit.com/blog/2017/even-swiftier-objective-c/)
+    __attribute__((weak)) NSDictionary *ZDInfoDict = nil;
+    ```
 
-3. [《C语言编程魔法书》](http://www.jb51.net/books/620682.html)
+-------
+
+### 参考：
+
+- [objc非主流代码技巧](http://blog.sunnyxx.com/2014/08/02/objc-weird-code/)
+
+- [Even Swiftier Objective-C](https://pspdfkit.com/blog/2017/even-swiftier-objective-c/)
+
+- [《C语言编程魔法书》](http://www.jb51.net/books/620682.html)
+
+- [GCC中的弱符号与强符号](https://www.cnblogs.com/kernel_hcy/archive/2010/01/27/1657411.html)
+
