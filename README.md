@@ -12,4 +12,4 @@
 
 #### 6、[Git常用操作](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/Git/Git%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C.md)
 
-#### 7. [Cocoapods Tips](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/CocoaPods/CocoaPods%20Tips.md)
+#### 7、[Cocoapods Tips](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/CocoaPods/CocoaPods%20Tips.md)
