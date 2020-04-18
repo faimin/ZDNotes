@@ -1,5 +1,7 @@
 ## Git常用操作
+
 ### git命令
+
 查看命令历史： `git reflog`
 
 
@@ -109,6 +111,12 @@
 	`git push origin :<branchName>`
 
 #### 删除tag
+
+```git
+git tag -d <tagname>
+git push origin -d <tagname>
+```
+
 1、删除本地`tag`
 
 ```
@@ -128,6 +136,7 @@ git tag | grep "0.0.d$" | xargs git tag -d
 ```
 	
 #### 解决有时clone下来代码后提示缺失文件的解决办法
+
 添加`--recursive`参数选项
 
 ```git
@@ -135,7 +144,9 @@ git clone --recursive https://github.com/Cocoanetics/DTCoreText.git "/Users/ssss
 ```
 
 #### 'stash@{x}' is not a stash reference
+
 ![](http://olmn3rwny.bkt.clouddn.com/20180914114817_95vQdn_stash error.jpeg)
+
 ```git 
 git stash list
 
