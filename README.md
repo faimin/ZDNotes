@@ -13,3 +13,5 @@
 #### 6、[Git常用操作](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/Git/Git%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C.md)
 
 #### 7、[Cocoapods Tips](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/CocoaPods/CocoaPods%20Tips.md)
+
+#### 8、[Jenkins踩坑记录](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/Jenkins/Jenkins%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95.md)
