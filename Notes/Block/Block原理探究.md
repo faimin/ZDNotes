@@ -25,7 +25,7 @@ TypeName blockName = ^returnType(parameters) {...};
 ```
 </details>
 
-对`Object-C`文件执行 `xcrun -sdk iphonesimulator clang -rewrite-objc fileName.m` 操作来获取伪代码，仅供技术探究。
+对`Object-C`文件执行 `xcrun -sdk iphonesimulator clang -fobjc-arc -fobjc-runtime=ios -rewrite-objc fileName.m` 操作来获取伪代码，仅供技术探究。
 
 先把`__block_impl`结构体拿出来放在最前面，最终block调用时都会被强转成这种类型，下面好多地方会用到。
 
