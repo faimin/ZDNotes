@@ -296,7 +296,8 @@ pre_install do |installer|
   installer.pod_targets.each do |pod|
      if not $dynamic_framework.include?(pod.name)
        def pod.build_type;
-          Pod::Target::BuildType.static_library
+          #Pod::Target::BuildType.static_library
+          Pod::BuildType.static_library
        end
      end
   end
