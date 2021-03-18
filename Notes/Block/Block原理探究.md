@@ -1,7 +1,9 @@
 # Block原理探究
 在此之前先介绍一下**block 基本语法**：
 
-![block语法](http://olmn3rwny.bkt.clouddn.com/20170330193208_8X7KiF_Screenshot.jpeg)
+<img src="../SourceImages/BlockSyntax.png" alt="BlockSyntax" style="zoom:50%;"/>
+
+</br>
 
 <details open>
 <summary>Block Syntax</summary>
@@ -146,7 +148,7 @@ int main(int argc, char *argv[]) {
 
 ```C++
 // 由下面的代码可知: `__block`的作用就是定义一个新的结构体来包裹原来的变量
-// 定义一个保存变量的结构体
+// 定义一个保存变量的结构体 （被__block标记的变量会被转化为这种格式的结构体对象）
 struct __Block_byref_mutArr_0 {
   void *__isa;
   __Block_byref_mutArr_0 *__forwarding;
@@ -172,7 +174,7 @@ struct __main_block_impl_0 {
 
 // 在block内部对`mutArr`操作 (block回调时执行的函数)
 static void __main_block_func_0(struct __main_block_impl_0 *__cself) {
-    // 拿到 包含捕获的局部变量 的结构体指针
+   // 拿到 包含捕获的局部变量 的结构体指针
    __Block_byref_mutArr_0 *mutArr = __cself->mutArr; // bound by ref
    // 通过上面的结构体指针一步步拿到`mutArr`数组
    ((void (*)(id, SEL, ObjectType))(void *)objc_msgSend)((id)(mutArr->__forwarding->mutArr), sel_registerName("addObject:"), (id)((NSNumber *(*)(Class, SEL, int))(void *)objc_msgSend)(objc_getClass("NSNumber"), sel_registerName("numberWithInt:"), 2));
@@ -197,6 +199,7 @@ static struct __main_block_desc_0 {
 int main(int argc, char *argv[]) {
  /* @autoreleasepool */ { __AtAutoreleasePool __autoreleasepool; 
 
+  // 这里可以看到结构体中的 __forwarding 指针其实指向的就是其自身
   __attribute__((__blocks__(byref))) __Block_byref_mutArr_0 mutArr = {(void*)0,(__Block_byref_mutArr_0 *)&mutArr, 33554432, sizeof(__Block_byref_mutArr_0), __Block_byref_id_object_copy_131, __Block_byref_id_object_dispose_131, ((NSMutableArray *(*)(id, SEL))(void *)objc_msgSend)((id)objc_getClass("NSMutableArray"), sel_registerName("array"))};
   
   // 与不加__block差不多,`block`变量还是一个指向`__main_block_impl_0`结构体的指针,区别在于第三个参数变了. 第三个参数是包含局部变量`mutArr`的结构体指针.
@@ -207,8 +210,15 @@ int main(int argc, char *argv[]) {
 	//
 	// 此处对`mutArr`数组对象进行操作,获取`mutArr`也是和`block`内部的获取方法一样,
 	// 都是通过持有`mutArr`的结构体一步步获取到`mutArr`数组,
+  //
+  // 这里要经过 __forwarding 来获取`mutArr`的原因是：
+  // __block 标记的变量有可能被copy到堆上，__forwarding 的作用就是在被copy到堆上时修改指向，使栈和堆上的 __forwarding 都指向堆上的那个副本，这样就保证了block内外操作的都是同一份内存。
+  // 具体的copy实现可以参见下面的 `_Block_byref_copy` 函数
+  // 
 	// 所以,在block内外,操作的都是同一个`mutArr`对象.都是通过包含`mutArr`对象的`__Block_byref_mutArr_0`结构体对其进行间接操作处理的
 	// 这也就是为什么添加`__block`后还能改变原来的对象的原因
+  //
+  // PS: 当我们用__block 标记一个变量以后，当我们用到这个变量时都不是直接使用这个变量了，而是变成了通过`__Block_byref`来操作这个变量
   ((void (*)(id, SEL, ObjectType))(void *)objc_msgSend)((id)(mutArr.__forwarding->mutArr), sel_registerName("addObject:"), (id)(NSString *)&__NSConstantStringImpl__var_folders_4t_ldgq93v932g220vwkl7c1fk40000gn_T_BlockTest_b07809_mi_0);
 
   ((void (*)(__block_impl *))((__block_impl *)block)->FuncPtr)((__block_impl *)block);
@@ -216,8 +226,54 @@ int main(int argc, char *argv[]) {
  }
 }
 static struct IMAGE_INFO { unsigned version; unsigned flag; } _OBJC_IMAGE_INFO = { 0, 2 };
+
+// __block 变量被copy到堆上时的具体实现
+static struct Block_byref *_Block_byref_copy(const void *arg) {
+    struct Block_byref *src = (struct Block_byref *)arg;
+
+    if ((src->forwarding->flags & BLOCK_REFCOUNT_MASK) == 0) {
+        // src points to stack
+        struct Block_byref *copy = (struct Block_byref *)malloc(src->size);
+        copy->isa = NULL;
+        // byref value 4 is logical refcount of 2: one for caller, one for stack
+        copy->flags = src->flags | BLOCK_BYREF_NEEDS_FREE | 4;
+        // 堆上的forwarding指向其自身
+        copy->forwarding = copy; // patch heap copy to point to itself
+        // 栈上的forwarding指向copy到堆上的副本
+        src->forwarding = copy;  // patch stack to point to heap copy
+        copy->size = src->size;
+
+        if (src->flags & BLOCK_BYREF_HAS_COPY_DISPOSE) {
+            // Trust copy helper to copy everything of interest
+            // If more than one field shows up in a byref block this is wrong XXX
+            struct Block_byref_2 *src2 = (struct Block_byref_2 *)(src+1);
+            struct Block_byref_2 *copy2 = (struct Block_byref_2 *)(copy+1);
+            copy2->byref_keep = src2->byref_keep;
+            copy2->byref_destroy = src2->byref_destroy;
+
+            if (src->flags & BLOCK_BYREF_LAYOUT_EXTENDED) {
+                struct Block_byref_3 *src3 = (struct Block_byref_3 *)(src2+1);
+                struct Block_byref_3 *copy3 = (struct Block_byref_3*)(copy2+1);
+                copy3->layout = src3->layout;
+            }
+
+            (*src2->byref_keep)(copy, src);
+        }
+        else {
+            // Bitwise copy.
+            // This copy includes Block_byref_3, if any.
+            memmove(copy+1, src+1, src->size - sizeof(*src));
+        }
+    }
+    // already copied to heap
+    else if ((src->forwarding->flags & BLOCK_BYREF_NEEDS_FREE) == BLOCK_BYREF_NEEDS_FREE) {
+        latching_incr_int(&src->forwarding->flags);
+    }
+    
+    return src->forwarding;
+}
 ```
-虽然NSMutableArray前面加不加__block，都不会影响往数组中添加数据，但是当在block中给`mutArr`重新赋值的时候就有区别了。
+虽然`NSMutableArray`前面加不加`__block`，都不会影响往数组中添加数据，但是当在`block`中给`mutArr`重新赋值的时候就有区别了。
 ![blockTest1.png](https://github.com/faimin/ZDStudyNotes/blob/master/Notes/SourceImages/blockTest1.png)
 如果你想对`mutArr`变量重新赋值一个新的`array`实例，改变原变量的指针，那么不加`_block`是不行的，但是如果只是单纯的`add`一个数据进去实际上改变的是变量所指的那个`mutArr`内存区域，这样是没有区别的。
 
