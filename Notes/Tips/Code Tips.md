@@ -132,7 +132,9 @@
     // {0, 3, 2, 1, 0, 12306}
    ```
 
-    **这个特性可以用来做枚举值和字符串的映射**
+
+   **这个特性可以用来做枚举值和字符串的映射**
+    
 
    ```objectivec
     typedef NS_ENUM(NSInteger, Type){
@@ -145,7 +147,9 @@
     };
    ```
 
-    又如 `UITableView+FDIndexPathHeightCache`中的例子：
+
+   又如 `UITableView+FDIndexPathHeightCache`中的例子：
+    
 
    ```objectivec
     // All methods that trigger height cache's invalidation
@@ -179,13 +183,13 @@
 
 #### 7. 逗号表达式：
 
-    逗号表达式取后值，但前值的表达式参与运算，可用`void`忽略编译器警告
+   逗号表达式取后值，但前值的表达式参与运算，可用`void`忽略编译器警告
 
    ```objective-c
     int a = ((void)(1+2), 2); // a == 2
    ```
 
-    于是上面的`keypath`宏的输出结果是`#PATH`也就是一个`c`字符串 
+   于是上面的`keypath`宏的输出结果是`#PATH`也就是一个`c`字符串 
 
 #### 8. `C`函数重载标示符：
 
@@ -203,12 +207,12 @@
 
 #### 9. 同名全局变量或者全局函数共存：
 
-    ```c
+   ```c
     // 下面二者可以并存
     NSDictionary *ZDInfoDict = nil;
 
     __attribute__((weak)) NSDictionary *ZDInfoDict = nil;
-    ```
+   ```
 
 -------
 
