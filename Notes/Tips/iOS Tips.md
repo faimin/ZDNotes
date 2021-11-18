@@ -1138,6 +1138,37 @@ double val = ((double)arc4random() / ARC4RANDOM_MAX);
 }
 ```
 
+### 判断低电量模式
+
+```swift
+// 函数
+if NSProcessInfo.processInfo().lowPowerModeEnabled {
+    // 当前用户启用低电量模式
+} else {
+    // 当前用户未启用低电量模式
+}
+
+//-------------------------------------------
+// 通知
+NSNotificationCenter.defaultCenter().addObserver(
+    self,
+    selector: "yourMethodName:",
+    name: NSProcessInfoPowerStateDidChangeNotification,
+    object: nil
+)
+
+func yourMethodName:(note:NSNotification) {  
+    if (NSProcessInfo.processInfo().isLowPowerModeEnabled) {  
+      // 当前用户启用低电量模式
+      // 在这里减少动画、降低帧频、停止位置更新、禁用同步和备份等
+    } else {  
+      // 当前用户未启用低电量模式
+      // 在这里恢复被禁止的操作
+    }  
+}
+```
+
+
 ### iOS 常用数学函数
 
 ```objectivec
