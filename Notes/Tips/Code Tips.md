@@ -204,8 +204,18 @@
         return a + b + c;
     }
    ```
+   
+#### 9. 参数个数
 
-#### 9. 同名全局变量或者全局函数共存：
+    ```c
+        // 最多支持10个参数
+    	#define COUNT_PARMS2(_a1, _a2, _a3, _a4, _a5, _a6, _a7, _a8, _a9, _a10, RESULT, ...) RESULT
+		#define COUNT_PARMS(...) COUNT_PARMS2(__VA_ARGS__, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+        
+		int count = COUNT_PARMS(1,2,3,4,5,6); // 预处理时count==6
+    ```
+
+#### 10. 同名全局变量或者全局函数共存：
 
    ```c
     // 下面二者可以并存
@@ -213,6 +223,62 @@
 
     __attribute__((weak)) NSDictionary *ZDInfoDict = nil;
    ```
+
+#### 11. 偷梁换柱：
+
+```swift
+class Test {
+    dynamic func foo() {
+        print("bar")
+    }
+}
+
+extension Test {
+    @_dynamicReplacement(for: foo())
+    func new_foo() {
+        print("bar new")
+        foo()  // calls previous implementation
+    }
+}
+
+Test().foo() // bar new
+```
+
+> 有2点需要说明：
+> 1. 标注`dynamic`关键字
+> 2. 在工程中运行，`playground`不支持
+
+#### 12. 移花接木
+
+```swift
+@_silgen_name("backtrace")
+internal func swift_backtrace(_ callstacks: UnsafeMutableRawPointer, _ counts: Int) -> Int
+
+@_silgen_name("backtrace_symbols")
+internal func swift_backtrace_symbols(_ callstacks: UnsafeRawPointer, _ counts: Int) -> UnsafeMutablePointer<UnsafePointer<CChar>>?
+
+//------------------------------------------------
+
+static func callstack() -> [String] {
+    var callstack = [UnsafeMutableRawPointer?](repeating: nil, count: 128)
+    let frames = swift_backtrace(&callstack, callstack.count)
+    
+    var callstackArr: [String] = []
+    if let symbols = swift_backtrace_symbols(&callstack, frames) {
+        for frame in 0..<frames {
+            let symbol = String(cString: symbols[frame])
+            callstackArr.append(symbol)
+        }
+        
+        free(symbols)
+        
+        os_log("堆栈信息 => %@", log: .apmLog, type: .info, callstackArr)
+    }
+    
+    return callstackArr
+}
+```
+
 
 -------
 
@@ -225,4 +291,7 @@
 - [《C语言编程魔法书》](http://www.jb51.net/books/620682.html)
 
 - [GCC中的弱符号与强符号](https://www.cnblogs.com/kernel_hcy/archive/2010/01/27/1657411.html)
+
+- [swift: SIL](https://github.com/apple/swift/blob/main/docs/SIL.rst)
+
 
