@@ -279,6 +279,13 @@ static func callstack() -> [String] {
 }
 ```
 
+#### 13. Swift类名解析
+
+```shell
+# xcrun swift-demangle _TtC11NewWolfKill22WKRoomControlMenuModel
+$ xcrun swift-demangle <your-mangled-symbol>
+```
+
 
 -------
 
@@ -293,5 +300,7 @@ static func callstack() -> [String] {
 - [GCC中的弱符号与强符号](https://www.cnblogs.com/kernel_hcy/archive/2010/01/27/1657411.html)
 
 - [swift: SIL](https://github.com/apple/swift/blob/main/docs/SIL.rst)
+
+- [30-tips-to-make-you-a-better-ios-developer](https://www.fadel.io/blog/posts/30-tips-to-make-you-a-better-ios-developer)
 
 
