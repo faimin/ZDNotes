@@ -286,6 +286,17 @@ static func callstack() -> [String] {
 $ xcrun swift-demangle <your-mangled-symbol>
 ```
 
+#### 14. 队列校验
+
+```swift
+methodThatCallsBackOnMain(completion: { result in
+    // 确保在主队列中调用
+	dispatchPrecondition(.onQueue(.main))
+    
+	// process `result`
+	// ...
+})
+```
 
 -------
 
