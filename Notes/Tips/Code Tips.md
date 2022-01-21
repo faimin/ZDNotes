@@ -298,6 +298,30 @@ methodThatCallsBackOnMain(completion: { result in
 })
 ```
 
+#### 15. Assert
+
+`assert`会导致程序退出，下面这种方式不会使程序退出而只是让`IDE`断在指定位置，类似于打断点那种效果
+
+
+```c
+// 适用于所有架构
+__builtin_debugtrap()
+```
+
+如果是模拟器，可以使用内联汇编的方式
+
+```c
+asm("int3")
+```
+
+如果是win平台，可以用
+
+```c++
+__debugbreak()
+```
+
+
+
 -------
 
 ### 参考：
@@ -314,4 +338,5 @@ methodThatCallsBackOnMain(completion: { result in
 
 - [30-tips-to-make-you-a-better-ios-developer](https://www.fadel.io/blog/posts/30-tips-to-make-you-a-better-ios-developer)
 
+- [C/C++调试技巧-debugbreak](https://www.bilibili.com/read/cv1165694)
 
