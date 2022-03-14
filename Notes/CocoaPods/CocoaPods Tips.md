@@ -317,11 +317,27 @@ pre_install do |installer|
 end
 ```
 
---------
+#### 15、使用`Ruby`快速设置头文件
+
+  > https://github.com/mxcl/PromiseKit/blob/6.15.3/PromiseKit.podspec
+
+```ruby
+  s.subspec 'CorePromise' do |ss|
+    hh = Dir['Sources/*.h'] - Dir['Sources/*+Private.h']
+
+    cc = Dir['Sources/*.swift'] - ['Sources/SwiftPM.swift']
+    cc << 'Sources/{after,AnyPromise,GlobalState,dispatch_promise,hang,join,PMKPromise,when,race}.m'
+    cc += hh
+
+    ss.source_files = cc
+    ss.public_header_files = hh
+    ss.preserve_paths = 'Sources/AnyPromise+Private.h', 'Sources/PMKCallVariadicBlock.m', 'Sources/NSMethodSignatureForBlock.m'
+  end
+```
+
+---
 
 ### 参考：
-
-- [CocoaPods 大全](https://guides.cocoapods.org/)
 
 - [podspec 语法指南](http://guides.cocoapods.org/syntax/podspec.html#specification)
 
