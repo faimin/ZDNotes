@@ -343,6 +343,31 @@ __debugbreak()
 
 
 
+#### 16. 保证对象的生命周期
+
+1. Swift
+   
+   [withExtendedLifetime()](https://github.com/apple/swift/blob/541f7725e1b0f4ac2cfc1f1b71a90c5a5c813c1d/stdlib/public/core/Unmanaged.swift#L145)
+   
+   ```swift
+   var owningReference = Instance()
+   ...
+   withExtendedLifetime(owningReference) {
+       dosomething(...)
+   }  // Assuming: No stores to owned occur for the dynamic lifetime of
+      //         the withExtendedLifetime invocation.
+   ```
+
+2. Objective-C
+   
+   在 Objective-C ARC 中你可以使用 `__attribute__((objc_precise_lifetime))` 或者 `NS_VALID_UNTIL_END_OF_SCOPE` 来标注变量以达到类似的效果.
+
+
+
+
+
+
+
 -------
 
 ### 参考：
@@ -360,3 +385,7 @@ __debugbreak()
 - [30-tips-to-make-you-a-better-ios-developer](https://www.fadel.io/blog/posts/30-tips-to-make-you-a-better-ios-developer)
 
 - [C/C++调试技巧-debugbreak](https://www.bilibili.com/read/cv1165694)
+
+- [Swift 中的 ARC 机制: 从基础到进阶](https://mp.weixin.qq.com/s/ZJ3gVI-jzDcKpRKa0IMi0A)
+
+
