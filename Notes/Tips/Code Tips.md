@@ -317,6 +317,32 @@ asm("int3")
 __debugbreak()
 ```
 
+
+
+贴段样例：
+
+```objc
+// MARK: - ZDAssert
+#if DEBUG
+#ifndef ZDAssert
+#define ZDAssert(condition, format, ...) do { \
+    _Pragma("clang diagnostic push") \
+    _Pragma("clang diagnostic ignored \"-Wobjc-literal-conversion\"") \
+    if (condition) break; \
+    if (format) printf("\n%s\n\n", [[NSString stringWithFormat:format, ##__VA_ARGS__] UTF8String]); \
+    _Pragma("clang diagnostic pop") \
+    __builtin_debugtrap(); \
+} while(0);
+#endif
+#else
+#ifndef ZDAssert
+#define ZDAssert(condition, format, ...)
+#endif
+#endif
+```
+
+
+
 -------
 
 ### 参考：
