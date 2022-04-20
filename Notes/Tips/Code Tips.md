@@ -356,8 +356,6 @@ import Darwin
 }        
 ```
 
-
-
 #### 16. 保证对象的生命周期
 
 1. Swift
@@ -375,7 +373,19 @@ import Darwin
 
 2. Objective-C
    
-   在 Objective-C ARC 中你可以使用 `__attribute__((objc_precise_lifetime))` 或者 `NS_VALID_UNTIL_END_OF_SCOPE` 来标注变量以达到类似的效果.
+   在 Objective-C ARC 中你可以使用 `__attribute__((objc_precise_lifetime))` 或者 `NS_VALID_UNTIL_END_OF_SCOPE` 来标注变量以达到类似的效果。
+
+#### 17. 区间判断
+
+    判断某一个值`x`是否在区间`[min, max]`内    
+
+    
+
+> 第一个 (x - minx) 如果 x < minx 的话，得到的结果 < 0 ，即高位为 1，第二个判断同理，如果超过范围，高位也为 1，两个条件进行比特或运算以后，只有两个高位都是 0 ，最终才为真
+
+```c
+if (( (x - minx) | (maxx - x) ) >= 0) ...
+```
 
 -------
 
@@ -396,3 +406,5 @@ import Darwin
 - [C/C++调试技巧-debugbreak](https://www.bilibili.com/read/cv1165694)
 
 - [Swift 中的 ARC 机制: 从基础到进阶](https://mp.weixin.qq.com/s/ZJ3gVI-jzDcKpRKa0IMi0A)
+
+- [C语言有什么奇淫技巧](https://www.zhihu.com/question/27417946)
