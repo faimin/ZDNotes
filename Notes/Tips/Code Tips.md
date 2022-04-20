@@ -317,8 +317,6 @@ asm("int3")
 __debugbreak()
 ```
 
-
-
 贴段样例：
 
 ```objc
@@ -339,6 +337,23 @@ __debugbreak()
 #define ZDAssert(condition, format, ...)
 #endif
 #endif
+```
+
+> 这里建议加上一个条件--只在调试期间起作用，因为在非调试阶段执行到这个`trap`程序会挂掉，代码如下：
+
+```swift
+import Darwin
+
+// See http://developer.apple.com/library/mac/#qa/qa1361/_index.html
+@objc public class func isDebuggerAttached() -> Bool {
+    var info = kinfo_proc()
+    var mib = [CTL_KERN, KERN_PROC, KERN_PROC_PID, getpid()]
+    var size = MemoryLayout<kinfo_proc>.stride
+    let junk = sysctl(&mib, u_int(mib.count), &info, &size, nil, 0)
+    assert(junk == 0)
+    let isDebuggerAttaced = info.kp_proc.p_flag & P_TRACED != 0
+    return isDebuggerAttaced
+}        
 ```
 
 
@@ -362,12 +377,6 @@ __debugbreak()
    
    在 Objective-C ARC 中你可以使用 `__attribute__((objc_precise_lifetime))` 或者 `NS_VALID_UNTIL_END_OF_SCOPE` 来标注变量以达到类似的效果.
 
-
-
-
-
-
-
 -------
 
 ### 参考：
@@ -387,5 +396,3 @@ __debugbreak()
 - [C/C++调试技巧-debugbreak](https://www.bilibili.com/read/cv1165694)
 
 - [Swift 中的 ARC 机制: 从基础到进阶](https://mp.weixin.qq.com/s/ZJ3gVI-jzDcKpRKa0IMi0A)
-
-
