@@ -2,7 +2,7 @@
 //  AppDelegate.m
 //  MRC
 //
-//  Created by 符现超 on 2017/3/30.
+//  Created by Zero.D.Saber on 2017/3/30.
 //  Copyright © 2017年 Zero.D.Saber. All rights reserved.
 //
 
