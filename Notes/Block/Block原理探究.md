@@ -461,16 +461,14 @@ static struct IMAGE_INFO { unsigned version; unsigned flag; } _OBJC_IMAGE_INFO =
 
 ------
 
+### 推荐文章：
+
+> 比我写的好
+- [Block本质](https://github.com/pro648/tips/blob/master/sources/Block%E7%9A%84%E6%9C%AC%E8%B4%A8.md)
+
 ### 参考文章:
 1. [谈Objective-C Block的实现](http://blog.devtang.com/2013/07/28/a-look-inside-blocks/)
 2. [iOS中的block是如何持有对象的](http://draveness.me/block-retain-object)
 3. [深入分析Objective-C block、weakself、strongself实现原理](http://www.jianshu.com/p/a5dd014edb13)
 4. [block-copy](http://www.galloway.me.uk/2013/05/a-look-inside-blocks-episode-3-block-copy/)
-
-
-
-
-
-
-
 
