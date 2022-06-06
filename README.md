@@ -16,4 +16,6 @@
 
 - [Jenkins踩坑记录](./Notes/Jenkins/Jenkins%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95.md)
 
-- [Swift与Objective-C混编](./Notes/SwiftOCMixed/CocoaPods%E7%BB%84%E4%BB%B6%E4%B8%ADSwift%E4%B8%8EObjective-C%E6%B7%B7%E7%BC%96.md)
+- [Swift与Objective-C混编](./Notes/Swift/CocoaPods%E7%BB%84%E4%BB%B6%E4%B8%ADSwift%E4%B8%8EObjective-C%E6%B7%B7%E7%BC%96.md)
+
+- [Swift元编程 - Sourcery](./Notes/Swift/Swift%E5%85%83%E7%BC%96%E7%A8%8B%20-%20Sourcery.md)
