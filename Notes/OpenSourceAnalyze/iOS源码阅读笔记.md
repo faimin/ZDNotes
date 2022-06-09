@@ -97,6 +97,9 @@ thread_pool_size = DISPATCH_WORKQ_MAX_PTHREAD_COUNT     255
 
 	内部其实是对dispatch_async 和 dispatch_group_enter / dispatch_group_leave 的封装
 
+9. 线程池复用原理：
+
+    线程创建后从队列里取出任务执行，任务执行后使用信号量使其等待`5`秒钟，如果在这期间再有`GCD`任务过来，会先尝试唤醒线程，让它继续工作，否则等待超时后线程会自动结束，被系统销毁。（不是`tableview`中的复用池机制）
 
 
 ## NSTimer
