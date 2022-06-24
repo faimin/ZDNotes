@@ -21,3 +21,5 @@
 - [Swift与Objective-C混编](./Notes/Swift/CocoaPods%E7%BB%84%E4%BB%B6%E4%B8%ADSwift%E4%B8%8EObjective-C%E6%B7%B7%E7%BC%96.md)
 
 - [Swift元编程 - Sourcery](./Notes/Swift/Swift%E5%85%83%E7%BC%96%E7%A8%8B%20-%20Sourcery.md)
+
+- [闭包破环](./Notes/Tips/Break%20retain%20circle.md)
