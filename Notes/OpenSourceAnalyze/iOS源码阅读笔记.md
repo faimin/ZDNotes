@@ -17,6 +17,14 @@
 
 ![methodLists](../ArticleImageResources/OpenSource/iOS/Runtime_AttackMethodLists.png)
 
+#### 类和category实现load对加载的影响
+
+只有类和分类都实现`load`方法，才会发生在`load_image`阶段分类方法整合到所属类的方法列表中的操作，也就是说只有类或者分类中实现`load`的时候，类的方法和分类方法都是直接在编译期存放到`class_ro_t`中的`baseMethods`中的。那这种情况怎么能保证分类方法在原始类方法前面的？这是编译器自己在编译期做的处理，让分类方法地址比原始类的方法地址要低。
+
+而对于类和分类都实现`load`的场景，即在`load_image`阶段整把分类方法整合到类的方法列表中的情况是如何进行二分查找的呢？其实整合后的方法列表是个二维数组，内部存的是排好序的一维方法列表（`methodizeClass`阶段`preparemethod`进行的方法升序排序），方法查找时先是顺序遍历二维数组，再在有序的一维方法列表中进行二分查找。
+
+综上所述，不要在类和分类中同时实现`load`方法也是提升启动速度的一个点，当然，不用`load`最好了。
+
 ## Weak
 
 `weak_table_t` 是全局的保存弱引用的哈希表。以 `object ids` 为 `keys`，以 `weak_entry_t` 为 `values`。
