@@ -27,13 +27,14 @@
 
 ## Weak
 
-`weak_table_t` 是全局的保存弱引用的哈希表。以 `object ids` 为 `keys`，以 `weak_entry_t` 为 `values`。
-	
-`weak_entry_t` 是用来存储所有指向某个对象的弱引用变量的地址的，它存储的其实是弱引用的指针，即指针的指针，这么做的目的是可以把弱引用置为`nil`。
-	
-`weak_entry_t` 中有`2`种结构，当存储的弱引用数量`<= 4`个的时候用的其实是个定长数组，`> 4`的时候才会转为哈希数组。（这里使用哈希数组的原因应该是为了处理B弱引用A，然后B先释放了，这时那个弱引用可能也要置为nil，用hash数组的话查询速度会比较快）
+`weak_table_t` 是全局保存弱引用的哈希表，它是通过对`object`地址做`hash`计算，然后从`8`个`SideTable`数组中取出其中一张，然后再从`SideTable`中读取到`weak_table`。`weak_table_t` 是以 `object` 地址为 `key`，以 `weak_entry_t` 为 `value`。
 
-往`weak_entry_t` 中添加弱引用变量时采用的是定向寻址法;
+`weak_entry_t` 是用来存储所有指向某个对象的弱引用变量的地址的，里面有个`weak_referrer_t`数组，它存储的其实是弱引用的指针，即指针的指针，这么做的目的是可以把弱引用置为`nil`。
+
+`weak_entry_t` 中有`2`种结构，当存储的弱引用数量`<= 4`个的时候用的其实是个定长数组，`> 4`的时候才会转为哈希数组。（这里使用哈希数组的原因应该是为了处理B弱引用A，然后B先释放了，这时那个弱引用可能也要置为nil，用hash数组的话查询速度会比较快）。往`weak_entry_t` 中添加弱引用变量时，即更新`weak_referrer_t`采用的是定向寻址法；
+
+往`weak_table` 中插入`weak_entry_t`时，先是对`object`地址取`hash`作为它的`index`，如果这个`index`下的位置不为空，则通过一个算法（`index = (index+1) & weak_table->mask`）重新计算生成一个新的`index`再读取对应的位置，直到找到一个空位置，然后把`weak_entry_t`放进去，同时更新元素数量。这种插入方式其实也是定向寻址法。
+
 
 > hash 函数，与 mask 做与操作，防止 index 越界;
 
