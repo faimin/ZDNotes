@@ -46,6 +46,24 @@ size_t begin = hash_pointer(referent) & weak_table->mask;
 
 `weak_table_t` 还有一个扩容和缩容的处理，当前使用容量占到 总容量`（mask + 1） 3/4` 的时候会进行扩容处理，扩大到现有总容量`（mask + 1）`的`2`倍。 当总容量超过`1024`，而实际使用的空间低于总空间的 `1/16` 时则会进行容量压缩，缩到现有总容量的`1/8` （为什么是八分之一？是为了保证总容量是现有使用容量的`2`倍）。
 
+## @synchronized原理
+
+1. 先从当前线程的`TLS`中尝试获取`SyncData`（本身是个单向链表），如果存在并且`SyncData`中的`object`与传进来的`object`相同，则说明找到对应的`SyncData`了。更新锁数量（`lockCount`），并返回`SyncData`。
+    
+    （注意：一条线程的`TLS`中只能存唯一一个`SyncData`，假如已经存在了但是`object`并不与自己传进来的一致，则创建新的`SyncData`后并不会更新到`TLS`中，而是保存到 `pthread_data` 中，有点先入为主的意思）
+
+2. 从`pthread_data`中获取`SyncCache`（里面存着一个`SyncCacheItem`数组，`SyncCacheItem`存的是`SyncData`），如果存在则遍历`SyncCacheItem`数组，如果`cacheItem`中的`syncData`中的`object`与传进来的`object`相同，则更新 `item->lockCount` ，然后返回`SyncData`。
+
+3. 走到这里就说明没有从`thread cache`中找到合适的`SyncData`。这时就会从全局`StripMap<SyncList> sDataLists` 表中读取，先通过对象`object`的`hash`值取出一个`SyncList`，接着拿到`SyncList`中的`SyncData`链表，然后遍历整个链表。
+
+	a. 如果发现与`object`匹配的`SyncData`则更新`SyncData`中的`threadCount`数量，然后把找到的这个`SyncData`保存到`TLS`或者`pthread_data`中的`SyncCache`里面；
+
+	b. 如果遍历到最后也没发现匹配的，则找到链表中第一个未使用（`SyncData`中的`threadCount = 0`）的`SyncData`，进行复用。这个`SyncData`也会和上面一样进行缓存；
+
+	c. 如果没找到匹配的，也没找到未使用的，则创建一个新的`SyncData`。这个新的`SyncData`会先保存到`SyncList`中，然后也会和上面一样保存到`TLS`或者`pthread_data`中一份，即新创建的有2份缓存。
+
+    ![@synchronized关系图](../ArticleImageResources/OpenSource/iOS/Runtime_synchronized.png)
+
 ## GCD
 
 可创建的最大线程数是 `255`
