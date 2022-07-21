@@ -63,7 +63,13 @@ size_t begin = hash_pointer(referent) & weak_table->mask;
 
 	c. 如果没找到匹配的，也没找到未使用的，则创建一个新的`SyncData`。这个新的`SyncData`会先保存到`SyncList`中，然后也会和上面一样保存到`TLS`或者`pthread_data`中一份，即新创建的有2份缓存。
 
-    ![@synchronized关系图](../ArticleImageResources/OpenSource/iOS/Runtime_synchronized.png)
+    ![@synchronized关系图](../ArticleImageResources/OpenSource/iOS/Runtime_Synchronized.png)
+
+## Associate 原理
+
+所有的关联对象都是由`AssociationsManager`管理的，`AssociationsManager`里面是由一个静态`AssociationsHashMap`来存储所有的关联对象。这相当于把所有对象的关联对象都存在一个全局`hashMap`里面，`hashMap`的`key`是这个对象的`指针地址`（任意两个不同对象的指针地址一定是不同的），而这个`hashMap`的`value`又是一个`ObjectAssociationsMap`，里面保存了关联对象的`key`和对应的`value`值。`runtime`的销毁对象函数`objc_destructInstance`里面会判断这个对象有没有关联对象，如果有会调用`_object_remove_assocations`做关联对象的清理工作。
+
+![Associate](../ArticleImageResources/OpenSource/iOS/Runtime_Associate.png)
 
 ## GCD
 
