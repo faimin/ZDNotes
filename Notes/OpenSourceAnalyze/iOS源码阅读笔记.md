@@ -96,44 +96,44 @@ thread_pool_size = DISPATCH_WORKQ_MAX_PTHREAD_COUNT     255
     }
     ```
 
-3. `dispatch_sync` :
+#### `dispatch_sync` :
 
     a. 首先将任务加入队列
 
     b. 执行任务`block`
 
-    c. 将任务移除队列
+    c. 将任务移出队列
 
     d. `sync`里面的处理最终执行的是`barrier`的内部函数
 
-    e. 会死锁的原因是：执行时会检查当前线程的状态（是否正在等待），然后与当前的线程的ID（`_dispatch_tid_self()`）做比较，相等的话则判定为死锁。（相关处理在 `__DISPATCH_WAIT_FOR_QUEUE__` 函数中）
+    e. 会死锁的原因：执行时会检查当前线程的状态（是否正在等待），然后与当前的线程的`ID`（`_dispatch_tid_self()`）做比较，相等的话则判定为死锁。（相关处理在 `__DISPATCH_WAIT_FOR_QUEUE__` 函数中）
 
-4. `dispatch_async`
+#### dispatch_async
 
     a. 将异步任务（`dispatch_queue 、 block`）封装为 `dispatch_continuation_t` 类型
 
     b. 然后执行 `_dispatch_continuation_async -> dx_push`递归重定向到根队列，然后通过创建线程执行 `dx_invoke` 执行`block`回调；
 
-5. dispatch_barrier_async：
+#### dispatch_barrier_async：
 
     a. 和`dispatch_async` 流程一样，只是里面有一个`while`循环，等队列中的`barrier`前面的任务执行完，才执行后面的
     b. 这里有个优化是：封装成 `dispatch_continuation_s` 结构时，会先从当前线程的`TLS`中获取一下，获取不到再从堆上创建新的
 
-6. dispatch_group：
+#### dispatch_group
 
     a. `dispatch_group`内部维护着一个数值，初始值为`0`，`enter`时减`4`，`leave`时加`4`   https://juejin.cn/post/6902346229868019719#heading-4
 	
     b. 等待用的是`while`循环，而不是信号量
 
-7. dispatch_semaphore_t：
+#### dispatch_semaphore_t
 
-    a. dispatch_semaphore_wait 时里面其实是起了一个do-while循环，不断的去查询原子变量的值，不满足条件时会一直循环，借此阻塞流程的进行。有点像`dispatch_once`
+    a. `dispatch_semaphore_wait` 时里面其实是起了一个`do-while` 循环，不断的去查询原子变量的值，不满足条件时会一直循环，借此阻塞流程的进行。有点像`dispatch_once`
 	
-8. dispatch_group_async：
+#### dispatch_group_async
 
     内部其实是对`dispatch_async` 和 `dispatch_group_enter / dispatch_group_leave` 的封装
 
-9. 线程池复用原理：
+#### 线程池复用原理
 
     线程创建后从队列里取出任务执行，任务执行后使用信号量使其等待`5`秒钟，如果在这期间再有`GCD`任务过来，会先尝试唤醒线程，让它继续工作，否则等待超时后线程会自动结束，被系统销毁。（不是`tableview`中的复用池机制）
 
