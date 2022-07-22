@@ -9,15 +9,14 @@
 #### 为什么会有一块干净的内存和一块脏内存呢？
 
  这是因为`iOS`运行时会导致不断对内存进行增删改查，会对内存的操作比较严重，为了防止对原始数据的修改，所以把原来的干净内存`copy`一份到`rw`中，有了`rw`为什么还要`rwe`（脏内存），这是因为不是所有的类进行动态的插入、删除。当我们添加一个属性，一个方法会对内存改动很大，会对内存的消耗很有影响，所以我们只要对类进行动态处理了，就会生成一个`rwe`。
-	
-	
-#### 为什么category会覆盖原来的方法？
+
+#### 为什么`category`会覆盖原来的方法？
 
 在`map_images`方法的 `attachCategories -> attachLists` 分类附加到原来的类的方法列表时，会先重新开辟一个新的数组，把原来的方法列表倒序遍历添加到新数组的后面，接着再正序遍历，把分类的方法添加到新数组的前面（方法列表的顺序与原来的顺序一致）；
 
 ![methodLists](../ArticleImageResources/OpenSource/iOS/Runtime_AttackMethodLists.png)
 
-#### 类和category实现load对加载的影响
+#### 类和`category`实现`load`对加载的影响
 
 只有类和分类都实现`load`方法，才会发生在`load_image`阶段分类方法整合到所属类的方法列表中的操作; 只有类或者分类中实现`load`的时候，类的方法和分类方法都是直接在编译期存放到`class_ro_t`中的`baseMethods`中的。那这种情况怎么能保证分类方法在原始类方法前面的？这应该是编译器自己在编译期做的处理，让分类方法地址比原始类的方法地址要低（方法排序用的是升序排序）。
 
@@ -71,6 +70,7 @@ size_t begin = hash_pointer(referent) & weak_table->mask;
 
 ![Associate](../ArticleImageResources/OpenSource/iOS/Runtime_Associate.png)
 
+----
 ## GCD
 
 可创建的最大线程数是 `255`
@@ -96,6 +96,7 @@ thread_pool_size = DISPATCH_WORKQ_MAX_PTHREAD_COUNT     255
     }
     ```
 
+----
 #### dispatch_sync
 
 a. 首先将任务加入队列
@@ -108,37 +109,43 @@ d. `sync`里面的处理最终执行的是`barrier`的内部函数
 
 e. 会死锁的原因：执行时会检查当前线程的状态（是否正在等待），然后与当前的线程的`ID`（`_dispatch_tid_self()`）做比较，相等的话则判定为死锁。（相关处理在 `__DISPATCH_WAIT_FOR_QUEUE__` 函数中）
 
+----
 #### dispatch_async
 
 a. 将异步任务（`dispatch_queue 、 block`）封装为 `dispatch_continuation_t` 类型
 
 b. 然后执行 `_dispatch_continuation_async -> dx_push`递归重定向到根队列，然后通过创建线程执行 `dx_invoke` 执行`block`回调；
 
+----
 #### dispatch_barrier_async
 
 a. 和`dispatch_async` 流程一样，只是里面有一个`while`循环，等队列中的`barrier`前面的任务执行完，才执行后面的；
 
 b. 这里有个优化是：封装成 `dispatch_continuation_s` 结构时，会先从当前线程的`TLS`中获取一下，获取不到再从堆上创建新的
 
+----
 #### dispatch_group
 
 a. `dispatch_group`内部维护着一个数值，初始值为`0`，`enter`时减`4`，`leave`时加`4`   https://juejin.cn/post/6902346229868019719#heading-4
 
 b. 等待用的是`while`循环，而不是信号量
 
+----
 #### dispatch_semaphore_t
 
 a. `dispatch_semaphore_wait` 时里面其实是起了一个`do-while` 循环，不断的去查询原子变量的值，不满足条件时会一直循环，借此阻塞流程的进行。有点像`dispatch_once`
-	
+
+----
 #### dispatch_group_async
 
 内部其实是对`dispatch_async` 和 `dispatch_group_enter / dispatch_group_leave` 的封装
 
+----
 #### 线程池复用原理
 
 线程创建后从队列里取出任务执行，任务执行后使用信号量使其等待`5`秒钟，如果在这期间再有`GCD`任务过来，会先尝试唤醒线程，让它继续工作，否则等待超时后线程会自动结束，被系统销毁。（不是`tableview`中的复用池机制）
 
-
+----
 ## NSTimer
 
 #### timer添加到runloop的过程：
