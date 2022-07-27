@@ -24,6 +24,11 @@
 
 综上所述，不要在类和分类中同时实现`load`方法也是提升启动速度的一个点，当然，不用`load`最好了。
 
+## 为什么执行`load`方法时没有触发`initialize`？
+
+一定明确`initialize`是在首次发消息时才会触发，而`load`的执行是通过函数指针的方式调用的，没有走消息发送机制，所以不会触发`initialize`。
+
+
 ## Weak
 
 `weak_table_t` 是全局保存弱引用的哈希表，它是通过对`object`地址做`hash`计算，然后从`8`个`SideTable`数组中取出其中一张，然后再从`SideTable`中读取到`weak_table`。`weak_table_t` 是以 `object` 地址为 `key`，以 `weak_entry_t` 为 `value`。
