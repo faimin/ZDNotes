@@ -345,4 +345,4 @@ end
 
 - [开启 Cocoapods 新选项，加快项目索引速度](https://kemchenj.github.io/2019-05-31/)
 
-- [Flipper](https://github.com/facebook/flipper/blob/master/docs/getting-started.md)
+- [Flipper](https://fbflipper.com/docs/getting-started/ios-native/)
