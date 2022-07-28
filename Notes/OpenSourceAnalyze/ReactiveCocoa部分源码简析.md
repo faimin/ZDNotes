@@ -7,7 +7,7 @@
 >* [RAC核心元素与信号流](http://www.jianshu.com/p/d262f2c55fbe) 
 >* [细说ReactiveCocoa的冷信号与热信号（三）：怎么处理冷信号与热信号](http://tech.meituan.com/talk-about-reactivecocoas-cold-signal-and-hot-signal-part-3.html) 
 
-P.S：本文有些地方是参考上面推荐的文章来理解的，感谢**godyZ**和**美团团队**。
+P.S：本文有些地方是参考上面推荐的文章来理解的
 
 >* `map`和`flatten`是基于`flattenMap`,而`flattenMap`是基于`bind:`,所以在此之前先来看看`bind`函数。
 >* 具体来看源码（为方便理解，去掉了源代码中`RACDisposable`, `@synchronized`, `@autoreleasepool`相关代码)。当新信号`N`被外部订阅时，会进入信号`N`的`didSubscribeBlock` (1)，之后订阅原信号`O` (2)，当原信号`O`有值输出后就用`bind`函数传入的`bindBlock`将其变换成中间信号`M` (3), 并马上对其进行订阅(4)，最后将中间信号`M`的输出作为新信号`N`的输出 (5)。即：当新生成的信号被订阅时，源信号也会立即被订阅。
