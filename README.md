@@ -25,3 +25,5 @@
 - [Swift元编程 - Sourcery](./Notes/Swift/Swift%E5%85%83%E7%BC%96%E7%A8%8B%20-%20Sourcery.md)
 
 - [闭包破环](./Notes/Tips/Break%20retain%20circle.md)
+
+- [《程序员的自我修养》笔记](./Notes/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E3%80%8B%E7%AC%94%E8%AE%B0.md)
