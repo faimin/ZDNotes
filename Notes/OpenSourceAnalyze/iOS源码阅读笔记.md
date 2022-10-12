@@ -29,6 +29,170 @@
 一定明确`initialize`是在首次发消息时才会触发，而`load`的执行是通过函数指针的方式调用的，没有走消息发送机制，所以不会触发`initialize`。
 
 
+#### 什么在对象释放过程中通过`weak`变量获取不到这个对象？
+
+在关联的场景中，比如`A`关联`B`，`B`弱持有`A`，`A`释放时会释放其关联的`B`，导致`B`的`dealloc`执行，然后我们在`B`的`dealloc`方法中通过`weak`变量读取`A`，却发现获取到的是`nil`（根据释放流程此时A还没有free掉），这是为什么？
+
+分析如下：
+
+读取`weak`变量时执行的是`objc_loadWeak`函数，内部执行大概流程为：`objc_loadWeak` -> `objc_loadWeakRetained` -> `obj->rootTryRetain()` -> `rootRetain(true, RRVariant::Fast)` ，在`rootRetain`中如果当前对象正在处于释放流程中，则返回`nil`。具体代码如下：
+
+```cpp
+id
+objc_loadWeakRetained(id *location)
+{
+    id obj;
+    id result;
+    Class cls;
+
+    SideTable *table;
+    
+ retry:
+    obj = *location;
+    if (_objc_isTaggedPointerOrNil(obj)) return obj;
+    
+    table = &SideTables()[obj];
+    
+    table->lock();
+    if (*location != obj) {
+        table->unlock();
+        goto retry;
+    }
+    
+    result = obj;
+
+    cls = obj->ISA();
+    if (! cls->hasCustomRR()) {
+        // 执行此逻辑
+        if (! obj->rootTryRetain()) {
+            result = nil;
+        }
+    }
+    else {
+        // 执行不到的逻辑，删掉
+    }
+        
+    table->unlock();
+    return result;
+}
+
+ALWAYS_INLINE bool 
+objc_object::rootTryRetain()
+{
+    return rootRetain(true, RRVariant::Fast) ? true : false;
+}
+
+ALWAYS_INLINE id
+objc_object::rootRetain(bool tryRetain, objc_object::RRVariant variant)
+{
+    if (slowpath(isTaggedPointer())) return (id)this;
+
+    bool sideTableLocked = false;
+    bool transcribeToSideTable = false;
+
+    isa_t oldisa;
+    isa_t newisa;
+
+    oldisa = LoadExclusive(&isa().bits);
+
+    // ...
+
+    do {
+        transcribeToSideTable = false;
+        newisa = oldisa;
+
+        // 关键逻辑：
+        // 如果正在释放中，并且tryRetain=true，则返回nil
+        // don't check newisa.fast_rr; we already called any RR overrides
+        if (slowpath(newisa.isDeallocating())) {
+            ClearExclusive(&isa().bits);
+            if (sideTableLocked) {
+                ASSERT(variant == RRVariant::Full);
+                sidetable_unlock();
+            }
+            if (slowpath(tryRetain)) {
+                return nil;
+            } else {
+                return (id)this;
+            }
+        }
+        uintptr_t carry;
+        newisa.bits = addc(newisa.bits, RC_ONE, 0, &carry);  // extra_rc++
+
+        if (slowpath(carry)) {
+            // newisa.extra_rc++ overflowed
+            if (variant != RRVariant::Full) {
+                ClearExclusive(&isa().bits);
+                return rootRetain_overflow(tryRetain);
+            }
+            // Leave half of the retain counts inline and 
+            // prepare to copy the other half to the side table.
+            if (!tryRetain && !sideTableLocked) sidetable_lock();
+            sideTableLocked = true;
+            transcribeToSideTable = true;
+            newisa.extra_rc = RC_HALF;
+            newisa.has_sidetable_rc = true;
+        }
+    } while (slowpath(!StoreExclusive(&isa().bits, &oldisa.bits, newisa.bits)));
+
+    if (variant == RRVariant::Full) {
+        if (slowpath(transcribeToSideTable)) {
+            // Copy the other half of the retain counts to the side table.
+            sidetable_addExtraRC_nolock(RC_HALF);
+        }
+
+        if (slowpath(!tryRetain && sideTableLocked)) sidetable_unlock();
+    } else {
+        ASSERT(!transcribeToSideTable);
+        ASSERT(!sideTableLocked);
+    }
+
+    return (id)this;
+}
+```
+
+既然没释放，那我们怎么拿到这个对象呢？通过`unsafe_unretained`或者`assign`标记就可以获取到了。
+
+
+### 对象释放流程
+
+调用`release` -> `rootRelease`，引用计数`-1`，当引用计数变为`0`时，就会通过`objc_msgSend`调用`Objective-C`对象的`dealloc`方法，然后进入到`objc_object::rootDealloc()`函数，函数内部会读取当前对象的`isa`中存储的信息，包括是否是非指针、有没有弱引用、成员变量、关联对象、`has_sidetable_rc`，如果都没有会直接释放（`free`），否则会执行`objc_destructInstance(obj)`，这个函数的逻辑为先释放成员变量，接着移除关联对象，再移除弱引用，把弱引用指针置为`nil`，最后再从`SideTable`的`RefcountMap refcnts`成员变量中 把存储当前对象引用计数的记录（`key-value`）从引用计数表中移除，类似于从字典中把这条`key-value`都删除（疑问：此时引用计数已经是0了，那最后这个引用计数表的处理是不是多余的，什么情况下会执行进来？？？）。
+
+在`dealloc`方法中如果有对`self`的引用，比如`- (void)dealloc { id obj = self; }`，是不会发生引用计数`+1`的，`runtime`处理如下：
+
+```cpp
+// 是否正在释放
+bool isDeallocating() {
+    return extra_rc == 0 && has_sidetable_rc == 0;
+}
+
+// retain最终执行的函数
+ALWAYS_INLINE id
+objc_object::rootRetain(bool tryRetain, objc_object::RRVariant variant)
+{
+    // 省略代码
+    ... 
+
+    // 在dealloc中这里的执行结果是true
+    if (slowpath(newisa.isDeallocating())) {
+        ClearExclusive(&isa.bits);
+        if (sideTableLocked) {
+            ASSERT(variant == RRVariant::Full);
+            sidetable_unlock();
+        }
+        if (slowpath(tryRetain)) {
+            return nil;
+        } else {
+            return (id)this;
+        }
+    }
+
+    // 省略代码
+    ...
+}
+```
+
+
 ## Weak
 
 `weak_table_t` 是全局保存弱引用的哈希表，它是通过对`object`地址做`hash`计算，然后从`8`个`SideTable`数组中取出其中一张，然后再从`SideTable`中读取到`weak_table`。`weak_table_t` 是以 `object` 地址为 `key`，以 `weak_entry_t` 为 `value`。
@@ -153,6 +317,52 @@ a. `dispatch_semaphore_wait` 时里面其实是起了一个`do-while` 循环，�
 线程创建后从队列里取出任务执行，任务执行后使用信号量使其等待`5`秒钟，如果在这期间再有`GCD`任务过来，会先尝试唤醒线程，让它继续工作，否则等待超时后线程会自动结束，被系统销毁。（不是`tableview`中的复用池机制）
 
 ----
+
+
+#### dispatch_once
+
+`dispatch_once`函数中的`token` (`dispatch_once_t`) 会被强转为`dispatch_once_gate_t`类型，而`dispatch_once_gate_t`里面是个`union`联合体类型，其中`dgo_once`用来记录当前`block`的执行状态，执行完后状态会被标记为`DLOCK_ONCE_DONE`。
+
+```cpp
+typedef struct dispatch_once_gate_s {
+	union {
+		dispatch_gate_s dgo_gate;
+		uintptr_t dgo_once;
+	};
+} dispatch_once_gate_s, *dispatch_once_gate_t;
+```
+
+我们首先获取`dgo_once`变量的值，如果是`DLOCK_ONCE_DONE`，则表示已经执行过了，直接return掉；
+如果是`DLOCK_ONCE_UNLOCKED`状态，则表示首次执行，然后会把当前的`线程id`存到`dgo_once`变量中，然后开始执行block任务，结束后会把`dgo_once`置为`DLOCK_ONCE_DONE`；
+如果有其他线程执行过来，根据`dgo_once`判断，发现正在执行中，则会进入等待流程，等待其实是启了个`for (;;)`无限循环，在循环中不断地通过原子操作查询`dgo_once`的状态，等发现变为`DLOCK_ONCE_DONE`后则退出循环。
+
+
+---
+
+#### dispatch_source_merge_data
+
+对应的结构定义
+
+```cpp
+// 定义在 libdispatch 仓库中的 init.c 文件中
+DISPATCH_VTABLE_INSTANCE(source,
+	.do_type        = DISPATCH_SOURCE_KEVENT_TYPE,
+	.do_dispose     = _dispatch_source_dispose,
+	.do_debug       = _dispatch_source_debug,
+	.do_invoke      = _dispatch_source_invoke,
+
+	.dq_activate    = _dispatch_source_activate,
+	.dq_wakeup      = _dispatch_source_wakeup,
+	.dq_push        = _dispatch_lane_push,
+);
+```
+
+把任务包装成`dispatch_continuation_t`对象，每次`dispatch_source_merge_data`时对内部变量进行原子性的`ADD、OR、REPLACE`等操作，并执行`dx_wakeup`函数，`dx_wakeup`是个宏定义，其实调用的是`_dispatch_source_wakeup`，wakeup这个函数其实是一个入队操作，但并不是每次都会进行入队（此处还未完全看明白 o(╯□╰)o ），接着会执行`_dispatch_main_queue_drain -> _dispatch_continuation_pop_inline`出队操作，流程基本和`dispatch_async`一致。
+
+
+---
+
+
 ## NSTimer
 
 #### timer添加到runloop的过程：
