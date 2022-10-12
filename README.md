@@ -1,5 +1,7 @@
 ## ZDNotes
 
+> 内容已经迁移至 [我的博客](https://https://faimin.github.io/)，内容更新也是以博客优先，不定期同步到这里。
+
 - [iOS源码阅读笔记](./Notes/OpenSourceAnalyze/iOS%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0.md)
 
 - [Swift问题简析](./Notes/Swift/Swift%20%E9%97%AE%E9%A2%98%E7%AE%80%E6%9E%90.md)
