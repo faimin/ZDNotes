@@ -1,6 +1,6 @@
 ## ZDNotes
 
-> 文章已经迁移至 [我的博客](http://faimin.com/)，内容更新也是以博客优先，不定期同步到这里。
+> 文章已经迁移至 [我的博客](https://faimin.github.io/)，内容更新也是以博客优先，不定期同步到这里。
 
 - [iOS源码阅读笔记](./Notes/OpenSourceAnalyze/iOS%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0.md)
 
